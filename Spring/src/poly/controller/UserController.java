@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import poly.dto.UserDTO;
+import poly.dto.MemberDTO;
 import poly.service.IUserService;
 import poly.util.EncryptUtil;
 
@@ -41,10 +41,10 @@ public class UserController {
 
 		String HashEnc = EncryptUtil.enHashSHA256(pwd);
 
-		UserDTO uDTO = new UserDTO();
+		MemberDTO uDTO = new MemberDTO();
 
 		uDTO.setMember_id(id);
-		uDTO.setMember_pwd(pwd);
+		uDTO.setMember_pwd(HashEnc);
 		
 		log.info("userService start");
 		uDTO = userService.getLoginInfo(uDTO);
@@ -60,9 +60,15 @@ public class UserController {
 			log.info("uDTO.Member_name : " + uDTO.getMember_name());
 
 			
-			session.setAttribute("user_id", uDTO.getMember_id());
-			session.setAttribute("user_name", uDTO.getMember_name());
-
+			session.setAttribute("member_id", uDTO.getMember_id());
+			session.setAttribute("member_name", uDTO.getMember_name());
+			
+			model.addAttribute("member_id", uDTO.getMember_id());
+			model.addAttribute("favorite_team", uDTO.getFavorite_team());
+			model.addAttribute("member_name", uDTO.getMember_name());
+			model.addAttribute("member_score", uDTO.getMember_score());
+			model.addAttribute("member_point",uDTO.getMember_point());
+			
 			return "/main/home";
 		}
 
@@ -121,7 +127,7 @@ public class UserController {
 
 		String HashEnc = EncryptUtil.enHashSHA256(member_pwd);
 
-		UserDTO tDTO = new UserDTO();
+		MemberDTO tDTO = new MemberDTO();
 		log.info("tDTO.set start");
 		tDTO.setMember_id(member_id);
 		tDTO.setMember_pwd(HashEnc);
@@ -163,18 +169,19 @@ public class UserController {
 		public int idCheck(HttpServletRequest request) throws Exception {
 			log.info("idCheck start");
 
-			String userId = request.getParameter("userId");
+			String memberId = request.getParameter("memberId");
 
-			log.info("userService.idCheck start");
-			UserDTO idCheck = userService.idCheck(userId);
-			log.info("userService.idCheck start");
+			log.info("userService.idCheck Start : "+ memberId);
+			MemberDTO idCheck = userService.idCheck(memberId);
+			log.info("userService.idCheck End");
 
 			int res = 0;
 
 			log.info("id 확인");
-			if (idCheck != null)
+			if (idCheck != null) {
+				log.info("값이 있음");
 				res = 1;
-
+			}
 			log.info("result : " + res);
 
 			log.info("idCheck end");

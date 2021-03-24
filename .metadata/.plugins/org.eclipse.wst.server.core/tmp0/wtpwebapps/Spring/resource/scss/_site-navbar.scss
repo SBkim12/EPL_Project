@@ -1,25 +1,28 @@
-.site-logo {
-	position: relative;
-	font-weight: 900;	
-	font-size: 1.3rem;
-	a {
-		color: $white;
-	}
-}
 .site-navbar {
-
+	background: $white;
 	margin-bottom: 0px;
 	z-index: 1999;
-	position: absolute;
-	width: 100%;
+	position: relative;
 	
-	.container-fluid {
-		padding-left: 7rem;
-		padding-right: 7rem;
+	&.transparent {
+		background: transparent;
+	}
+	&.absolute {
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 100%;
+	}
+
+	.site-logo {
+		position: absolute;
+		left: 0;
+		top: 0;
+		margin-top: -20px;
 	}
 	
-	
 	.site-navigation {
+		background: rgba($black, .2);
 		&.border-bottom {
 			border-bottom: 1px solid lighten($gray-1, 80%)!important;
 		}
@@ -28,39 +31,26 @@
 			margin-bottom: 0;
 			.active {
 				> a {
-					// color: $primary!important;
-					display: inline-block;
-					position: relative;
-					&:before {
-						content: "";
-						position: absolute;
-						bottom: 0;
-						left: 20px;
-						right: 20px;
-						height: 2px;
-						background: $white;
-					}
+					color: $primary;
 				}
 			}
 			a {
 				text-decoration: none!important;
+				font-size: 15px;
 				display: inline-block;
 			}
 			> li {
 				display: inline-block;
+				padding: 10px 5px;
 				> a {
-					padding: 5px 20px;
-					color: $white;
-					font-size: 12px;
-					letter-spacing: .1rem;
+					padding: 10px 10px;
 					text-transform: uppercase;
-					font-weight: 400;
-					display: inline-block;
+					letter-spacing: .05em;
+					color: $white;
+					font-size: 15px;
 					text-decoration: none!important;
-					
 					&:hover {
-						color: $white;
-						
+						color: $primary;
 					}
 				}
 			}
@@ -85,8 +75,8 @@
 					top: 100%;
 					position: absolute;
 					text-align: left;
-					border-top: 2px solid $primary;
-					box-shadow: 0 2px 10px -2px rgba(0,0,0,.1);
+					// border-top: 2px solid $primary;
+					box-shadow: 0 0px 4px 0px rgba(0,0,0,.25);
 					border-left: 1px solid $gray-4;
 					border-right: 1px solid $gray-4;
 					border-bottom: 1px solid $gray-4;
@@ -118,7 +108,7 @@
 					
 
 					a {
-						// font-size: 16px;
+						font-size: 16px;
 						text-transform: none;
 						letter-spacing: normal;
 						transition: 0s all;
@@ -163,7 +153,9 @@
 						}
 					}
 				}
-				
+				a {
+					text-transform: uppercase;
+				}
 				&:hover, &:focus, &:active {
 					> a {
 						color: $primary;
@@ -178,13 +170,6 @@
 						opacity: 1;
 
 				
-					}
-				}
-			}
-			&.site-menu-dark {
-				> li {
-					> a {
-						color: $black;
 					}
 				}
 			}
@@ -215,6 +200,7 @@
 	.site-mobile-menu-header {
 		width: 100%;
 		float: left;
+		margin-bottom: 20px;
 		padding-left: 20px;
 		padding-right: 20px;
 		
@@ -252,10 +238,11 @@
 	}
 
 	.site-mobile-menu-body {
+		// height: 400px;
 		overflow-y: scroll;
   	-webkit-overflow-scrolling: touch;
 		position: relative;
-		padding: 0 20px 20px 20px;
+		padding: 20px;
 
 		height: calc(100vh - 52px);
 		padding-bottom: 150px;
@@ -353,99 +340,6 @@
 				}
 			}
 		}
-	
-	&[data-class="social"] {
-		float: left;
-		width: 100%;
-		margin-top: 30px;
-		padding-bottom: 5em;
-		> li {
-			width: auto;
-			&:first-child {
-				a {
-					padding-left: 15px!important;
-				}
-			}
-		}
+		
 	}
-
-	}
-
-
 }
-
-.sticky-wrapper {
-	position: absolute;
-	z-index: 100;
-	width: 100%;
-
-	& + .site-blocks-cover {
-		// margin-top: 140px;
-		margin-top: 96px;
-	}
-	.site-navbar {
-		transition: .3s all ease;
-		.site-menu {
-			> li {
-				display: inline-block;
-				> a {
-					&.active {
-						color: $white;
-						position: relative;
-						&:after {
-							height: 2px;
-							background: $white;
-							content: "";
-							position: absolute;
-							bottom: 0;
-							left: 20px;
-							right: 20px;
-						}
-					}
-				}
-			}
-		}
-	}
-	&.is-sticky {
-		.site-navbar {
-			box-shadow: 4px 0 20px -5px rgba(0,0,0,.2);
-			background: $white;
-			.site-logo {
-				a {
-					color: $black;
-					img {
-						width: 70px;
-					}
-				}
-			}
-			.site-menu {
-				> li {
-					display: inline-block;
-					> a {
-						padding: 5px 20px;
-						color: $black;
-						display: inline-block;
-						text-decoration: none!important;
-						
-						&:hover {
-							color: $primary;
-							
-						}
-						&.active {
-							&:after {
-								background: $primary;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	.shrink {
-		padding-top: 10px!important;
-		padding-bottom: 10px!important;
-	}
-
-
-}
-

@@ -30,8 +30,6 @@
 <!--===============================================================================================-->
 </head>
 <body>
-	
-	
 	<div class="container-login100" style="background-image: url('../resource_login/images/EPL.png');">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30">
 			<form class="login100-form validate-form" action="SignUpProc.do" method="post" >
@@ -39,22 +37,22 @@
 					Sign Up
 				</span>
 
-				<div class="wrap-input100 validate-input m-b-2" data-validate="Enter email">
-					<input class="input100" type="email" id="userId" name="id" placeholder="Email">
+				<div class="wrap-input100 validate-input m-b-15" data-validate="Enter email">
+					<input class="input100" type="email" id="userId" name="email" placeholder="Email">
 					<span class="focus-input100"></span>
 				</div>
 
-				<div class="wrap-input100 validate-input m-b-2" data-validate = "Enter password">
+				<div class="wrap-input100 validate-input m-b-15" data-validate = "Enter password">
 					<input id="newPassWord" class="input100" type="password" name="pwd" placeholder="password">
 					<span class="focus-input100"></span>
 				</div>
 				
-				<div class="wrap-input100 validate-input m-b-2" data-validate = "Enter password check">
+				<div class="wrap-input100 validate-input m-b-15" data-validate = "Enter password check">
 					<input id="passWordCheck" class="input100" type="password" name="pwd_check" placeholder="password check">
 					<span class="focus-input100"></span>
 				</div>
 				
-				<div class="wrap-input100 validate-input m-b-2" data-validate = "Enter Your nickname">
+				<div class="wrap-input100 validate-input m-b-15	" data-validate = "Enter Your nickname">
 					<input id="passWordCheck" class="input100" type="text" name="name" placeholder="nickname">
 					<span class="focus-input100"></span>
 				</div>
@@ -106,7 +104,7 @@
 	
 
 	<div id="dropDownSelect1"></div>
-	
+
 <!--===============================================================================================-->
 	<script src="../resource_login/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -122,6 +120,6 @@
 <!--===============================================================================================-->
 	<script src="../resource_login/vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
-	<script language="JavaScript" src="../resource_login/js/main.js" charset="UTF-8"></script>
+	<script src="../resource_login/js/main.js" ></script>
 </body>
 </html>

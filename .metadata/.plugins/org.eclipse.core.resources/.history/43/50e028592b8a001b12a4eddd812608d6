@@ -1,0 +1,35 @@
+package poly.service.impl;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import poly.dto.MemberDTO;
+import poly.persistance.mapper.IUserMapper;
+import poly.service.IUserService;
+
+@Service("UserService")
+public class UserService implements IUserService{
+	
+	@Resource(name="UserMapper")
+	private IUserMapper userMapper;
+
+	@Override
+	public MemberDTO getLoginInfo(MemberDTO uDTO) {
+		
+		return userMapper.getLoginInfo(uDTO);
+	}
+
+	@Override
+	public MemberDTO idCheck(String userId) {
+		return userMapper.idCheck(userId);
+	}
+
+	@Override
+	public int UserSignUp(MemberDTO tDTO) {
+		return userMapper.userSignUp(tDTO);
+	}
+
+
+	
+}

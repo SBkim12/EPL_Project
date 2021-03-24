@@ -49,16 +49,26 @@
          	return false;
          }
     	 
+    	 if($(input).attr('name') == 'id') {
+             if($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
+             	$("#userId").parent().attr("data-validate","Check Email Format");
+             	return false;
+            }else{
+            	$("#userId").parent().attr("data-validate","Enter email");
+            	return true;
+            }
+    	 }
+    	 
         if($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
             if($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
-            	$("#userId").parent().attr("data-validate","Enter Email Format");
+            	$("#userId").parent().attr("data-validate","Check Email Format");
             	return false;
             }else if($(input).val().trim() == ''){
             	$("#userId").parent().attr("data-validate","Enter Email");
             	return false;
             }else{
             	var query = {
-                	userId : $("#userId").val()
+                	memberId : $("#userId").val()
                 };
             	var possible = 'Y';
         		$.ajax({
@@ -67,7 +77,6 @@
         			data : query,
         			async: false,
         			success : function(data) {
-        				var thisAlert = $("#userId").parent();
         				if (data == 1) {
         					$("#userId").parent().attr("data-validate",'Used Email');
         				} else {

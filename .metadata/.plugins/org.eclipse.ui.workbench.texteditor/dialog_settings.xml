@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="img"/>
+		<item key="selection" value="messages"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="img"/>
-			<item value="png"/>
-			<item value="val"/>
-			<item value="pwd"/>
-			<item value="alert-validate"/>
-			<item value="showValidate"/>
-			<item value="check"/>
-			<item value="validate"/>
-			<item value="main"/>
-			<item value="btn-hide-validate"/>
-			<item value=".btn-hide-validate"/>
-			<item value="validate-input"/>
-			<item value="json"/>
-			<item value="mybatis"/>
+			<item value="messages"/>
+			<item value="onMessage"/>
+			<item value="writeResponse"/>
+			<item value="send"/>
+			<item value="floating-chat.expand"/>
+			<item value="floating-chat"/>
+			<item value="enter"/>
+			<item value="enter expand"/>
+			<item value="chat"/>
+			<item value="loadingImg"/>
+			<item value="connect"/>
+			<item value="org.spring"/>
+			<item value="org.framework"/>
+			<item value="spring"/>
+			<item value="webs"/>
 		</list>
 		<list key="replacehistory">
+			<item value="../resource/images/"/>
+			<item value="MemberDTO"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="179"/>
-		<item key="DIALOG_Y_ORIGIN" value="222"/>
+		<item key="DIALOG_X_ORIGIN" value="969"/>
+		<item key="DIALOG_Y_ORIGIN" value="337"/>
 		<item key="DIALOG_WIDTH" value="340"/>
 		<item key="DIALOG_HEIGHT" value="454"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>

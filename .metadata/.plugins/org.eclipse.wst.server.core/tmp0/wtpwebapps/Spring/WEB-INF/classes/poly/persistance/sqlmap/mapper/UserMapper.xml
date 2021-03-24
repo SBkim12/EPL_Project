@@ -3,7 +3,7 @@
 <mapper namespace="poly.persistance.mapper.IUserMapper">
 
 	<!-- 로그인  -->
-	<select id="getLoginInfo" resultType="UserDTO">
+	<select id="getLoginInfo" resultType="MemberDTO">
 	SELECT
 		MEMBER_ID,  
 		MEMBER_NAME, 
@@ -17,17 +17,17 @@
 	</select>
 	
 	<!-- 아이디 중복 확인 -->
-	<select id="idCheck" resultType="UserDTO" parameterType="UserDTO" >
+	<select id="idCheck" resultType="MemberDTO" parameterType="MemberDTO" >
 	SELECT
 		MEMBER_ID
 	FROM
 		MEMBER_DATA
 	WHERE
-		MEMBER_ID = #{user_id}
+		MEMBER_ID = #{memberId}
 	</select>
 	
 	<!-- 회원 가입 -->
-	<insert id="userSignUp" parameterType="UserDTO" >
+	<insert id="userSignUp" parameterType="MemberDTO" >
 	INSERT INTO 
 		MEMBER_DATA(
 		MEMBER_ID,  

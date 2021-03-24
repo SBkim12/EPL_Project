@@ -1,17 +1,15 @@
 package poly.persistance.mapper;
 
-import java.util.List;
-
 import config.Mapper;
-import poly.dto.UserDTO;
+import poly.dto.MemberDTO;
 
 @Mapper("UserMapper")
 public interface IUserMapper {
 
-	UserDTO getLoginInfo(UserDTO uDTO);
+	MemberDTO getLoginInfo(MemberDTO uDTO);
 
-	UserDTO idCheck(String userId);
+	MemberDTO idCheck(String memberId);
 
-	int userSignUp(UserDTO tDTO);
+	int userSignUp(MemberDTO tDTO);
 	
 }

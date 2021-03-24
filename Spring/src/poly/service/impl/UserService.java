@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import poly.dto.UserDTO;
+import poly.dto.MemberDTO;
 import poly.persistance.mapper.IUserMapper;
 import poly.service.IUserService;
 
@@ -15,18 +15,17 @@ public class UserService implements IUserService{
 	private IUserMapper userMapper;
 
 	@Override
-	public UserDTO getLoginInfo(UserDTO uDTO) {
-		
+	public MemberDTO getLoginInfo(MemberDTO uDTO) {
 		return userMapper.getLoginInfo(uDTO);
 	}
 
 	@Override
-	public UserDTO idCheck(String userId) {
-		return userMapper.idCheck(userId);
+	public MemberDTO idCheck(String memberId) {
+		return userMapper.idCheck(memberId);
 	}
 
 	@Override
-	public int UserSignUp(UserDTO tDTO) {
+	public int UserSignUp(MemberDTO tDTO) {
 		return userMapper.userSignUp(tDTO);
 	}
 

@@ -1,574 +1,1445 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%
+	String member_id = (String) request.getAttribute("member_id");
+	String favorite_team = (String) request.getAttribute("favorite_team");
+	String member_name = (String) request.getAttribute("member_name");
+	String member_score = (String) request.getAttribute("member_score");
+	String member_point = (String) request.getAttribute("member_point");
+%>
+
+	
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <title>Soccer &mdash; Website by Colorlib</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Hompage</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script>
+	function loading_st() {
+	   layer_str = "<div id='loading_layer' style='display:block; position:absolute; text-align:center; width:100%;'><img src='../resource/images/loading-img.gif'/></div>"
+	   document.write(layer_str);
+	}
+	function loading_ed() {
+	    var ta = document.getElementById('loading_layer');
+	    ta.style.display = 'none';
+	}
+	loading_st();
+	window.onload = loading_ed;
+</script>
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
+<link rel="stylesheet" href="../resource/fonts/icomoon/style.css">
 
+<link rel="stylesheet" href="../resource/css/bootstrap.min.css">
+<link rel="stylesheet" href="../resource/css/magnific-popup.css">
+<link rel="stylesheet" href="../resource/css/jquery-ui.css">
+<link rel="stylesheet" href="../resource/css/owl.carousel.min.css">
+<link rel="stylesheet" href="../resource/css/owl.theme.default.min.css">
+<link rel="stylesheet" href="../resource/css/chat.css">
 
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../resource/css/aos.css">
 
-  <link rel="stylesheet" href="../resource/fonts/icomoon/style.css">
-
-  <link rel="stylesheet" href="../resource/css/bootstrap/bootstrap.css">
-  <link rel="stylesheet" href="../resource/css/jquery-ui.css">
-  <link rel="stylesheet" href="../resource/css/owl.carousel.min.css">
-  <link rel="stylesheet" href="../resource/css/owl.theme.default.min.css">
-  <link rel="stylesheet" href="../resource/css/owl.theme.default.min.css">
-
-  <link rel="stylesheet" href="../resource/css/jquery.fancybox.min.css">
-
-  <link rel="stylesheet" href="../resource/css/bootstrap-datepicker.css">
-
-  <link rel="stylesheet" href="../resource/fonts/flaticon/font/flaticon.css">
-
-  <link rel="stylesheet" href="../resource/css/aos.css">
-
-  <link rel="stylesheet" href="../resource/css/style.css">
-
-
-
+<link rel="stylesheet" href="../resource/css/style.css">
+<script src="https://kit.fontawesome.com/84865ac036.js" crossorigin="anonymous"></script>
 </head>
-
 <body>
 
-  <div class="site-wrap">
+	<div class="site-wrap">
 
-    <div class="site-mobile-menu site-navbar-target">
-      <div class="site-mobile-menu-header">
-        <div class="site-mobile-menu-close">
-          <span class="icon-close2 js-menu-toggle"></span>
-        </div>
-      </div>
-      <div class="site-mobile-menu-body"></div>
-    </div>
+		<div class="site-mobile-menu">
+			<div class="site-mobile-menu-header">
+				<div class="site-mobile-menu-logo">
+					<a href="#"><img src="../resource/images/logo.png" alt="Image"></a>
+				</div>
+				<div class="site-mobile-menu-close mt-3">
+					<span class="icon-close2 js-menu-toggle"></span>
+				</div>
+			</div>
+			<div class="site-mobile-menu-body"></div>
+		</div>
 
+		<header class="site-navbar absolute transparent" role="banner">
+			<div class="py-3">
+				<div class="container">
+					<div class="row align-items-center">
+						<div class="col-6 col-md-3">
+							<a href="#" class="text-secondary px-2 pl-0">
+								<span>
+									<%=member_name%>
+								</span>
+								<br>
+								<span>
+									<%=member_score%>
+								</span>
+								<br>
+								<span>
+									<%=member_point%>
+								</span>
+							</a>
+							<a href="#" class="text-secondary px-2"><span
+								class="icon-twitter">
+								</span>
+							</a> 
+							<a href="#" class="text-secondary px-2">
+								<span class="icon-linkedin">
+								</span>
+							</a>
+						</div>
+						<div class="col-6 col-md-9 text-right">
+							<div class="d-inline-block">
+								<a href="#" class="text-secondary p-2 d-flex align-items-center"><span
+									class="icon-envelope mr-3"></span> <span
+									class="d-none d-md-block">youremail@domain.com</span></a>
+							</div>
+							<div class="d-inline-block">
+								<a href="#" class="text-secondary p-2 d-flex align-items-center"><span
+									class="icon-phone mr-0 mr-md-3"></span> <span
+									class="d-none d-md-block">+1 232 3532 321</span></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<nav
+				class="site-navigation position-relative text-right bg-black text-md-right"
+				role="navigation">
+				<div class="container position-relative">
+					<div class="site-logo">
+						<a href="index.html"><img src="../resource/images/logo.png"
+							alt=""></a>
+					</div>
 
-    <header class="site-navbar py-4" role="banner">
+					<div class="d-inline-block d-md-none ml-md-0 mr-auto py-3">
+						<a href="#" class="site-menu-toggle js-menu-toggle text-white"><span
+							class="icon-menu h3"></span></a>
+					</div>
 
-      <div class="container">
-        <div class="d-flex align-items-center">
-          <div class="site-logo">
-            <a href="index.html">
-              <img src="../resource/images/logo.png" alt="Logo">
-            </a>
-          </div>
-          <div class="ml-auto">
-            <nav class="site-navigation position-relative text-right" role="navigation">
-              <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li class="active"><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="matches.html" class="nav-link">Matches</a></li>
-                <li><a href="players.html" class="nav-link">Players</a></li>
-                <li><a href="blog.html" class="nav-link">Mypage</a></li>
-                <li><a href="/Logout.do" class="nav-link">Logout</a></li>
-              </ul>
-            </nav>
-
-            <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black float-right text-white"><span
-                class="icon-menu h3 text-white"></span></a>
-          </div>
-        </div>
-      </div>
-
-    </header>
-
-    <div class="hero overlay" style="background-image: url('images/bg_3.jpg');">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-5 ml-auto">
-            <h1 class="text-white">World Cup Event</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta, molestias repudiandae pariatur.</p>
-            <div id="date-countdown"></div>
-            <p>
-              <a href="#" class="btn btn-primary py-3 px-4 mr-3">Book Ticket</a>
-              <a href="#" class="more light">Learn More</a>
-            </p>  
-          </div>
-        </div>
-      </div>
-    </div>
-
-    
-    
-    <div class="container">
-      
-
-      <div class="row">
-        <div class="col-lg-12">
-          
-          <div class="d-flex team-vs">
-            <span class="score">4-1</span>
-            <div class="team-1 w-50">
-              <div class="team-details w-100 text-center">
-                <img src="../reousrce/images/logo_1.png" alt="Image" class="img-fluid">
-                <h3>LA LEGA <span>(win)</span></h3>
-                <ul class="list-unstyled">
-                  <li>Anja Landry (7)</li>
-                  <li>Eadie Salinas (12)</li>
-                  <li>Ashton Allen (10)</li>
-                  <li>Baxter Metcalfe (5)</li>
-                </ul>
-              </div>
-            </div>
-            <div class="team-2 w-50">
-              <div class="team-details w-100 text-center">
-                <img src="../resource/images/logo_2.png" alt="Image" class="img-fluid">
-                <h3>JUVENDU <span>(loss)</span></h3>
-                <ul class="list-unstyled">
-                  <li>Macauly Green (3)</li>
-                  <li>Arham Stark (8)</li>
-                  <li>Stephan Murillo (9)</li>
-                  <li>Ned Ritter (5)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-
-    <div class="latest-news">
-      <div class="container">
-        <div class="row">
-          <div class="col-12 title-section">
-            <h2 class="heading">Latest News</h2>
-          </div>
-        </div>
-        <div class="row no-gutters">
-          <div class="col-md-4">
-            <div class="post-entry">
-              <a href="#">
-                <img src="images/img_1.jpg" alt="Image" class="img-fluid">
-              </a>
-              <div class="caption">
-                <div class="caption-inner">
-                  <h3 class="mb-3">Romolu to stay at Real Nadrid?</h3>
-                  <div class="author d-flex align-items-center">
-                    <div class="img mb-2 mr-3">
-                      <img src="images/person_1.jpg" alt="">
-                    </div>
-                    <div class="text">
-                      <h4>Mellissa Allison</h4>
-                      <span>May 19, 2020 &bullet; Sports</span>
-                    </div>
-                  </div>
-                </div>
-              </div> 
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="post-entry">
-              <a href="#">
-                <img src="images/img_3.jpg" alt="Image" class="img-fluid">
-              </a>
-              <div class="caption">
-                <div class="caption-inner">
-                  <h3 class="mb-3">Kai Nets Double To Secure Comfortable Away Win</h3>
-                  <div class="author d-flex align-items-center">
-                    <div class="img mb-2 mr-3">
-                      <img src="images/person_1.jpg" alt="">
-                    </div>
-                    <div class="text">
-                      <h4>Mellissa Allison</h4>
-                      <span>May 19, 2020 &bullet; Sports</span>
-                    </div>
-                  </div>
-                </div>
-              </div> 
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="post-entry">
-              <a href="#">
-                <img src="images/img_2.jpg" alt="Image" class="img-fluid">
-              </a>
-              <div class="caption">
-                <div class="caption-inner">
-                  <h3 class="mb-3">Dogba set for Juvendu return?</h3>
-                  <div class="author d-flex align-items-center">
-                    <div class="img mb-2 mr-3">
-                      <img src="images/person_1.jpg" alt="">
-                    </div>
-                    <div class="text">
-                      <h4>Mellissa Allison</h4>
-                      <span>May 19, 2020 &bullet; Sports</span>
-                    </div>
-                  </div>
-                </div>
-              </div> 
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-    
-    <div class="site-section bg-dark">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="widget-next-match">
-              <div class="widget-title">
-                <h3>Next Match</h3>
-              </div>
-              <div class="widget-body mb-3">
-                <div class="widget-vs">
-                  <div class="d-flex align-items-center justify-content-around justify-content-between w-100">
-                    <div class="team-1 text-center">
-                      <img src="../reousrce/images/logo_1.png" alt="Image">
-                      <h3>Football League</h3>
-                    </div>
-                    <div>
-                      <span class="vs"><span>VS</span></span>
-                    </div>
-                    <div class="team-2 text-center">
-                      <img src="../reousrce/images/logo_2.png" alt="Image">
-                      <h3>Soccer</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="text-center widget-vs-contents mb-4">
-                <h4>World Cup League</h4>
-                <p class="mb-5">
-                  <span class="d-block">December 20th, 2020</span>
-                  <span class="d-block">9:30 AM GMT+0</span>
-                  <strong class="text-primary">New Euro Arena</strong>
-                </p>
-
-                <div id="date-countdown2" class="pb-1"></div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            
-            <div class="widget-next-match">
-              <table class="table custom-table">
-                <thead>
-                  <tr>
-                    <th>P</th>
-                    <th>Team</th>
-                    <th>W</th>
-                    <th>D</th>
-                    <th>L</th>
-                    <th>PTS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td><strong class="text-white">Football League</strong></td>
-                    <td>22</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>140</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td><strong class="text-white">Soccer</strong></td>
-                    <td>22</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>140</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td><strong class="text-white">Juvendo</strong></td>
-                    <td>22</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>140</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td><strong class="text-white">French Football League</strong></td>
-                    <td>22</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>140</td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td><strong class="text-white">Legia Abante</strong></td>
-                    <td>22</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>140</td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td><strong class="text-white">Gliwice League</strong></td>
-                    <td>22</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>140</td>
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td><strong class="text-white">Cornika</strong></td>
-                    <td>22</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>140</td>
-                  </tr>
-                  <tr>
-                    <td>8</td>
-                    <td><strong class="text-white">Gravity Smash</strong></td>
-                    <td>22</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>140</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div> <!-- .site-section -->
-
-    <div class="site-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-6 title-section">
-            <h2 class="heading">Videos</h2>
-          </div>
-          <div class="col-6 text-right">
-            <div class="custom-nav">
-            <a href="#" class="js-custom-prev-v2"><span class="icon-keyboard_arrow_left"></span></a>
-            <span></span>
-            <a href="#" class="js-custom-next-v2"><span class="icon-keyboard_arrow_right"></span></a>
-            </div>
-          </div>
-        </div>
+					<ul class="site-menu js-clone-nav d-none d-md-block">
+						<li class="has-children active"><a href="index.html">Home</a>
+							<ul class="dropdown arrow-top">
+								<li><a href="#">Menu One</a></li>
+								<li><a href="#">Menu Two</a></li>
+								<li><a href="#">Menu Three</a></li>
+								<li class="has-children"><a href="#">Sub Menu</a>
+									<ul class="dropdown">
+										<li><a href="#">Menu One</a></li>
+										<li><a href="#">Menu Two</a></li>
+										<li><a href="#">Menu Three</a></li>
+									</ul></li>
+							</ul></li>
+						<li class="has-children"><a href="news.html">News</a>
+							<ul class="dropdown arrow-top">
+								<li><a href="#">Menu One</a></li>
+								<li><a href="#">Menu Two</a></li>
+								<li><a href="#">Menu Three</a></li>
+							</ul></li>
+						<li><a href="matches.html">Matches</a></li>
+						<li><a href="team.html">Team</a></li>
+						<li><a href="about.html">About</a></li>
+						<li><a href="contact.html">Contact</a></li>
+						<li><a href="/Logout.do">LogOut</a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
 
 
-        <div class="owl-4-slider owl-carousel">
-          <div class="item">
-            <div class="video-media">
-              <img src="../reousrce/images/img_1.jpg" alt="Image" class="img-fluid">
-              <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
+
+		<div class="slide-one-item home-slider owl-carousel">
+			<div class="site-blocks-cover overlay"
+				style="background-image: url(../resource/images/hero_bg_2.jpg);"
+				data-aos="fade" data-stellar-background-ratio="0.5">
+				<div class="container">
+					<div class="row align-items-center justify-content-start">
+						<div class="col-md-6 text-center text-md-left" data-aos="fade-up"
+							data-aos-delay="400">
+							<h1 class="bg-text-line">Russia's World Cup Championship</h1>
+							<p>
+								<a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read
+									More</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="site-blocks-cover overlay"
+				style="background-image: url(../resource/images/hero_bg_4.jpg);"
+				data-aos="fade" data-stellar-background-ratio="0.5">
+				<div class="container">
+					<div class="row align-items-center justify-content-start">
+						<div class="col-md-6 text-center text-md-left" data-aos="fade-up"
+							data-aos-delay="400">
+							<h1 class="bg-text-line">Russia's World Cup Championship</h1>
+							<p>
+								<a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read
+									More</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="site-blocks-cover overlay"
+				style="background-image: url(../resource/images/hero_bg_3.jpg);"
+				data-aos="fade" data-stellar-background-ratio="0.5">
+				<div class="container">
+					<div class="row align-items-center justify-content-start">
+						<div class="col-md-6 text-center text-md-left" data-aos="fade-up"
+							data-aos-delay="400">
+							<h1 class="bg-text-line">Russia's World Cup Championship</h1>
+							<p>
+								<a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read
+									More</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="site-section pt-0 feature-blocks-1" data-aos="fade"
+			data-aos-delay="100">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-lg-4">
+						<div class="p-3 p-md-5 feature-block-1 mb-5 mb-lg-0 bg"
+							style="background-image: url('../resource/images/img_1.jpg');">
+							<div class="text">
+								<h2 class="h5 text-white">Russia's World Cup Championship</h2>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+									Eos repellat autem illum nostrum sit distinctio!</p>
+								<p class="mb-0">
+									<a href="#" class="btn btn-primary btn-sm px-4 py-2 rounded-0">Read
+										More</a>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="p-3 p-md-5 feature-block-1 mb-5 mb-lg-0 bg"
+							style="background-image: url('../resource/images/img_2.jpg');">
+							<div class="text">
+								<h2 class="h5 text-white">Russia's World Cup Championship</h2>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+									Eos repellat autem illum nostrum sit distinctio!</p>
+								<p class="mb-0">
+									<a href="#" class="btn btn-primary btn-sm px-4 py-2 rounded-0">Read
+										More</a>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="p-3 p-md-5 feature-block-1 mb-5 mb-lg-0 bg"
+							style="background-image: url('../resource/images/img_3.jpg');">
+							<div class="text">
+								<h2 class="h5 text-white">Russia's World Cup Championship</h2>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+									Eos repellat autem illum nostrum sit distinctio!</p>
+								<p class="mb-0">
+									<a href="#" class="btn btn-primary btn-sm px-4 py-2 rounded-0">Read
+										More</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="site-blocks-vs site-section bg-light">
+			<div class="container">
+
+				<div
+					class="border mb-3 rounded d-block d-lg-flex align-items-center p-3 next-match">
+
+					<div
+						class="mr-auto order-md-1 w-60 text-center text-lg-left mb-3 mb-lg-0">
+						Next match
+						<div id="date-countdown"></div>
+					</div>
+
+					<div class="ml-auto pr-4 order-md-2">
+						<div class="h5 text-black text-uppercase text-center text-lg-left">
+							<div class="d-block d-md-inline-block mb-3 mb-lg-0">
+								<img src="../resource/images/img_1_sq.jpg" alt="Image"
+									class="mr-3 image"><span
+									class="d-block d-md-inline-block ml-0 ml-md-3 ml-lg-0">Sea
+									Hawlks </span>
+							</div>
+							<span
+								class="text-muted mx-3 text-normal mb-3 mb-lg-0 d-block d-md-inline ">vs</span>
+							<div class="d-block d-md-inline-block">
+								<img src="../resource/images/img_3_sq.jpg" alt="Image"
+									class="mr-3 image"><span
+									class="d-block d-md-inline-block ml-0 ml-md-3 ml-lg-0">Patriots</span>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+				<div class="bg-image overlay-success rounded mb-5"
+					style="background-image: url('../resource/images/hero_bg_1.jpg');"
+					data-stellar-background-ratio="0.5">
+
+					<div class="row align-items-center">
+						<div class="col-md-12 col-lg-4 mb-4 mb-lg-0">
+
+							<div class="text-center text-lg-left">
+								<div class="d-block d-lg-flex align-items-center">
+									<div class="image mx-auto mb-3 mb-lg-0 mr-lg-3">
+										<img src="../resource/images/img_1_sq.jpg" alt="Image"
+											class="img-fluid">
+									</div>
+									<div class="text">
+										<h3 class="h5 mb-0 text-black">Sea Hawks</h3>
+										<span class="text-uppercase small country text-black">Brazil</span>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-md-12 col-lg-4 text-center mb-4 mb-lg-0">
+							<div class="d-inline-block">
+								<p class="mb-2">
+									<small class="text-uppercase text-black font-weight-bold">Premier
+										League &mdash; Round 10</small>
+								</p>
+								<div
+									class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
+									<span class="h3">3:2</span>
+								</div>
+								<p class="mb-0">
+									<small class="text-uppercase text-black font-weight-bold">10
+										September / 7:30 AM</small>
+								</p>
+							</div>
+						</div>
+
+						<div class="col-md-12 col-lg-4 text-center text-lg-right">
+							<div class="">
+								<div class="d-block d-lg-flex align-items-center">
+									<div class="image mx-auto ml-lg-3 mb-3 mb-lg-0 order-2">
+										<img src="../resource/images/img_4_sq.jpg" alt="Image"
+											class="img-fluid">
+									</div>
+									<div class="text order-1">
+										<h3 class="h5 mb-0 text-black">Steelers</h3>
+										<span class="text-uppercase small country text-black">London</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+
+						<h2 class="h6 text-uppercase text-black font-weight-bold mb-3">Latest
+							Matches</h2>
+						<div class="site-block-tab">
+							<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+								<li class="nav-item"><a class="nav-link active"
+									id="pills-home-tab" data-toggle="pill" href="#pills-home"
+									role="tab" aria-controls="pills-home" aria-selected="true">Match
+										1</a></li>
+								<li class="nav-item"><a class="nav-link"
+									id="pills-profile-tab" data-toggle="pill" href="#pills-profile"
+									role="tab" aria-controls="pills-profile" aria-selected="false">Match
+										2</a></li>
+								<li class="nav-item"><a class="nav-link"
+									id="pills-contact-tab" data-toggle="pill" href="#pills-contact"
+									role="tab" aria-controls="pills-contact" aria-selected="false">Match
+										3</a></li>
+							</ul>
+							<div class="tab-content" id="pills-tabContent">
+								<div class="tab-pane fade show active" id="pills-home"
+									role="tabpanel" aria-labelledby="pills-home-tab">
+
+									<div class="row align-items-center">
+										<div class="col-md-12">
+
+
+											<div
+												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
+												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+
+													<div class="text-center text-lg-left">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
+																<img src="../resource/images/img_1_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text">
+																<h3 class="h5 mb-0 text-black">Packers</h3>
+																<span class="text-uppercase small country">Brazil</span>
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
+													<div class="d-inline-block">
+														<div
+															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
+															<span class="h5">3:2</span>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-4 col-lg-4 text-center text-lg-right">
+													<div class="">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
+																<img src="../resource/images/img_4_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text order-1 w-100">
+																<h3 class="h5 mb-0 text-black">Steelers</h3>
+																<span class="text-uppercase small country">London</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- END row -->
+
+											<div
+												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
+												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+
+													<div class="text-center text-lg-left">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
+																<img src="../resource/images/img_1_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text">
+																<h3 class="h5 mb-0 text-black">Patriots</h3>
+																<span class="text-uppercase small country">Brazil</span>
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
+													<div class="d-inline-block">
+														<div
+															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
+															<span class="h5">3:2</span>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-4 col-lg-4 text-center text-lg-right">
+													<div class="">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
+																<img src="../resource/images/img_4_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text order-1 w-100">
+																<h3 class="h5 mb-0 text-black">Cowboys</h3>
+																<span class="text-uppercase small country">London</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- END row -->
+
+											<div
+												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
+												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+
+													<div class="text-center text-lg-left">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
+																<img src="../resource/images/img_1_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text">
+																<h3 class="h5 mb-0 text-black">Raiders</h3>
+																<span class="text-uppercase small country">Brazil</span>
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
+													<div class="d-inline-block">
+														<div
+															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
+															<span class="h5">3:2</span>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-4 col-lg-4 text-center text-lg-right">
+													<div class="">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
+																<img src="../resource/images/img_4_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text order-1 w-100">
+																<h3 class="h5 mb-0 text-black">Chiefs</h3>
+																<span class="text-uppercase small country">London</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- END row -->
+
+										</div>
+
+									</div>
+								</div>
+								<div class="tab-pane fade" id="pills-profile" role="tabpanel"
+									aria-labelledby="pills-profile-tab">
+									<div class="row align-items-center">
+										<div class="col-md-12">
+
+
+											<div
+												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
+												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+
+													<div class="text-center text-lg-left">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
+																<img src="../resource/images/img_1_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text">
+																<h3 class="h5 mb-0 text-black">Packers</h3>
+																<span class="text-uppercase small country">Brazil</span>
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
+													<div class="d-inline-block">
+														<div
+															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
+															<span class="h5">3:2</span>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-4 col-lg-4 text-center text-lg-right">
+													<div class="">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
+																<img src="../resource/images/img_4_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text order-1 w-100">
+																<h3 class="h5 mb-0 text-black">Steelers</h3>
+																<span class="text-uppercase small country">London</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- END row -->
+
+											<div
+												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
+												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+
+													<div class="text-center text-lg-left">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
+																<img src="../resource/images/img_1_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text">
+																<h3 class="h5 mb-0 text-black">Patriots</h3>
+																<span class="text-uppercase small country">Brazil</span>
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
+													<div class="d-inline-block">
+														<div
+															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
+															<span class="h5">3:2</span>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-4 col-lg-4 text-center text-lg-right">
+													<div class="">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
+																<img src="../resource/images/img_4_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text order-1 w-100">
+																<h3 class="h5 mb-0 text-black">Cowboys</h3>
+																<span class="text-uppercase small country">London</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- END row -->
+
+											<div
+												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
+												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+
+													<div class="text-center text-lg-left">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
+																<img src="../resource/images/img_1_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text">
+																<h3 class="h5 mb-0 text-black">Raiders</h3>
+																<span class="text-uppercase small country">Brazil</span>
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
+													<div class="d-inline-block">
+														<div
+															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
+															<span class="h5">3:2</span>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-4 col-lg-4 text-center text-lg-right">
+													<div class="">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
+																<img src="../resource/images/img_4_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text order-1 w-100">
+																<h3 class="h5 mb-0 text-black">Chiefs</h3>
+																<span class="text-uppercase small country">London</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- END row -->
+
+										</div>
+
+									</div>
+								</div>
+								<div class="tab-pane fade" id="pills-contact" role="tabpanel"
+									aria-labelledby="pills-contact-tab">
+									<div class="row align-items-center">
+										<div class="col-md-12">
+
+
+											<div
+												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
+												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+
+													<div class="text-center text-lg-left">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
+																<img src="../resource/images/img_1_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text">
+																<h3 class="h5 mb-0 text-black">Packers</h3>
+																<span class="text-uppercase small country">Brazil</span>
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
+													<div class="d-inline-block">
+														<div
+															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
+															<span class="h5">3:2</span>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-4 col-lg-4 text-center text-lg-right">
+													<div class="">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
+																<img src="../resource/images/img_4_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text order-1 w-100">
+																<h3 class="h5 mb-0 text-black">Steelers</h3>
+																<span class="text-uppercase small country">London</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- END row -->
+
+											<div
+												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
+												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+
+													<div class="text-center text-lg-left">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
+																<img src="../resource/images/img_1_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text">
+																<h3 class="h5 mb-0 text-black">Patriots</h3>
+																<span class="text-uppercase small country">Brazil</span>
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
+													<div class="d-inline-block">
+														<div
+															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
+															<span class="h5">3:2</span>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-4 col-lg-4 text-center text-lg-right">
+													<div class="">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
+																<img src="../resource/images/img_4_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text order-1 w-100">
+																<h3 class="h5 mb-0 text-black">Cowboys</h3>
+																<span class="text-uppercase small country">London</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- END row -->
+
+											<div
+												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
+												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
+
+													<div class="text-center text-lg-left">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
+																<img src="../resource/images/img_1_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text">
+																<h3 class="h5 mb-0 text-black">Raiders</h3>
+																<span class="text-uppercase small country">Brazil</span>
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
+													<div class="d-inline-block">
+														<div
+															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
+															<span class="h5">3:2</span>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-4 col-lg-4 text-center text-lg-right">
+													<div class="">
+														<div class="d-block d-lg-flex align-items-center">
+															<div
+																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
+																<img src="../resource/images/img_4_sq.jpg" alt="Image"
+																	class="img-fluid">
+															</div>
+															<div class="text order-1 w-100">
+																<h3 class="h5 mb-0 text-black">Chiefs</h3>
+																<span class="text-uppercase small country">London</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- END row -->
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div
+			class="site-section block-13 bg-primary fixed overlay-primary bg-image"
+			style="background-image: url('../resource/images/hero_bg_3.jpg');"
+			data-stellar-background-ratio="0.5">
+
+			<div class="container">
+				<div class="row mb-5">
+					<div class="col-md-12 text-center">
+						<h2 class="text-white">More Game Highlights</h2>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="nonloop-block-13 owl-carousel">
+						<div class="item">
+							<!-- uses .block-12 -->
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_1.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_2.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_3.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_4.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<!-- uses .block-12 -->
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_1.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_2.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_3.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_4.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<!-- uses .block-12 -->
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_1.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_2.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_3.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_4.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<!-- uses .block-12 -->
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_1.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_2.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_3.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="block-12">
+								<figure>
+									<img src="../resource/images/img_4.jpg" alt="Image"
+										class="img-fluid">
+								</figure>
+								<div class="text">
+									<span class="meta">May 20th 2018</span>
+									<div class="text-inner">
+										<h2 class="heading mb-3">
+											<a href="#" class="text-black">World Cup Championship</a>
+										</h2>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Ad culpa, consectetur! Eligendi illo, repellat
+											repudiandae cumque fugiat optio!</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="site-section">
+			<div class="container">
+				<div class="row mb-5">
+					<div class="col-md-12 text-center">
+						<h2 class="text-black">Latest News</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 col-lg-4">
+						<div class="post-entry">
+							<div class="image">
+								<img src="../resource/images/img_1.jpg" alt="Image"
+									class="img-fluid">
+							</div>
+							<div class="text p-4">
+								<h2 class="h5 text-black">
+									<a href="#">RealMad vs Striker Who Will Win?</a>
+								</h2>
+								<span class="text-uppercase date d-block mb-3"><small>By
+										Colorlib &bullet; Sep 25, 2018</small></span>
+								<p class="mb-0">Lorem ipsum dolor sit amet, consectetur
+									adipisicing elit. Fugiat beatae doloremque, ex corrupti
+									perspiciatis.</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="post-entry">
+							<div class="image">
+								<img src="../resource/images/img_2.jpg" alt="Image"
+									class="img-fluid">
+							</div>
+							<div class="text p-4">
+								<h2 class="h5 text-black">
+									<a href="#">RealMad vs Striker Who Will Win?</a>
+								</h2>
+								<span class="text-uppercase date d-block mb-3"><small>By
+										Colorlib &bullet; Sep 25, 2018</small></span>
+								<p class="mb-0">Lorem ipsum dolor sit amet, consectetur
+									adipisicing elit. Fugiat beatae doloremque, ex corrupti
+									perspiciatis.</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="post-entry">
+							<div class="image">
+								<img src="../resource/images/img_3.jpg" alt="Image"
+									class="img-fluid">
+							</div>
+							<div class="text p-4">
+								<h2 class="h5 text-black">
+									<a href="#">RealMad vs Striker Who Will Win?</a>
+								</h2>
+								<span class="text-uppercase date d-block mb-3"><small>By
+										Colorlib &bullet; Sep 25, 2018</small></span>
+								<p class="mb-0">Lorem ipsum dolor sit amet, consectetur
+									adipisicing elit. Fugiat beatae doloremque, ex corrupti
+									perspiciatis.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<footer class="site-footer border-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-4">
+						<div class="mb-5">
+							<h3 class="footer-heading mb-4">About Sportz</h3>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+								Saepe pariatur reprehenderit vero atque, consequatur id ratione,
+								et non dignissimos culpa? Ut veritatis, quos illum totam quis
+								blanditiis, minima minus odio!</p>
+						</div>
+
+						<div class="mb-5">
+							<h3 class="footer-heading mb-4">Recent Blog</h3>
+							<div class="block-25">
+								<ul class="list-unstyled">
+									<li class="mb-3"><a href="#" class="d-flex">
+											<figure class="image mr-4">
+												<img src="../resource/images/img_1.jpg" alt=""
+													class="img-fluid">
+											</figure>
+											<div class="text">
+												<h3 class="heading font-weight-light">Lorem ipsum dolor
+													sit amet consectetur elit</h3>
+											</div>
+									</a></li>
+									<li class="mb-3"><a href="#" class="d-flex">
+											<figure class="image mr-4">
+												<img src="../resource/images/img_1.jpg" alt=""
+													class="img-fluid">
+											</figure>
+											<div class="text">
+												<h3 class="heading font-weight-light">Lorem ipsum dolor
+													sit amet consectetur elit</h3>
+											</div>
+									</a></li>
+									<li class="mb-3"><a href="#" class="d-flex">
+											<figure class="image mr-4">
+												<img src="../resource/images/img_1.jpg" alt=""
+													class="img-fluid">
+											</figure>
+											<div class="text">
+												<h3 class="heading font-weight-light">Lorem ipsum dolor
+													sit amet consectetur elit</h3>
+											</div>
+									</a></li>
+								</ul>
+							</div>
+						</div>
+
+					</div>
+					<div class="col-lg-4 mb-5 mb-lg-0">
+						<div class="row mb-5">
+							<div class="col-md-12">
+								<h3 class="footer-heading mb-4">Quick Menu</h3>
+							</div>
+							<div class="col-md-6 col-lg-6">
+								<ul class="list-unstyled">
+									<li><a href="#">Home</a></li>
+									<li><a href="#">Matches</a></li>
+									<li><a href="#">News</a></li>
+									<li><a href="#">Team</a></li>
+								</ul>
+							</div>
+							<div class="col-md-6 col-lg-6">
+								<ul class="list-unstyled">
+									<li><a href="#">About Us</a></li>
+									<li><a href="#">Privacy Policy</a></li>
+									<li><a href="#">Contact Us</a></li>
+									<li><a href="#">Membership</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<h3 class="footer-heading mb-4">Follow Us</h3>
+
+								<div>
+									<a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+									<a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
+									<a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+									<a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="col-lg-4 mb-5 mb-lg-0">
+						<div class="mb-5">
+							<h3 class="footer-heading mb-4">Watch Video</h3>
+
+							<div class="block-16">
+								<figure>
+									<img src="../resource/images/img_1.jpg" alt="Image placeholder"
+										class="img-fluid rounded">
+									<a href="https://vimeo.com/channels/staffpicks/93951774"
+										class="play-button popup-vimeo"><span class="icon-play"></span></a>
+								</figure>
+							</div>
+
+						</div>
+
+						<div class="mb-5">
+							<h3 class="footer-heading mb-2">Subscribe Newsletter</h3>
+							<p>Lorem ipsum dolor sit amet consectetur adipisicing elit
+								minima minus odio.</p>
+
+							<form action="#" method="post">
+								<div class="input-group mb-3">
+									<input type="text"
+										class="form-control border-secondary text-white bg-transparent"
+										placeholder="Enter Email" aria-label="Enter Email"
+										aria-describedby="button-addon2">
+									<div class="input-group-append">
+										<button class="btn btn-primary" type="button"
+											id="button-addon2">Send</button>
+									</div>
+								</div>
+							</form>
+
+						</div>
+
+					</div>
+					
+				</div>
+				<div class="row pt-5 mt-5 text-center">
+					<div class="col-md-12">
+						<p>
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+							Copyright &copy;
+							<script data-cfasync="false"
+								src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+							<script>
+								document.write(new Date().getFullYear());
+							</script>
+							All rights reserved | This template is made with <i
+								class="icon-heart-o" aria-hidden="true"></i> by <a
+								href="https://colorlib.com" target="_blank">Colorlib</a>
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						</p>
+					</div>
+
+				</div>
+			</div>
+		</footer>
+	</div>
+	
+	
+	<div>
+		발송자 : <input type="text" id="sender"> 
+		메시지 : <input type="text" id="messageinput">
+	</div>
+	<div>
+		<button type="button" onclick="openSocket();">Open</button>
+		<button type="button" onclick="send();">Send</button>
+		<button type="button" onclick="closeSocket();">Close</button>
+	</div>
+	
+	
+<!--  Server responses get written here 
+	<div id="messages"> -->
+	
+	</div>
+	<div class="floating-chat" style="z-index:100;">
+        <i class="fa fa-comments" aria-hidden="true"></i>
+        <div class="chat">
+            <div class="header">	
+                <span class="title">
+                	User Chat
                 </span>
-                <div class="caption">
-                  <h3 class="m-0">Dogba set for Juvendu return?</h3>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="item">
-            <div class="video-media">
-              <img src="../reousrce/images/img_2.jpg" alt="Image" class="img-fluid">
-              <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
-                </span>
-                <div class="caption">
-                  <h3 class="m-0">Kai Nets Double To Secure Comfortable Away Win</h3>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="item">
-            <div class="video-media">
-              <img src="../reousrce/images/img_3.jpg" alt="Image" class="img-fluid">
-              <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
-                </span>
-                <div class="caption">
-                  <h3 class="m-0">Romolu to stay at Real Nadrid?</h3>
-                </div>
-              </a>
-            </div>
-          </div>
+                <button>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
 
-          <div class="item">
-            <div class="video-media">
-              <img src="../reousrce/images/img_1.jpg" alt="Image" class="img-fluid">
-              <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
-                </span>
-                <div class="caption">
-                  <h3 class="m-0">Dogba set for Juvendu return?</h3>
-                </div>
-              </a>
             </div>
-          </div>
-          <div class="item">
-            <div class="video-media">
-              <img src="../reousrce/images/img_2.jpg" alt="Image" class="img-fluid">
-              <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
-                </span>
-                <div class="caption">
-                  <h3 class="m-0">Kai Nets Double To Secure Comfortable Away Win</h3>
-                </div>
-              </a>
+            <ul id="messages">
+                <li class="self">i hate you</li>
+                <li class="other">don't be so negative! here's a banana 🍌</li>
+                <li class="self">......... -___-</li>
+            </ul>
+            <div class="footer">
+                <div class="text-box" contenteditable="true" disabled="true"></div>
+                <button id="sendMessage">send</button>
             </div>
-          </div>
-          <div class="item">
-            <div class="video-media">
-              <img src="../reousrce/images/img_3.jpg" alt="Image" class="img-fluid">
-              <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
-                </span>
-                <div class="caption">
-                  <h3 class="m-0">Romolu to stay at Real Nadrid?</h3>
-                </div>
-              </a>
-            </div>
-          </div>
-
         </div>
-
-      </div>
     </div>
+	
+	<!-- websocket javascript -->
+	<script type="text/javascript">
+		
+	</script>
+	
+	
+	<script src="../resource/js/jquery-3.3.1.min.js"></script>
+	<script src="../resource/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="../resource/js/jquery-ui.js"></script>
+	<script src="../resource/js/popper.min.js"></script>
+	<script src="../resource/js/bootstrap.min.js"></script>
+	<script src="../resource/js/owl.carousel.min.js"></script>
+	<script src="../resource/js/jquery.stellar.min.js"></script>
+	<script src="../resource/js/jquery.countdown.min.js"></script>
+	<script src="../resource/js/jquery.magnific-popup.min.js"></script>
+	<script src="../resource/js/aos.js"></script>
+	<script src="../resource/js/chat.js"></script>
 
-    <div class="container site-section">
-      <div class="row">
-        <div class="col-6 title-section">
-          <h2 class="heading">Our Blog</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="custom-media d-flex">
-            <div class="img mr-4">
-              <img src="../reousrce/images/img_1.jpg" alt="Image" class="img-fluid">
-            </div>
-            <div class="text">
-              <span class="meta">May 20, 2020</span>
-              <h3 class="mb-4"><a href="#">Romolu to stay at Real Nadrid?</a></h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus deserunt saepe tempora dolorem.</p>
-              <p><a href="#">Read more</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="custom-media d-flex">
-            <div class="img mr-4">
-              <img src="../reousrce/images/img_3.jpg" alt="Image" class="img-fluid">
-            </div>
-            <div class="text">
-              <span class="meta">May 20, 2020</span>
-              <h3 class="mb-4"><a href="#">Romolu to stay at Real Nadrid?</a></h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus deserunt saepe tempora dolorem.</p>
-              <p><a href="#">Read more</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-    <footer class="footer-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-3">
-            <div class="widget mb-3">
-              <h3>News</h3>
-              <ul class="list-unstyled links">
-                <li><a href="#">All</a></li>
-                <li><a href="#">Club News</a></li>
-                <li><a href="#">Media Center</a></li>
-                <li><a href="#">Video</a></li>
-                <li><a href="#">RSS</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="widget mb-3">
-              <h3>Tickets</h3>
-              <ul class="list-unstyled links">
-                <li><a href="#">Online Ticket</a></li>
-                <li><a href="#">Payment and Prices</a></li>
-                <li><a href="#">Contact &amp; Booking</a></li>
-                <li><a href="#">Tickets</a></li>
-                <li><a href="#">Coupon</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="widget mb-3">
-              <h3>Matches</h3>
-              <ul class="list-unstyled links">
-                <li><a href="#">Standings</a></li>
-                <li><a href="#">World Cup</a></li>
-                <li><a href="#">La Lega</a></li>
-                <li><a href="#">Hyper Cup</a></li>
-                <li><a href="#">World League</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-lg-3">
-            <div class="widget mb-3">
-              <h3>Social</h3>
-              <ul class="list-unstyled links">
-                <li><a href="#">Twitter</a></li>
-                <li><a href="#">Facebook</a></li>
-                <li><a href="#">Instagram</a></li>
-                <li><a href="#">Youtube</a></li>
-              </ul>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="row text-center">
-          <div class="col-md-12">
-            <div class=" pt-5">
-              <p>
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                Copyright &copy;
-                <script>
-                  document.write(new Date().getFullYear());
-                </script> All rights reserved | This template is made with <i class="icon-heart"
-                  aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </footer>
-
-
-
-  </div>
-  <!-- .site-wrap -->
-
-  <script src="../resource/js/jquery-3.3.1.min.js"></script>
-  <script src="../resource/js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="../resource/js/jquery-ui.js"></script>
-  <script src="../resource/js/popper.min.js"></script>
-  <script src="../resource/js/bootstrap.min.js"></script>
-  <script src="../resource/js/owl.carousel.min.js"></script>
-  <script src="../resource/js/jquery.stellar.min.js"></script>
-  <script src="../resource/js/jquery.countdown.min.js"></script>
-  <script src="../resource/js/bootstrap-datepicker.min.js"></script>
-  <script src="../resource/js/jquery.easing.1.3.js"></script>
-  <script src="../resource/js/aos.js"></script>
-  <script src="../resource/js/jquery.fancybox.min.js"></script>
-  <script src="../resource/js/jquery.sticky.js"></script>
-  <script src="../resource/js/jquery.mb.YTPlayer.min.js"></script>
-
-
-  <script src="../resource/js/main.js"></script>
+	<script src="../resource/js/main.js"></script>
 
 </body>
-
 </html>

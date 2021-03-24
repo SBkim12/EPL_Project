@@ -1,13 +1,13 @@
 package poly.service;
 
-import poly.dto.UserDTO;
+import poly.dto.MemberDTO;
 
 public interface IUserService {
 
-	UserDTO getLoginInfo(UserDTO uDTO);
+	MemberDTO getLoginInfo(MemberDTO uDTO);
 	
-	UserDTO idCheck(String userId);
+	MemberDTO idCheck(String memberId);
 
-	int UserSignUp(UserDTO tDTO);
+	int UserSignUp(MemberDTO tDTO);
 	
 }
