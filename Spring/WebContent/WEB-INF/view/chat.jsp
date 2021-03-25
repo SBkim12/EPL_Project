@@ -53,6 +53,18 @@
 		}
 
 		function closeSocket() {
+			
+			element.find('.chat').removeClass('enter').hide();
+		    element.find('>i').show();
+		    element.removeClass('expand');
+		    element.find('.header button').off('click', closeElement);
+		    element.find('#sendMessage').off('click', sendNewMessage);
+		    element.find('.text-box').off('keydown', onMetaAndEnter).prop("disabled", true).blur();
+		    setTimeout(function() {
+		        element.find('.chat').removeClass('enter').show()
+		        element.click(openElement);
+		    }, 500);
+			
 			ws.close();
 		}
 		function writeResponse(text) {

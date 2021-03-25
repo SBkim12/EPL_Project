@@ -66,8 +66,11 @@
 					<div class="row align-items-center">
 						<div class="col-6 col-md-3">
 							<a href="#" class="text-secondary px-2 pl-0">
-								<span>
+								<span id="member_name">
 									<%=member_name%>
+								</span>
+								<span id="favorite_team">
+									<%=favorite_team%>
 								</span>
 								<br>
 								<span>
@@ -1364,8 +1367,6 @@
 						<p>
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 							Copyright &copy;
-							<script data-cfasync="false"
-								src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 							<script>
 								document.write(new Date().getFullYear());
 							</script>
@@ -1382,7 +1383,7 @@
 	</div>
 	
 	
-	<div>
+	<!-- <div>
 		발송자 : <input type="text" id="sender"> 
 		메시지 : <input type="text" id="messageinput">
 	</div>
@@ -1390,7 +1391,7 @@
 		<button type="button" onclick="openSocket();">Open</button>
 		<button type="button" onclick="send();">Send</button>
 		<button type="button" onclick="closeSocket();">Close</button>
-	</div>
+	</div> -->
 	
 	
 <!--  Server responses get written here 
@@ -1402,29 +1403,25 @@
         <div class="chat">
             <div class="header">	
                 <span class="title">
-                	User Chat
+                	Live Chat
                 </span>
                 <button>
-                    <i class="fa fa-times" aria-hidden="true"></i>
+                    <i class="fa fa-tim	es" aria-hidden="true"></i>
                 </button>
 
             </div>
-            <ul id="messages">
+            <ul id="messages" class="messages">
                 <li class="self">i hate you</li>
                 <li class="other">don't be so negative! here's a banana 🍌</li>
-                <li class="self">......... -___-</li>
             </ul>
             <div class="footer">
-                <div class="text-box" contenteditable="true" disabled="true"></div>
+                <div class="text-box" id="text-box" contenteditable="true" disabled="true"></div>
                 <button id="sendMessage">send</button>
             </div>
         </div>
     </div>
 	
-	<!-- websocket javascript -->
-	<script type="text/javascript">
-		
-	</script>
+	
 	
 	
 	<script src="../resource/js/jquery-3.3.1.min.js"></script>
@@ -1440,6 +1437,112 @@
 	<script src="../resource/js/chat.js"></script>
 
 	<script src="../resource/js/main.js"></script>
+	<!-- websocket javascript -->
+	<script type="text/javascript">
+	var element = $('.floating-chat');
+	var myStorage = localStorage;
+
+	var ws;
+	var messages = document.getElementById("messages");
+	
+	var favorite_team = "<%=favorite_team%>";
+	var member_name = "<%=member_name%>";
+	
+	setTimeout(function() {
+	    element.addClass('enter');
+	}, 1000);
+		
+	element.click(openSocket);
+	
+	function openSocket() {
+		
+		var messages = element.find('.messages');
+	    var textInput = element.find('.text-box');
+	    element.find('>i').hide();
+	    element.addClass('expand');
+	    element.find('.chat').addClass('enter');
+	    var strLength = textInput.val().length * 2;
+	    textInput.keydown(onMetaAndEnter).prop("disabled", false).focus();
+	    element.off('click', openSocket);
+	    element.find('.header button').click(closeSocket);
+	    element.find('#sendMessage').click(send);
+	    messages.scrollTop(messages.prop("scrollHeight"));
+		
+		if (ws !== undefined && ws.readyState !== WebSocket.CLOSED) {
+			writeResponse("WebSocket is already opened.");
+			return;
+		}
+		// 웹소켓 객체 만드는 코드
+		ws = new WebSocket("ws://localhost:9005/echo.do");
+
+		ws.onopen = function(event) {
+			if (event.data === undefined)
+				return;
+
+			writeResponse(event.data);
+		};
+		ws.onmessage = function(event) {
+			writeResponse(event.data);
+		};
+		ws.onclose = function(event) {
+			writeResponse("Connection closed");
+		}
+	}
+
+	function send() {
+		var text = $('#text-box').val()
+		//.val() + ","+ member_name;
+		console.log(text)
+		ws.send(text);
+		text = "";
+		
+		var userInput = $('.text-box');
+		
+		var messagesContainer = $('.messages');
+		
+		// clean out old message
+	    userInput.html('');
+	    // focus on input
+	    userInput.focus();
+		
+		messagesContainer.finish().animate({
+	        scrollTop: messagesContainer.prop("scrollHeight")
+	    }, 250);
+		
+	}
+
+	function closeSocket() {
+		element.find('.chat').removeClass('enter').hide();
+	   element.find('>i').show();
+	   element.removeClass('expand');
+	   element.find('.header button').off('click', closeSocket);
+	   element.find('#sendMessage').off('click', send);
+	   element.find('.text-box').off('keydown', onMetaAndEnter).prop("disabled", true).blur();
+	   setTimeout(function() {
+	       element.find('.chat').removeClass('enter').show()
+	       element.click(openSocket);
+	   }, 500);
+		
+		ws.close();
+	}
+	function writeResponse(text) {
+		if(text.split(",")[1]!=member_name){
+			messages.innerHTML += '<li class="other">' + text.split(",")[0] + '</li>';
+		}else{
+			messages.innerHTML += '<li class="self">' + text.split(",")[0] + '</li>';
+		}
+		var messagesContainer = $('.messages');
+		
+		messagesContainer.finish().animate({
+	        scrollTop: messagesContainer.prop("scrollHeight")
+	    }, 250);
+	}
+	function onMetaAndEnter(event) {
+	    if ((event.metaKey || event.ctrlKey) && event.keyCode == 13) {
+	        send();
+	    }
+	}
+	</script>
 
 </body>
 </html>

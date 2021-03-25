@@ -1,0 +1,97 @@
+var element = $('.floating-chat');
+var myStorage = localStorage;
+var ws;
+var messages = $('.messages');
+var myteam = $('.favorite_team').val();
+
+setTimeout(function() {
+    element.addClass('enter');
+}, 1000);
+
+element.click(openElement);
+
+function openElement() {
+    var messages = element.find('.messages');
+    var textInput = element.find('.text-box');
+    element.find('>i').hide();
+    element.addClass('expand');
+    element.find('.chat').addClass('enter');
+    var strLength = textInput.val().length * 2;
+    textInput.keydown(onMetaAndEnter).prop("disabled", false).focus();
+    element.off('click', openElement);
+    element.find('.header button').click(closeElement);
+    element.find('#sendMessage').click(sendNewMessage);
+    messages.scrollTop(messages.prop("scrollHeight"));
+    if (ws !== undefined && ws.readyState !== WebSocket.CLOSED) {
+		writeResponse("WebSocket is already opened.");
+		return;
+	}
+	// 웹소켓 객체 만드는 코드
+	ws = new WebSocket("ws://localhost:9005/echo.do");
+
+	ws.onopen = function(event) {
+		if (event.data === undefined)
+			return;
+
+		writeResponse(event.data);
+	};
+	ws.onmessage = function(event) {
+		writeResponse(event.data);
+	};
+	ws.onclose = function(event) {
+		writeResponse("Connection closed");
+	}
+}
+
+function closeElement() {
+    element.find('.chat').removeClass('enter').hide();
+    element.find('>i').show();
+    element.removeClass('expand');
+    element.find('.header button').off('click', closeElement);
+    element.find('#sendMessage').off('click', sendNewMessage);
+    element.find('.text-box').off('keydown', onMetaAndEnter).prop("disabled", true).blur();
+    setTimeout(function() {
+        element.find('.chat').removeClass('enter').show()
+        element.click(openElement);
+    }, 500);
+    ws.close();
+}
+
+function writeResponse(text) {
+	messages.innerHTML +=  '<li class="other">'+ text + '</li>';
+}
+
+
+function sendNewMessage() {
+    var userInput = $('.text-box');
+    var newMessage = userInput.html().replace(/\<div\>|\<br.*?\>/ig, '\n').replace(/\<\/div\>/g, '').trim().replace(/\n/g, '<br>');
+
+    if (!newMessage) return;
+    
+	var text = newMessage + ","+ myteam;
+	ws.send(text);
+	text = "";
+	
+    var messagesContainer = $('.messages');
+
+    messagesContainer.append([
+        '<li class="self">',
+        newMessage,
+        '</li>'
+    ].join(''));
+
+    // clean out old message
+    userInput.html('');
+    // focus on input
+    userInput.focus();
+
+    messagesContainer.finish().animate({
+        scrollTop: messagesContainer.prop("scrollHeight")
+    }, 250);
+}
+
+function onMetaAndEnter(event) {
+    if ((event.metaKey || event.ctrlKey) && event.keyCode == 13) {
+        sendNewMessage();
+    }
+}

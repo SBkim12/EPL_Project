@@ -38,8 +38,8 @@ public class WebSocketController {
 	public void onOpen(Session session) {
 		log.info("Open session id:" + session.getId());
 		try {
-			final Basic basic = session.getBasicRemote();
-			basic.sendText("000님 입장하셨습니다.");
+//			final Basic basic = session.getBasicRemote();
+//			basic.sendText("000님 입장하셨습니다.");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -55,7 +55,7 @@ public class WebSocketController {
 		try {
 			for (Session session : WebSocketController.sessionList) {
 				if (!self.getId().equals(session.getId())) {
-					session.getBasicRemote().sendText(message.split(",")[1] + " : " + message);
+					session.getBasicRemote().sendText(message);
 				}
 			}
 		} catch (Exception e) {
@@ -65,10 +65,10 @@ public class WebSocketController {
 
 	@OnMessage
 	public void onMessage(String message, Session session) {
-		log.info("Message From " + message.split(",")[1] + " : " + message.split(",")[0]);
+		log.info(message);
 		try {
 			final Basic basic = session.getBasicRemote();
-			basic.sendText("to : " + message);	
+			basic.sendText(message);	
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
