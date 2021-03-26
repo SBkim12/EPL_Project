@@ -1,7 +1,3 @@
 INDEX VERSION 1.4+C:\EPL_Private_Project_2021\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-814234470.index
-1952830234.index
-265846008.index
+3368760246.index
 2756308033.index
-4113090495.index
-4012931528.index

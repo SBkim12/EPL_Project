@@ -38,8 +38,8 @@ public class WebSocketController {
 	public void onOpen(Session session) {
 		log.info("Open session id:" + session.getId());
 		try {
-//			final Basic basic = session.getBasicRemote();
-//			basic.sendText("000님 입장하셨습니다.");
+			final Basic basic = session.getBasicRemote();
+			basic.sendText("Chat Open");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

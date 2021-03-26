@@ -11,5 +11,7 @@ public interface IUserMapper {
 	MemberDTO idCheck(String memberId);
 
 	int userSignUp(MemberDTO tDTO);
+
+	MemberDTO reLoginInfo(MemberDTO uDTO);
 	
 }

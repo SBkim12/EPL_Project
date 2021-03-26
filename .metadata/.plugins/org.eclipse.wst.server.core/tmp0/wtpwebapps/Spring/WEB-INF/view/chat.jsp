@@ -41,7 +41,7 @@
 				writeResponse(event.data);
 			};
 			ws.onclose = function(event) {
-				writeResponse("Connection closed");
+				writeResponse("Chat is closed");
 			}
 		}
 

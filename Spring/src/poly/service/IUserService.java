@@ -9,5 +9,7 @@ public interface IUserService {
 	MemberDTO idCheck(String memberId);
 
 	int UserSignUp(MemberDTO tDTO);
+
+	MemberDTO reLoginInfo(MemberDTO uDTO);
 	
 }

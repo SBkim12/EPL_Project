@@ -2,13 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%
 	String member_id = (String) request.getAttribute("member_id");
-	String favorite_team = (String) request.getAttribute("favorite_team");
-	String member_name = (String) request.getAttribute("member_name");
-	String member_score = (String) request.getAttribute("member_score");
-	String member_point = (String) request.getAttribute("member_point");
+String favorite_team = (String) request.getAttribute("favorite_team");
+String member_name = (String) request.getAttribute("member_name");
+String member_score = (String) request.getAttribute("member_score");
+String member_point = (String) request.getAttribute("member_point");
 %>
 
-	
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,7 +42,8 @@
 <link rel="stylesheet" href="../resource/css/aos.css">
 
 <link rel="stylesheet" href="../resource/css/style.css">
-<script src="https://kit.fontawesome.com/84865ac036.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/84865ac036.js"
+	crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -65,29 +66,16 @@
 				<div class="container">
 					<div class="row align-items-center">
 						<div class="col-6 col-md-3">
-							<a href="#" class="text-secondary px-2 pl-0">
-								<span id="member_name">
-									<%=member_name%>
-								</span>
-								<span id="favorite_team">
-									<%=favorite_team%>
-								</span>
-								<br>
-								<span>
-									<%=member_score%>
-								</span>
-								<br>
-								<span>
-									<%=member_point%>
-								</span>
-							</a>
-							<a href="#" class="text-secondary px-2"><span
-								class="icon-twitter">
-								</span>
-							</a> 
-							<a href="#" class="text-secondary px-2">
-								<span class="icon-linkedin">
-								</span>
+							<a href="#" class="text-secondary px-2 pl-0"> <span
+								id="member_name"> <%=member_name%>
+							</span> <span id="favorite_team"> <%=favorite_team%>
+							</span> <br> <span> <%=member_score%>
+							</span> <br> <span> <%=member_point%>
+							</span>
+							</a> <a href="#" class="text-secondary px-2"><span
+								class="icon-twitter"> </span> </a> <a href="#"
+								class="text-secondary px-2"> <span class="icon-linkedin">
+							</span>
 							</a>
 						</div>
 						<div class="col-6 col-md-9 text-right">
@@ -1360,7 +1348,7 @@
 						</div>
 
 					</div>
-					
+
 				</div>
 				<div class="row pt-5 mt-5 text-center">
 					<div class="col-md-12">
@@ -1381,49 +1369,33 @@
 			</div>
 		</footer>
 	</div>
-	
-	
-	<!-- <div>
-		발송자 : <input type="text" id="sender"> 
-		메시지 : <input type="text" id="messageinput">
-	</div>
-	<div>
-		<button type="button" onclick="openSocket();">Open</button>
-		<button type="button" onclick="send();">Send</button>
-		<button type="button" onclick="closeSocket();">Close</button>
-	</div> -->
-	
-	
-<!--  Server responses get written here 
-	<div id="messages"> -->
-	
-	</div>
-	<div class="floating-chat" style="z-index:100;">
-        <i class="fa fa-comments" aria-hidden="true"></i>
-        <div class="chat">
-            <div class="header">	
-                <span class="title">
-                	Live Chat
-                </span>
-                <button>
-                    <i class="fa fa-tim	es" aria-hidden="true"></i>
-                </button>
 
-            </div>
-            <ul id="messages" class="messages">
-                <li class="self">i hate you</li>
-                <li class="other">don't be so negative! here's a banana 🍌</li>
-            </ul>
-            <div class="footer">
-                <div class="text-box" id="text-box" contenteditable="true" disabled="true"></div>
-                <button id="sendMessage">send</button>
-            </div>
-        </div>
-    </div>
-	
-	
-	
-	
+
+
+	</div>
+	<div class="floating-chat" style="z-index: 100;">
+		<i class="fa fa-comments" aria-hidden="true"></i>
+		<div class="chat">
+			<div class="header">
+				<span class="title"> Live Chat </span>
+				<button>
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</button>
+
+			</div>
+			<ul id="messages" class="messages">
+			</ul>
+			<div class="footer">
+				<div class="text-box" id="text-box" contenteditable="true"
+					disabled="true"></div>
+				<button id="sendMessage">send</button>
+			</div>
+		</div>
+	</div>
+
+
+
+
 	<script src="../resource/js/jquery-3.3.1.min.js"></script>
 	<script src="../resource/js/jquery-migrate-3.0.1.min.js"></script>
 	<script src="../resource/js/jquery-ui.js"></script>
@@ -1434,115 +1406,128 @@
 	<script src="../resource/js/jquery.countdown.min.js"></script>
 	<script src="../resource/js/jquery.magnific-popup.min.js"></script>
 	<script src="../resource/js/aos.js"></script>
-	<script src="../resource/js/chat.js"></script>
-
-	<script src="../resource/js/main.js"></script>
-	<!-- websocket javascript -->
-	<script type="text/javascript">
+	<!-- 웹소켓 채팅 -->
+	<script>
 	var element = $('.floating-chat');
 	var myStorage = localStorage;
 
 	var ws;
-	var messages = document.getElementById("messages");
-	
+	var messages = $('.messages');
+
 	var favorite_team = "<%=favorite_team%>";
 	var member_name = "<%=member_name%>";
-	
-	setTimeout(function() {
-	    element.addClass('enter');
-	}, 1000);
-		
-	element.click(openSocket);
-	
-	function openSocket() {
-		
-		var messages = element.find('.messages');
-	    var textInput = element.find('.text-box');
-	    element.find('>i').hide();
-	    element.addClass('expand');
-	    element.find('.chat').addClass('enter');
-	    var strLength = textInput.val().length * 2;
-	    textInput.keydown(onMetaAndEnter).prop("disabled", false).focus();
-	    element.off('click', openSocket);
-	    element.find('.header button').click(closeSocket);
-	    element.find('#sendMessage').click(send);
-	    messages.scrollTop(messages.prop("scrollHeight"));
-		
-		if (ws !== undefined && ws.readyState !== WebSocket.CLOSED) {
-			writeResponse("WebSocket is already opened.");
-			return;
-		}
-		// 웹소켓 객체 만드는 코드
-		ws = new WebSocket("ws://localhost:9005/echo.do");
 
-		ws.onopen = function(event) {
-			if (event.data === undefined)
+		setTimeout(function() {
+			element.addClass('enter');
+		}, 1000);
+
+		element.click(openSocket);
+
+		function openSocket() {
+
+			var messages = element.find('.messages');
+			var textInput = element.find('.text-box');
+			element.find('>i').hide();
+			element.addClass('expand');
+			element.find('.chat').addClass('enter');
+			var strLength = textInput.val().length * 2;
+			textInput.keydown(onMetaAndEnter).prop("disabled", false).focus();
+			element.off('click', openSocket);
+			element.find('.header button').click(closeSocket);
+			element.find('#sendMessage').click(send);
+			messages.scrollTop(messages.prop("scrollHeight"));
+
+			if (ws !== undefined && ws.readyState !== WebSocket.CLOSED) {
+				writeResponse("WebSocket is already opened.");
 				return;
+			}
+			// 웹소켓 객체 만드는 코드
+			ws = new WebSocket("ws://localhost:9005/echo.do");
 
-			writeResponse(event.data);
-		};
-		ws.onmessage = function(event) {
-			writeResponse(event.data);
-		};
-		ws.onclose = function(event) {
-			writeResponse("Connection closed");
+			ws.onopen = function(event) {
+				if (event.data === undefined)
+					return;
+
+				writeResponse(event.data);
+			};
+			ws.onmessage = function(event) {
+				writeResponse(event.data);
+			};
+			ws.onclose = function(event) {
+				writeResponse("Chat Closed");
+			}
 		}
-	}
 
-	function send() {
-		var text = $('#text-box').val()
-		//.val() + ","+ member_name;
-		console.log(text)
-		ws.send(text);
-		text = "";
-		
-		var userInput = $('.text-box');
-		
-		var messagesContainer = $('.messages');
-		
-		// clean out old message
-	    userInput.html('');
-	    // focus on input
-	    userInput.focus();
-		
-		messagesContainer.finish().animate({
-	        scrollTop: messagesContainer.prop("scrollHeight")
-	    }, 250);
-		
-	}
+		function send() {
+			var userInput = $('.text-box');
+			var newMessage = userInput.html().replace(/\<div\>|\<br.*?\>/ig,
+					'\n').replace(/\<\/div\>/g, '').trim().replace(/\n/g,
+					'<br>');
+			if (newMessage.replaceAll("&nbsp;", "").replaceAll("<br>", "")
+					.trim() == "") {
+				return;
+			}
 
-	function closeSocket() {
-		element.find('.chat').removeClass('enter').hide();
-	   element.find('>i').show();
-	   element.removeClass('expand');
-	   element.find('.header button').off('click', closeSocket);
-	   element.find('#sendMessage').off('click', send);
-	   element.find('.text-box').off('keydown', onMetaAndEnter).prop("disabled", true).blur();
-	   setTimeout(function() {
-	       element.find('.chat').removeClass('enter').show()
-	       element.click(openSocket);
-	   }, 500);
+			var text = newMessage + "," + member_name + "," + favorite_team;
+			console.log(text)
+			ws.send(text);
+			text = "";
+
+			var messagesContainer = $('.messages');
+
+			// clean out old message
+			userInput.html('');
+			// focus on input
+			userInput.focus();
+			
+			messagesContainer.finish().animate({
+				scrollTop : messagesContainer.prop("scrollHeight")
+			}, 250);
 		
-		ws.close();
-	}
-	function writeResponse(text) {
-		if(text.split(",")[1]!=member_name){
-			messages.innerHTML += '<li class="other">' + text.split(",")[0] + '</li>';
-		}else{
-			messages.innerHTML += '<li class="self">' + text.split(",")[0] + '</li>';
 		}
-		var messagesContainer = $('.messages');
-		
-		messagesContainer.finish().animate({
-	        scrollTop: messagesContainer.prop("scrollHeight")
-	    }, 250);
-	}
-	function onMetaAndEnter(event) {
-	    if ((event.metaKey || event.ctrlKey) && event.keyCode == 13) {
-	        send();
-	    }
-	}
+
+		function closeSocket() {
+			element.find('.chat').removeClass('enter').hide();
+			element.find('>i').show();
+			element.removeClass('expand');
+			element.find('.header button').off('click', closeSocket);
+			element.find('#sendMessage').off('click', send);
+			element.find('.text-box').off('keydown', onMetaAndEnter).prop(
+					"disabled", true).blur();
+			setTimeout(function() {
+				element.find('.chat').removeClass('enter').show()
+				element.click(openSocket);
+			}, 500);
+
+			ws.close();
+		}
+		function writeResponse(text) {
+			
+			var messagesContainer = $('.messages');			
+			
+			if (text.split(",")[1] != member_name) {
+				messagesContainer.append([
+		            '<li class="other">',
+		            text.split(",")[0],
+		            '</li>'
+		        ].join(''));
+			} else {
+				messagesContainer.append(['<li class="self">',text.split(",")[0],'</li>'].join(''));
+			}
+			
+
+ 			messagesContainer.finish().animate({
+				scrollTop : messagesContainer.prop("scrollHeight")
+			}, 250); 
+}
+		function onMetaAndEnter(event) {
+			if ((event.metaKey || event.ctrlKey) && event.keyCode == 13) {
+				send();
+			}
+		}
 	</script>
+
+	<script src="../resource/js/main.js"></script>
 
 </body>
 </html>
