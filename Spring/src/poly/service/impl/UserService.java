@@ -35,6 +35,12 @@ public class UserService implements IUserService{
 		return userMapper.reLoginInfo(uDTO);
 	}
 
+	@Override
+	public int changePwd(MemberDTO uDTO) {
+		// TODO Auto-generated method stub
+		return userMapper.changePwd(uDTO);
+	}
+
 
 	
 }

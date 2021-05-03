@@ -13,5 +13,7 @@ public interface IUserMapper {
 	int userSignUp(MemberDTO tDTO);
 
 	MemberDTO reLoginInfo(MemberDTO uDTO);
+
+	int changePwd(MemberDTO uDTO);
 	
 }

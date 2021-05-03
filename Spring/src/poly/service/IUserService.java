@@ -11,5 +11,7 @@ public interface IUserService {
 	int UserSignUp(MemberDTO tDTO);
 
 	MemberDTO reLoginInfo(MemberDTO uDTO);
+
+	int changePwd(MemberDTO uDTO);
 	
 }

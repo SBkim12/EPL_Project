@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="poly.persistance.mapper.IEPLdataMapper">
+	
+	<!-- 로고 저장 -->
+	<!-- 로고의 변경이나 추가되는 팀을 입력 변경 둘다 가능 -->
+	<insert id="upsertlogo" parameterType="EPLDTO" >
+	INSERT INTO 
+			ENGLAND_TEAM(
+			TEAM_ID,
+			NAME,
+			SHORT_CODE,
+			LOGO
+		)VALUES(
+			#{team_id},
+			#{name},
+			#{short_code},
+			#{logo}
+		)
+		ON DUPLICATE KEY UPDATE
+        	TEAM_ID = #{team_id}
+           , NAME = #{name}
+           , SHORT_CODE = #{short_code}
+           , LOGO =  #{logo}
+           
+	</insert>
+	
+	
+</mapper>

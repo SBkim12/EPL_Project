@@ -20,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @ServerEndpoint(value = "/echo.do") 
 public class WebSocketController {
-
 	private static final List<Session> sessionList = new ArrayList<>();
 	private static final Logger log = LoggerFactory.getLogger(WebSocketController.class);
 

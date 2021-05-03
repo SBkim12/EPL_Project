@@ -5,5 +5,6 @@
     <typeAliases>
     	<!-- 사용할 DTO 등록  -->
 		<typeAlias type="poly.dto.MemberDTO" alias="MemberDTO"/>
+		<typeAlias type="poly.dto.EPLDTO" alias="EPLDTO"/>
     </typeAliases>
 </configuration>

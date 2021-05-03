@@ -7,7 +7,6 @@
 	SELECT
 		MEMBER_ID,  
 		MEMBER_NAME, 
-		MEMBER_SCORE, 
 		MEMBER_POINT,
 		FAVORITE_TEAM 
 	FROM 
@@ -22,7 +21,6 @@
 	SELECT
 		MEMBER_ID,  
 		MEMBER_NAME, 
-		MEMBER_SCORE, 
 		MEMBER_POINT,
 		FAVORITE_TEAM 
 	FROM 
@@ -50,7 +48,6 @@
 		MEMBER_ID,  
 		MEMBER_PWD,  
 		MEMBER_NAME, 
-		MEMBER_SCORE, 
 		MEMBER_POINT,
 		FAVORITE_TEAM 
 		)VALUES(
@@ -58,10 +55,18 @@
 		#{member_pwd},
 		#{member_name},
 		0,
-		0,
 		#{favorite_team}
 		)
 	</insert>
+	
+	<update parameterType="MemberDTO" id="changePwd">
+	UPDATE 
+		MEMBER_DATA
+	SET
+		MEMBER_PWD = #{member_pwd}
+	WHERE
+		MEMBER_ID = #{member_id} 
+	</update>
 	
 	
 </mapper>

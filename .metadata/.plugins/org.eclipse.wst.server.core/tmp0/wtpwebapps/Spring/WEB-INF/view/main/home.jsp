@@ -4,7 +4,6 @@
 	String member_id = (String) request.getAttribute("member_id");
 String favorite_team = (String) request.getAttribute("favorite_team");
 String member_name = (String) request.getAttribute("member_name");
-String member_score = (String) request.getAttribute("member_score");
 String member_point = (String) request.getAttribute("member_point");
 %>
 
@@ -52,7 +51,7 @@ String member_point = (String) request.getAttribute("member_point");
 		<div class="site-mobile-menu">
 			<div class="site-mobile-menu-header">
 				<div class="site-mobile-menu-logo">
-					<a href="#"><img src="../resource/images/logo.png" alt="Image"></a>
+					<a href="#"><img src="../resource/images/EPL_Patch.png" alt="Image" ></a>
 				</div>
 				<div class="site-mobile-menu-close mt-3">
 					<span class="icon-close2 js-menu-toggle"></span>
@@ -69,7 +68,6 @@ String member_point = (String) request.getAttribute("member_point");
 							<a href="#" class="text-secondary px-2 pl-0"> <span
 								id="member_name"> <%=member_name%>
 							</span> <span id="favorite_team"> <%=favorite_team%>
-							</span> <br> <span> <%=member_score%>
 							</span> <br> <span> <%=member_point%>
 							</span>
 							</a> <a href="#" class="text-secondary px-2"><span
@@ -98,8 +96,8 @@ String member_point = (String) request.getAttribute("member_point");
 				role="navigation">
 				<div class="container position-relative">
 					<div class="site-logo">
-						<a href="index.html"><img src="../resource/images/logo.png"
-							alt=""></a>
+						<a href="index.html"><img src="../resource/images/EPL_Patch.png"
+							alt="" style="height:100px"></a>
 					</div>
 
 					<div class="d-inline-block d-md-none ml-md-0 mr-auto py-3">
@@ -109,7 +107,7 @@ String member_point = (String) request.getAttribute("member_point");
 
 					<ul class="site-menu js-clone-nav d-none d-md-block">
 						<li class="has-children active"><a href="index.html">Home</a>
-							<ul class="dropdown arrow-top">
+							<!-- <ul class="dropdown arrow-top">
 								<li><a href="#">Menu One</a></li>
 								<li><a href="#">Menu Two</a></li>
 								<li><a href="#">Menu Three</a></li>
@@ -119,7 +117,8 @@ String member_point = (String) request.getAttribute("member_point");
 										<li><a href="#">Menu Two</a></li>
 										<li><a href="#">Menu Three</a></li>
 									</ul></li>
-							</ul></li>
+							</ul> -->
+						</li>
 						<li class="has-children"><a href="news.html">News</a>
 							<ul class="dropdown arrow-top">
 								<li><a href="#">Menu One</a></li>
@@ -1467,7 +1466,7 @@ String member_point = (String) request.getAttribute("member_point");
 					.trim() == "") {
 				return;
 			}
-
+		
 			var text = newMessage + "," + member_name + "," + favorite_team;
 			console.log(text)
 			ws.send(text);

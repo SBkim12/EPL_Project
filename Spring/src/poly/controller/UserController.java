@@ -66,7 +66,6 @@ public class UserController {
 			model.addAttribute("member_id", uDTO.getMember_id());
 			model.addAttribute("favorite_team", uDTO.getFavorite_team());
 			model.addAttribute("member_name", uDTO.getMember_name());
-			model.addAttribute("member_score", uDTO.getMember_score());
 			model.addAttribute("member_point",uDTO.getMember_point());
 			
 			return "/main/home";
