@@ -5,11 +5,25 @@ public class EPLDTO {
 	private String team_id;
 	private String name;
 	private String short_code;
-	private String logo;
+	private String logo; //england_team_table포함
 	
+	//england_team_table
+	private String team_name;
+	private String ko_name;
+	private int recent_rank;
+	private int recent_won;
+	private int recent_draw;
+	private int recent_lost;
+	private int recent_points;
+	private int goals_scored;
+	private int goals_against;
+	private int home_win;
+	private int home_draw;
+	private int home_lost;
 	
+	//england_season
 	private String season_id;
-	private String season_name;
+	private String season_name; //england_team_table포함
 	private String start_date;
 	private String end_date;
 	
@@ -89,6 +103,106 @@ public class EPLDTO {
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
+
+	
+	//england_team_table
+	public String getTeam_name() {
+		return team_name;
+	}
+
+	public void setTeam_name(String team_name) {
+		this.team_name = team_name;
+	}
+
+	public String getKo_name() {
+		return ko_name;
+	}
+
+	public void setKo_name(String ko_name) {
+		this.ko_name = ko_name;
+	}
+
+	public int getRecent_rank() {
+		return recent_rank;
+	}
+
+	public void setRecent_rank(int recent_rank) {
+		this.recent_rank = recent_rank;
+	}
+
+	public int getRecent_won() {
+		return recent_won;
+	}
+
+	public void setRecent_won(int recent_won) {
+		this.recent_won = recent_won;
+	}
+
+	public int getRecent_draw() {
+		return recent_draw;
+	}
+
+	public void setRecent_draw(int recent_draw) {
+		this.recent_draw = recent_draw;
+	}
+
+	public int getRecent_lost() {
+		return recent_lost;
+	}
+
+	public void setRecent_lost(int recent_lost) {
+		this.recent_lost = recent_lost;
+	}
+
+	public int getRecent_points() {
+		return recent_points;
+	}
+
+	public void setRecent_points(int recent_points) {
+		this.recent_points = recent_points;
+	}
+
+	public int getGoals_scored() {
+		return goals_scored;
+	}
+
+	public void setGoals_scored(int goals_scored) {
+		this.goals_scored = goals_scored;
+	}
+
+	public int getGoals_against() {
+		return goals_against;
+	}
+
+	public void setGoals_against(int goals_against) {
+		this.goals_against = goals_against;
+	}
+
+	public int getHome_win() {
+		return home_win;
+	}
+
+	public void setHome_win(int home_win) {
+		this.home_win = home_win;
+	}
+
+	public int getHome_draw() {
+		return home_draw;
+	}
+
+	public void setHome_draw(int home_draw) {
+		this.home_draw = home_draw;
+	}
+
+	public int getHome_lost() {
+		return home_lost;
+	}
+
+	public void setHome_lost(int home_lost) {
+		this.home_lost = home_lost;
+	}
+	
+
 	
 	
 }

@@ -1,1 +1,7 @@
 /.metadata/
+/Servers/
+/SpringPRJ/.settings/
+/SpringPRJ/target/
+/SpringPRJ/.classpath
+/SpringPRJ/WebContent/WEB-INF/classes/
+/SpringPRJ/bin/

@@ -25,5 +25,15 @@
            
 	</insert>
 	
+	<!-- 팀아이디에 맞는 팀로고, 이름 불러오기 -->
+	<select id="infoTeamLogoName" parameterType="EPLDTO" resultType="EPLDTO">
+	SELECT 
+		*
+	FROM
+		ENGLAND_TEAM
+	WHERE
+		TEAM_ID=#{team_id}
+	</select>
+	
 	
 </mapper>

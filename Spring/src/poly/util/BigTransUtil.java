@@ -1,6 +1,5 @@
 package poly.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -30,7 +29,7 @@ public class BigTransUtil {
 		
 		StringBuilder sb = new StringBuilder();
 		for(int i=0; i<enNews.size(); i++) {
-			if(enNews.get(i).length()+sb.length()<49000) {
+			if(enNews.get(i).length()+sb.length()<2000) {
 				sb.append(enNews.get(i));
 				sb.append("\r\n\r\n");
 			}else {
@@ -53,7 +52,9 @@ public class BigTransUtil {
 
 		// WebDriver 옵션 설정
 		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--start-maximized"); // 전체화면으로 실행
+		//options.addArguments("--start-maximized"); // 전체화면으로 실행
+		options.addArguments("headless");
+		options.addArguments("--disable-gpu");
 		options.addArguments("--disable-popup-blocking"); // 팝업 무시
 		options.addArguments("--disable-default-apps"); // 기본앱 사용안함
 

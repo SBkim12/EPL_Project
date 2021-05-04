@@ -1,5 +1,8 @@
 package poly.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,6 +42,24 @@ public class DataUpdateController {
 		int res = epldataService.updateLogo(pDTO);
 		
 		return "팀 로고 업데이트 성공";
+	}
+	
+	@RequestMapping(value = "seasonUpdate")
+	@ResponseBody
+	public String seasonUpdate(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+		log.info(this.getClass().getName() + ".TeamLogoUpdate start!");
+		
+		String key = SportsDataUtil.APIKey;
+		String EPL = SportsDataUtil.EPL;
+		
+		String url ="https://app.sportdataapi.com/api/v1/soccer/seasons?apikey="+key+"&league_id="+EPL;
+		
+		EPLDTO pDTO = new EPLDTO();
+		List<EPLDTO> rList = new ArrayList<EPLDTO>();
+		
+		rList = epldataService.updateSeasonRank(url);
+		
+		return "현재 시즌 순위 업데이트 성공";
 	}
 	
 }

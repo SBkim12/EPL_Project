@@ -7,5 +7,7 @@ import poly.dto.EPLDTO;
 public interface IEPLdataMapper {
 
 	int upsertlogo(EPLDTO rDTO);
+
+	EPLDTO infoTeamLogoName(EPLDTO rDTO);
 	
 }

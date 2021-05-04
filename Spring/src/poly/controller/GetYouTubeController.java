@@ -26,15 +26,13 @@ public class GetYouTubeController {
 	@RequestMapping(value = "test1")
 	public String test1(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		log.info("get youtube start");
-		
-		
+			
 		//검색 내용
 		String search = "e.hazard";
 		//Youtube Data API KEy
 		String key = "AIzaSyDdn4XkqugGpv7pmDGIj8jOilkDzHmqES8";
 		// 검색 갯수
 		String max = "3";
-		
 		
 		
 		// OpenAPI url
