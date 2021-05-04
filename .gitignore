@@ -5,4 +5,8 @@
 /SpringPRJ/.classpath
 /SpringPRJ/WebContent/WEB-INF/classes/
 /SpringPRJ/bin/
+<<<<<<< HEAD
 /Spring/src/poly/util/EmailUtil.java
+=======
+/Spring/src/poly/util/EmailUtil.java
+>>>>>>> 73d7e024b2f3a4763f9383d98ac8611b56bdea7c
