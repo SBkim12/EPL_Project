@@ -2,6 +2,9 @@ package poly.controller;
 
 import static poly.util.CmmUtil.nvl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import poly.dto.EPLDTO;
 import poly.dto.MemberDTO;
+import poly.service.IEPLdataService;
 import poly.service.IUserService;
 import poly.util.EncryptUtil;
 
@@ -26,7 +31,9 @@ public class UserController {
 	
 	@Resource(name = "UserService")
 	IUserService userService;
-
+	
+	@Resource(name = "EPLdataService")
+	IEPLdataService epldataService;
 
 	// 로그인 진행
 	@RequestMapping(value = "/LoginProc")
@@ -97,12 +104,30 @@ public class UserController {
 
 	// 회원가입
 	@RequestMapping(value = "SignUp")
-	public String SignUp() {
+	public String SignUp(HttpServletRequest request, ModelMap model)throws Exception {
 
 		log.info("TheSignUp Start");
 		
 		
-
+		List<EPLDTO> rList = new ArrayList<EPLDTO>();
+		
+		rList = epldataService.PresentEPLteam();
+		
+		if(rList.size()>0) {
+			log.info("현재 시즌 팀 목록 갯수 :: " + rList.size());
+		}else {
+			log.info("팀 목록 가져오기 실패");
+		}
+		
+		model.addAttribute("teams", rList);
+		EPLDTO pDTO = new EPLDTO();
+		for(int i=0; i<rList.size(); i++) {
+			pDTO = rList.get(i);
+			log.info(pDTO.getKo_name());
+			pDTO = null;
+		}
+		
+		
 		log.info("TheSignUp End");
 
 		return "/basic/signup";
@@ -134,8 +159,7 @@ public class UserController {
 		tDTO.setFavorite_team(favorite_team);
 		
 		log.info("tDTO.set end");
-
-		session.setAttribute("member_id", tDTO.getMember_id());
+		
 		log.info("sessionSet user_id : " + session.getAttribute("member_id"));
 
 		log.info("UserServic.SignUp start");
@@ -148,44 +172,45 @@ public class UserController {
 
 		if (res > 0) {
 			msg = "회원 가입 완료";
+			session.setAttribute("member_id", tDTO.getMember_id());
 		} else {
 			msg = "회원 가입 실패";
 		}
 
-		log.info("model.addAttribute ����");
+		log.info("model.addAttribute start");
 		model.addAttribute("msg", msg);
 		model.addAttribute("url", url);
-		log.info("model.addAttribute ����");
+		log.info("model.addAttribute end");
 
-		log.info("TheSignUpProc ����");
+		log.info("TheSignUpProc end");
 
 		return "/redirect";
 	}
 
 	// ID Check
-		@ResponseBody
-		@RequestMapping(value = "/idCheck", method = RequestMethod.POST)
-		public int idCheck(HttpServletRequest request) throws Exception {
-			log.info("idCheck start");
+	@ResponseBody
+	@RequestMapping(value = "/idCheck", method = RequestMethod.POST)
+	public int idCheck(HttpServletRequest request) throws Exception {
+		log.info("idCheck start");
 
-			String memberId = request.getParameter("memberId");
+		String memberId = request.getParameter("memberId");
 
-			log.info("userService.idCheck Start : "+ memberId);
-			MemberDTO idCheck = userService.idCheck(memberId);
-			log.info("userService.idCheck End");
+		log.info("userService.idCheck Start : " + memberId);
+		MemberDTO idCheck = userService.idCheck(memberId);
+		log.info("userService.idCheck End");
 
-			int res = 0;
+		int res = 0;
 
-			log.info("id 확인");
-			if (idCheck != null) {
-				log.info("값이 있음");
-				res = 1;
-			}
-			log.info("result : " + res);
-
-			log.info("idCheck end");
-			return res;
+		log.info("id 확인");
+		if (idCheck != null) {
+			log.info("값이 있음");
+			res = 1;
 		}
+		log.info("result : " + res);
+
+		log.info("idCheck end");
+		return res;
+	}
 
 
 	@RequestMapping("/callback")

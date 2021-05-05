@@ -21,15 +21,16 @@ public class EPLDTO {
 	private int home_draw;
 	private int home_lost;
 	
-	//england_season
+	//season
 	private String season_id;
-	private String season_name; //england_team_table포함
+	private String season_name;
 	private String start_date;
 	private String end_date;
+	private int is_current;
 	
 	//호출 URL
 	private String url;
-
+	
 	public String getUrl() {
 		return url;
 	}
@@ -37,7 +38,9 @@ public class EPLDTO {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
+	
+	
+	//season
 	public String getSeason_id() {
 		return season_id;
 	}
@@ -69,8 +72,14 @@ public class EPLDTO {
 	public void setEnd_date(String end_date) {
 		this.end_date = end_date;
 	}
-	
-	
+	public int getIs_current() {
+		return is_current;
+	}
+
+	public void setIs_current(int is_current) {
+		this.is_current = is_current;
+	}
+
 	//england team_logo
 	public String getTeam_id() {
 		return team_id;

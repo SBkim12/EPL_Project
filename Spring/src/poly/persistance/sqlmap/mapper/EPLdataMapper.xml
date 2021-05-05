@@ -35,5 +35,99 @@
 		TEAM_ID=#{team_id}
 	</select>
 	
+	<!-- EPL 1부 리그 테이블 -->
+	<insert id="upsertEPLdata" parameterType="EPLDTO">
+		INSERT INTO 
+			EPL_TEAMS(
+			TEAM_ID,		
+			TEAM_NAME,	
+			LOGO,
+			KO_NAME,	
+			SEASON,
+			RECENT_RANK,
+			RECENT_WON,
+			RECENT_DRAW,
+			RECENT_LOST,
+			RECENT_POINTS,
+			GOALS_SCORED,	
+			GOALS_AGAINST,	
+			HOME_WON,
+			HOME_DRAW,	
+			HOME_LOST	
+		)VALUES(
+			#{team_id},
+			#{team_name},
+			#{logo},
+			#{ko_name},
+			#{season_name},
+			#{recent_rank},
+			#{recent_won},
+			#{recent_draw},
+			#{recent_lost},
+			#{recent_points},
+			#{goals_scored},
+			#{goals_against},
+			#{home_win},
+			#{home_draw},
+			#{home_lost}
+		)
+		ON DUPLICATE KEY UPDATE
+        	TEAM_ID=#{team_id},
+			TEAM_NAME=#{team_name},
+			LOGO=#{logo},
+			KO_NAME=#{ko_name},
+			SEASON=#{season_name},
+			RECENT_RANK=#{recent_rank},
+			RECENT_WON=#{recent_won},
+			RECENT_DRAW=#{recent_draw},
+			RECENT_LOST=#{recent_lost},
+			RECENT_POINTS=#{recent_points},
+			GOALS_SCORED=#{goals_scored},
+			GOALS_AGAINST=#{goals_against},
+			HOME_WON=#{home_win},
+			HOME_DRAW=#{home_draw},
+			HOME_LOST=#{home_lost}
+	</insert>
+	
+	
+	<insert id="updateSeason" parameterType="EPLDTO" >
+	INSERT INTO 
+			Present_EPL_Season(
+			IS_CURRENT,
+			SEASON_NAME,
+			START_DATE,
+			END_DATE
+		)VALUES(
+			#{is_current},
+			#{season_name},
+			#{start_date},
+			#{end_date}
+		)
+		ON DUPLICATE KEY UPDATE
+        	IS_CURRENT = #{is_current}
+           , SEASON_NAME = #{season_name}
+           , START_DATE = #{start_date}
+           , END_DATE =  #{end_date}
+           
+	</insert>
+	
+	<select id="presentSeason" resultType="EPLDTO">
+	SELECT
+		SEASON_NAME
+	FROM
+		Present_EPL_Season
+	WHERE
+		IS_CURRENT = 1
+	</select>
+	
+	<!-- 팀 이름 가져오기 -->
+	<select id="presentTeams" parameterType="EPLDTO" resultType="EPLDTO">
+	SELECT
+		KO_NAME
+	FROM
+		EPL_TEAMS
+	WHERE
+		SEASON = #{season_name}
+	</select>
 	
 </mapper>

@@ -38,6 +38,8 @@ public class MainController {
 			String url = "";
 			if (uDTO == null) {
 				msg = "아이디 비밀번호를 확인하세요";
+				
+				session.invalidate();
 			} else {
 				log.info("relogin start");
 				
@@ -78,14 +80,5 @@ public class MainController {
 
 		log.info("test");
 		return "/main/home";
-	}
-
-	@RequestMapping(value = "chat")
-	public String chat(HttpSession session, ModelMap model) throws Exception {
-		log.info("chat start");
-
-
-		log.info("chat");
-		return "/chat";
 	}
 }

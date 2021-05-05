@@ -41,25 +41,54 @@ public class DataUpdateController {
 		
 		int res = epldataService.updateLogo(pDTO);
 		
-		return "팀 로고 업데이트 성공";
+		String answer = "";
+		if(res>0) {
+			answer = "성공";
+		}else {
+			answer = "실패";
+		}
+		
+		return "팀 로고 업데이트 " +answer;
 	}
 	
-	@RequestMapping(value = "seasonUpdate")
+	@RequestMapping(value = "seasonDataUpdate")
 	@ResponseBody
-	public String seasonUpdate(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
-		log.info(this.getClass().getName() + ".TeamLogoUpdate start!");
+	public String seasonDataUpdate(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+		log.info(this.getClass().getName() + ".seasonDateUpdate start!");
 		
 		String key = SportsDataUtil.APIKey;
 		String EPL = SportsDataUtil.EPL;
 		
 		String url ="https://app.sportdataapi.com/api/v1/soccer/seasons?apikey="+key+"&league_id="+EPL;
 		
-		EPLDTO pDTO = new EPLDTO();
 		List<EPLDTO> rList = new ArrayList<EPLDTO>();
 		
 		rList = epldataService.updateSeasonRank(url);
 		
-		return "현재 시즌 순위 업데이트 성공";
+		log.info(this.getClass().getName() + ".seasonDateUpdate end!");
+		return "rList";
 	}
 	
+	@RequestMapping(value = "seasonUpdate")
+	@ResponseBody
+	public String seasonUpdate(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+		log.info(this.getClass().getName() + ".seasonUpdate start!");
+		
+		String key = SportsDataUtil.APIKey;
+		String EPL = SportsDataUtil.EPL;
+		
+		String url ="https://app.sportdataapi.com/api/v1/soccer/seasons?apikey="+key+"&league_id="+EPL;
+		
+		int res = epldataService.updateSeason(url);
+		
+		String answer = "";
+		if(res>0) {
+			answer = "성공";
+		}else {
+			answer = "실패";
+		}
+		
+		log.info(this.getClass().getName() + ".seasonDateUpdate end!");
+		return answer;
+	}
 }

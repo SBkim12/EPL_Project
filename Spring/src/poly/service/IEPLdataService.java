@@ -9,5 +9,9 @@ public interface IEPLdataService {
 	int updateLogo(EPLDTO pDTO)throws Exception;
 
 	List<EPLDTO> updateSeasonRank(String url)throws Exception;
+
+	int updateSeason(String url)throws Exception;
+
+	List<EPLDTO> PresentEPLteam()throws Exception;
 	
 }

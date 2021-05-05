@@ -1,5 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="poly.dto.EPLDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="poly.util.CmmUtil"%>
+<%
+	List<EPLDTO> rList = (List<EPLDTO>) request.getAttribute("teams");
+
+	if(rList==null){
+		rList = new ArrayList<EPLDTO>();
+	}
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +50,7 @@
 				</span>
 
 				<div class="wrap-input100 validate-input m-b-15" data-validate="Enter email">
-					<input class="input100" type="email" id="userId" name="email" placeholder="Email">
+					<input class="input100" type="email" id="userId" name="id" placeholder="Email">
 					<span class="focus-input100"></span>
 				</div>
 
@@ -63,26 +75,15 @@
 					<select class="label-input100"style="width:100%" name="favorite_team"
 						style="margin-left: 15px">
 						<option value="없음" selected>없음</option>
-						<option value="맨시티">맨시티</option>
-						<option value="맨유">맨유</option>
-						<option value="첼시">첼시</option>
-						<option value="아스날">아스날</option>
-						<option value="레스터">레스터</option>
-						<option value="크리스탈펠리스">크리스탈 펠리스</option>
-						<option value="웨스트햄">웨스트햄</option>
-						<option value="브라이튼">브라이튼</option>
-						<option value="번리">번리</option>
-						<option value="토트넘">토트넘</option>
-						<option value="리버풀">리버풀</option>
-						<option value="에버턴">에버턴</option>
-						<option value="울버햄턴">울버햄턴</option>
-						<option value="뉴캐슬">뉴캐슬</option>
-						<option value="아스톤빌라">아스톤 빌라</option>
-						<option value="사우스햄튼">사우스햄튼</option>
-						<option value="셰필드">셰필드</option>
-						<option value="리즈">리즈</option>
-						<option value="풀럼">풀럼</option>
-						<option value="웨스트브롬">웨스트 브로미치 앨비온</option>
+						<!-- 1부 리그에 현존하는 팀만 조회 -->
+						<%for(int i=0; i<rList.size(); i++){
+							EPLDTO rDTO = rList.get(i);
+							if(rDTO==null){
+								rDTO = new EPLDTO();
+							}
+						%>
+						<option value="<%=CmmUtil.nvl(rDTO.getKo_name())%>"><%=CmmUtil.nvl(rDTO.getKo_name())%></option>	
+						<%}%>
 					</select></div>
 				</div>
 				
