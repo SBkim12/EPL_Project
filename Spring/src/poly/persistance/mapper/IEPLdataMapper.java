@@ -18,6 +18,6 @@ public interface IEPLdataMapper {
 
 	EPLDTO presentSeason();
 
-	List<EPLDTO> presentTeams(EPLDTO qDTO);
-	
+	List<EPLDTO> getEPLTeams(EPLDTO qDTO);
+
 }

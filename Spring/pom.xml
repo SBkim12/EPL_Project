@@ -8,21 +8,12 @@
 	<packaging>war</packaging>
 	<properties>
 		<java-version>1.8</java-version>
-		<org.springframework-version>4.3.7.RELEASE</org.springframework-version>
+		<!-- MongoDB에서 제공하는 스프링 버전과 연동을 위해 권장하는 버전인 4.2.9 버전으로 기존 4.3.7에서 다운그레이드함 -->
+		<org.springframework-version>4.3.27.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<slf4j.version>1.7.25</slf4j.version>
-		<log4j.version>2.11.0</log4j.version>
-
+		<log4j.version>1.2.17</log4j.version>
 	</properties>
-
-	<!-- 오라클에서 메이븐 저장소에 제공을 하고 있지 않기 때문에, 메이븐 사설 저장소 사용함 -->
-	<repositories>
-		<repository>
-			<id>oracle</id>
-			<name>ORACLE JDBC Repository</name>
-			<url>http://maven.jahia.org/maven2</url>
-		</repository>
-	</repositories>
 
 	<dependencies>
 		<!-- 자바 메일 발송 라이브러리 -->
@@ -45,7 +36,14 @@
 			<artifactId>google-api-client</artifactId>
 			<version>1.31.2</version>
 		</dependency>
-
+	
+		<!-- RequestBody 사용시, JSON 변환이 안되는 경우 추가함 -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.6</version>
+		</dependency>
+		
 		<!--JSON 형태의 데이터 생성 및 내용 읽기를 위한 라이브러리 다운로드 -->
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
@@ -72,9 +70,23 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.10.3</version>
 		</dependency>
+		
+		<!-- MongoDB 접속을 위한 드라이버 -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.11.1</version>
+		</dependency>
 
+		<!-- MongoDB와 스프링 프레임워크와의 연동을 위해 추가 -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>2.0.14.RELEASE</version>
+		</dependency>
 
 		<!-- logging -->
+		<!-- 스프링 초기 자동설정되는 로깅 방식이며, 로깅 처리를 위해 수정함 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -95,36 +107,71 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
+			<version>${log4j.version}</version>
 		</dependency>
 
-		<!-- Spring core -->
+		<!-- 스프링 프레임워크 필수 라이브들 설정 시작! 상단 스프링 버젼으로 업데이트-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${org.springframework-version}</version>
-			<exclusions>
-				<!-- Exclude Commons Logging in favor of SLF4j -->
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
-		<!-- Spring Web ( Servlet / Anotation ) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
 
-		<!-- Spring MVC -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<!-- 스프링 프레임워크 필수 라이브들 설정 끝! -->
 
 		<!-- AspectJ -->
 		<dependency>
@@ -162,25 +209,11 @@
 			<version>1.4</version>
 		</dependency>
 
-		<!-- Oracle -->
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>12.1.0.1</version>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.19</version>
-		</dependency>
-
-		<!-- 오라클 DBCP 관리를 위한 c3p0 -->
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
 		</dependency>
 
 		<dependency>
@@ -189,6 +222,7 @@
 			<version>1.2.1</version>
 		</dependency>
 
+		<!-- JSP에 JSTL 사용을 위한 외부라이브러리 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>

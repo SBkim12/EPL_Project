@@ -74,7 +74,6 @@
 					<div>
 					<select class="label-input100"style="width:100%" name="favorite_team"
 						style="margin-left: 15px">
-						<option value="없음" selected>없음</option>
 						<!-- 1부 리그에 현존하는 팀만 조회 -->
 						<%for(int i=0; i<rList.size(); i++){
 							EPLDTO rDTO = rList.get(i);

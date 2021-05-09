@@ -28,7 +28,7 @@ public class MailService implements IMailService{
 	final String password = EmailUtil.password; 
 	
 	@Override
-	public int doSendMail(MemberDTO uDTO) {
+	public int doSendMail(MemberDTO uDTO)throws Exception {
 		log.info("Service.doSendMail 시작");
 		
 		int res = 1;

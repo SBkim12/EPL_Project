@@ -4,5 +4,5 @@ import poly.dto.MemberDTO;
 
 public interface IMailService {
 
-	int doSendMail(MemberDTO mDTO);
+	int doSendMail(MemberDTO mDTO)throws Exception;
 }

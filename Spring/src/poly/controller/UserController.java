@@ -111,7 +111,7 @@ public class UserController {
 		
 		List<EPLDTO> rList = new ArrayList<EPLDTO>();
 		
-		rList = epldataService.PresentEPLteam();
+		rList = epldataService.getEPLteam();
 		
 		if(rList.size()>0) {
 			log.info("현재 시즌 팀 목록 갯수 :: " + rList.size());

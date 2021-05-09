@@ -120,14 +120,16 @@
 		IS_CURRENT = 1
 	</select>
 	
-	<!-- 팀 이름 가져오기 -->
-	<select id="presentTeams" parameterType="EPLDTO" resultType="EPLDTO">
+	<!-- 현재시즌 EPL 팀 정보 가져오기 -->
+	<select id="getEPLTeams" parameterType="EPLDTO" resultType="EPLDTO">
 	SELECT
-		KO_NAME
+		*
 	FROM
 		EPL_TEAMS
 	WHERE
 		SEASON = #{season_name}
+	ORDER BY
+		RECENT_RANK ASC
 	</select>
 	
 </mapper>

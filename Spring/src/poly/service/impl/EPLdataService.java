@@ -1,21 +1,11 @@
 package poly.service.impl;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -26,12 +16,13 @@ import org.springframework.stereotype.Service;
 import poly.dto.EPLDTO;
 import poly.persistance.mapper.IEPLdataMapper;
 import poly.service.IEPLdataService;
+import poly.service.impl.comm.AbstractgetUrlForJson;
 import poly.util.CmmUtil;
 import poly.util.SportsDataUtil;
 import poly.util.TranslateUtil;
 
 @Service("EPLdataService")
-public class EPLdataService implements IEPLdataService {
+public class EPLdataService	extends AbstractgetUrlForJson implements IEPLdataService {
 	
 	@Resource(name="EPLdataMapper")
 	private IEPLdataMapper epldataMapper;
@@ -40,68 +31,6 @@ public class EPLdataService implements IEPLdataService {
 	
 	//로그생성
 	private Logger log = Logger.getLogger(this.getClass());
-	
-	//API로 불러온 JSON 파일 가져오기
-	private String getUrlForJSON(String callUrl) {
-		
-		log.info(this.getClass().getName() + ".getUrlForJSON start!");
-		
-		log.info("requested URL: " +callUrl);
-		
-		StringBuilder sb = new StringBuilder();
-		URLConnection urlConn = null;
-		InputStreamReader in = null;
-		
-		// json 결과값 저장
-		String json = "";
-		
-		// SSL 적용된 사이트일 경우, 데이터 증명을 위해 사용
-		HostnameVerifier allHostsValid = new HostnameVerifier() {
-			@Override
-			public boolean verify(String hostname, SSLSession session) {
-				return true;
-			}
-		};
-		HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-		
-		try {
-			//웹 사이트 접속을 위한 URL 파싱
-			URL url = new URL(callUrl);
-			
-			//접속
-			urlConn = url.openConnection();
-			urlConn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36");
-			// 접속화면, 응답을 60초(60 * 1000ms)동안 기다림
-			if(urlConn != null) {
-				urlConn.setReadTimeout(60*1000);
-			}
-			
-			if(urlConn != null && urlConn.getInputStream() != null) {
-				in = new InputStreamReader(urlConn.getInputStream(), Charset.forName("UTF-8"));
-				
-				BufferedReader bufferedReader = new BufferedReader(in);
-				
-				// 주어진 문자 입력 스트림 inputStream에대해 기본 크기의 버퍼를 갖는 개체를 생성
-				if(bufferedReader!=null) {
-					int cp;
-					while((cp = bufferedReader.read()) != -1) {
-						sb.append((char)cp);
-					}
-					bufferedReader.close();
-				}
-			}
-			in.close();
-		}catch (Exception e){
-			throw new RuntimeException("Exception URL:" + callUrl, e);
-		}
-		
-		json = sb.toString(); //json 결과 저장
-		log.info("JSON result: " + json);
-		
-		log.info(this.getClass().getName() + ".getUrlForJSON End !");
-		
-		return json;
-	}
 	
 
 	@Override
@@ -167,8 +96,8 @@ public class EPLdataService implements IEPLdataService {
 			return 0;
 		}
 	}
-
-
+	
+	//최근 시즌으로 순위 업데이트
 	@Override
 	public List<EPLDTO> updateSeasonRank(String url) throws Exception {
 		
@@ -192,7 +121,7 @@ public class EPLdataService implements IEPLdataService {
 		// 요청한 파라미터 가져오기
 		JSONArray dataArr = (JSONArray) jsonObject.get("data");
 		
-		//가장 최슨 시즌 가져오기
+		//가장 최근 시즌 가져오기
 		int recent_season= 0;
 		String recent_season_id="";
 		String recent_season_name="";
@@ -295,7 +224,7 @@ public class EPLdataService implements IEPLdataService {
 		return rList;
 	}
 
-
+	//진행중인 시즌DB 업데이트
 	@Override
 	public int updateSeason(String url) throws Exception {
 		
@@ -354,14 +283,14 @@ public class EPLdataService implements IEPLdataService {
 
 	//EPL1부리그에 참여 중인 20팀 목록 불러오기
 	@Override
-	public List<EPLDTO> PresentEPLteam() throws Exception {
+	public List<EPLDTO> getEPLteam() throws Exception {
 		log.info(this.getClass().getName() + ".PresentEPLteam start");
 		
 		EPLDTO qDTO = new EPLDTO();
 		
 		qDTO = epldataMapper.presentSeason();
 
-		List<EPLDTO> rList = epldataMapper.presentTeams(qDTO);
+		List<EPLDTO> rList = epldataMapper.getEPLTeams(qDTO);
 
 		qDTO = null;
 
