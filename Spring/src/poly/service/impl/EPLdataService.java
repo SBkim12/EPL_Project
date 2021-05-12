@@ -16,13 +16,13 @@ import org.springframework.stereotype.Service;
 import poly.dto.EPLDTO;
 import poly.persistance.mapper.IEPLdataMapper;
 import poly.service.IEPLdataService;
-import poly.service.impl.comm.AbstractgetUrlForJson;
+import poly.service.impl.comm.AbstractgetUrlFordata;
 import poly.util.CmmUtil;
 import poly.util.SportsDataUtil;
 import poly.util.TranslateUtil;
 
 @Service("EPLdataService")
-public class EPLdataService	extends AbstractgetUrlForJson implements IEPLdataService {
+public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataService {
 	
 	@Resource(name="EPLdataMapper")
 	private IEPLdataMapper epldataMapper;
@@ -209,7 +209,7 @@ public class EPLdataService	extends AbstractgetUrlForJson implements IEPLdataSer
 			rDTO.setHome_win(home_win);
 			rDTO.setHome_draw(home_draw);
 			rDTO.setHome_lost(home_lost);
-			rDTO.setSeason_name(recent_season_name);
+			rDTO.setSeason(recent_season_name);
 			
 			int res = epldataMapper.upsertEPLdata(rDTO);
 			if(res==0) {
@@ -252,7 +252,7 @@ public class EPLdataService	extends AbstractgetUrlForJson implements IEPLdataSer
 		for(int i =0; i<dataArr.size(); i++) {
 			JSONObject result = (JSONObject) dataArr.get(i);
 			
-			String season_name = result.get("name").toString();
+			String season = result.get("name").toString();
 			int is_current = Integer.parseInt(result.get("is_current").toString());
 			String start_date = result.get("start_date").toString();
 			String end_date = result.get("end_date").toString();
@@ -261,7 +261,7 @@ public class EPLdataService	extends AbstractgetUrlForJson implements IEPLdataSer
 				EPLDTO rDTO = new EPLDTO();
 				
 				rDTO.setIs_current(is_current);
-				rDTO.setSeason_name(season_name);
+				rDTO.setSeason(season);
 				rDTO.setStart_date(start_date);
 				rDTO.setEnd_date(end_date);
 				
@@ -286,13 +286,8 @@ public class EPLdataService	extends AbstractgetUrlForJson implements IEPLdataSer
 	public List<EPLDTO> getEPLteam() throws Exception {
 		log.info(this.getClass().getName() + ".PresentEPLteam start");
 		
-		EPLDTO qDTO = new EPLDTO();
-		
-		qDTO = epldataMapper.presentSeason();
-
-		List<EPLDTO> rList = epldataMapper.getEPLTeams(qDTO);
-
-		qDTO = null;
+		//현재시즌 EPL팀 정보 가져오기
+		List<EPLDTO> rList = epldataMapper.PresentEPLTeam();
 
 		return rList;
 	}

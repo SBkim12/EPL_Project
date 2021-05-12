@@ -29,28 +29,41 @@ public class NewsController {
 	@Resource(name = "NewsService")
 	INewsService newsService;
 	
+	
 	@RequestMapping(value = "newsUpdate")
 	@ResponseBody
 	public String newsUpdate(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		log.info(this.getClass().getName() + ".newsUpdate start!");
 		
+		String answer = "";
+		
+		/*
 		List<EPLDTO> rList = new ArrayList<EPLDTO>();
 		
 		rList = epldataService.getEPLteam();
 		
+		log.info("SkytSports 뉴스 웹 크롤링 시작");
 		int res = newsService.skySportsNewsUpdate(rList);
 		
-		String answer = "";
+		
 		if(res>0) {
-			answer = "성공";
+			log.info("SkySports 뉴스 크롤링 성공");
+			answer = "스카이 스포츠 성공 //";
 		}else {
-			answer = "실패";
+
+			log.info("SkySports 뉴스 크롤링 실패");
+			answer = "스카이 스포츠 실패 //";
 		}
+		*/
+		
+		log.info("The Guardian 뉴스 웹 크롤링 시작");
+		int res1 = newsService.theGuardianNewsUpdate();
 		
 		
 		log.info(this.getClass().getName() + ".newsUpdate end!!");
 		return answer;
 	}
+	
 	
 	
 }

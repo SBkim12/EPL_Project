@@ -1,18 +1,9 @@
 package poly.service.impl;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -22,11 +13,11 @@ import org.springframework.stereotype.Service;
 
 import poly.dto.YouTubeDTO;
 import poly.service.IGetPlayerVideoService;
-import poly.service.impl.comm.AbstractgetUrlForJson;
+import poly.service.impl.comm.AbstractgetUrlFordata;
 import poly.util.CmmUtil;
 
 @Service("GetPlayerVideoService")
-public class GetPlayerVideoService extends AbstractgetUrlForJson  implements IGetPlayerVideoService {
+public class GetPlayerVideoService extends AbstractgetUrlFordata  implements IGetPlayerVideoService {
 
 	// 로그생성
 	private Logger log = Logger.getLogger(this.getClass());

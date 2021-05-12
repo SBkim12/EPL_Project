@@ -12,11 +12,11 @@ import javax.net.ssl.SSLSession;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class AbstractgetUrlForJson {
+public abstract class AbstractgetUrlFordata {
 	
 	//로그생성
 	private Logger log = Logger.getLogger(this.getClass());
@@ -85,43 +85,4 @@ public abstract class AbstractgetUrlForJson {
 		return json;
 	}
 	
-	protected String Selenium(StringBuilder enNews) {
-		// WebDriver 경로 설정
-		System.setProperty("webdriver.chrome.driver", "C:\\selenium\\chromedriver.exe");
-
-		// WebDriver 옵션 설정
-		ChromeOptions options = new ChromeOptions();
-		//options.addArguments("--start-maximized"); // 전체화면으로 실행
-		options.addArguments("headless");
-		options.addArguments("--disable-gpu");
-		options.addArguments("--disable-popup-blocking"); // 팝업 무시
-		options.addArguments("--disable-default-apps"); // 기본앱 사용안함
-
-		// WebDriver 객체 생성
-		ChromeDriver driver = new ChromeDriver(options);
-		
-		String koNews = "";
-		
-		try {
-
-			// 웹페이지 요청
-			driver.get("https://papago.naver.com/");
-			Thread.sleep(100);
-			// 뉴스 입력
-			WebElement element = driver.findElement(By.id("txtSource"));
-			element.sendKeys(enNews);
-
-			Thread.sleep(10000);
-
-			element = driver.findElement(By.id("txtTarget"));
-			koNews = element.getText();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			driver.close();
-		}
-		
-		
-		return koNews;
-	}
 }

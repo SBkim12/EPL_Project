@@ -8,4 +8,6 @@ public interface INewsService {
 
 	int skySportsNewsUpdate(List<EPLDTO> rList)throws Exception;
 
+	int theGuardianNewsUpdate()throws Exception;
+
 }

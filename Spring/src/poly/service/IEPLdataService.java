@@ -13,5 +13,5 @@ public interface IEPLdataService {
 	int updateSeason(String url)throws Exception;
 
 	List<EPLDTO> getEPLteam()throws Exception;
-	
+
 }

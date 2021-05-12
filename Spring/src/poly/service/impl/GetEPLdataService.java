@@ -1,18 +1,9 @@
 package poly.service.impl;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -22,11 +13,11 @@ import org.springframework.stereotype.Service;
 
 import poly.dto.EPLDTO;
 import poly.service.IGetEPLdataService;
-import poly.service.impl.comm.AbstractgetUrlForJson;
+import poly.service.impl.comm.AbstractgetUrlFordata;
 import poly.util.CmmUtil;
 
 @Service("GetEPLdataService")
-public class GetEPLdataService extends AbstractgetUrlForJson  implements IGetEPLdataService {
+public class GetEPLdataService extends AbstractgetUrlFordata  implements IGetEPLdataService {
 	
 	//로그생성
 	private Logger log = Logger.getLogger(this.getClass());
@@ -71,7 +62,7 @@ public class GetEPLdataService extends AbstractgetUrlForJson  implements IGetEPL
 			log.info("end_date :: " + CmmUtil.nvl(result.get("end_date").toString()));
 			
 			rDTO.setSeason_id(CmmUtil.nvl(result.get("season_id").toString()));
-			rDTO.setSeason_name(CmmUtil.nvl(result.get("name").toString()));
+			rDTO.setSeason(CmmUtil.nvl(result.get("name").toString()));
 			rDTO.setStart_date(CmmUtil.nvl(result.get("start_date").toString()));
 			rDTO.setEnd_date(CmmUtil.nvl(result.get("end_date").toString()));
 			

@@ -23,7 +23,7 @@ public class EPLDTO {
 	
 	//season
 	private String season_id;
-	private String season_name;
+	private String season;
 	private String start_date;
 	private String end_date;
 	private int is_current;
@@ -49,12 +49,12 @@ public class EPLDTO {
 		this.season_id = season_id;
 	}
 
-	public String getSeason_name() {
-		return season_name;
+	public String getSeason() {
+		return season;
 	}
 
-	public void setSeason_name(String season_name) {
-		this.season_name = season_name;
+	public void setSeason(String season) {
+		this.season = season;
 	}
 
 	public String getStart_date() {

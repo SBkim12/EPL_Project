@@ -16,8 +16,6 @@ public interface IEPLdataMapper {
 
 	int updateSeason(EPLDTO rDTO);
 
-	EPLDTO presentSeason();
-
-	List<EPLDTO> getEPLTeams(EPLDTO qDTO);
+	List<EPLDTO> PresentEPLTeam();
 
 }
