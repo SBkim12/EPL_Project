@@ -10,7 +10,7 @@
           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
 	<mongo:mongo-client host="ec2-user@ec2-15-164-51-243.ap-northeast-2.compute.amazonaws.com"
-		port="27017" credentials="KSB:1234@Sports_news" id="mongo">
+		port="27005" credentials="KSB:1234@Sports_news" id="mongo">
 	</mongo:mongo-client>
 
 	<mongo:db-factory dbname="Sports_news" mongo-ref="mongo"

@@ -287,7 +287,7 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 		log.info(this.getClass().getName() + ".PresentEPLteam start");
 		
 		//현재시즌 EPL팀 정보 가져오기
-		List<EPLDTO> rList = epldataMapper.PresentEPLTeam();
+		List<EPLDTO> rList = epldataMapper.getEPLTeam();
 
 		return rList;
 	}

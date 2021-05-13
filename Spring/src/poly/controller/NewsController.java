@@ -37,7 +37,7 @@ public class NewsController {
 		
 		String answer = "";
 		
-		/*
+		
 		List<EPLDTO> rList = new ArrayList<EPLDTO>();
 		
 		rList = epldataService.getEPLteam();
@@ -50,14 +50,13 @@ public class NewsController {
 			log.info("SkySports 뉴스 크롤링 성공");
 			answer = "스카이 스포츠 성공 //";
 		}else {
-
 			log.info("SkySports 뉴스 크롤링 실패");
 			answer = "스카이 스포츠 실패 //";
 		}
-		*/
 		
-		log.info("The Guardian 뉴스 웹 크롤링 시작");
-		int res1 = newsService.theGuardianNewsUpdate();
+		
+//		log.info("The Guardian 뉴스 웹 크롤링 시작");
+//		int res1 = newsService.theGuardianNewsUpdate();
 		
 		
 		log.info(this.getClass().getName() + ".newsUpdate end!!");
