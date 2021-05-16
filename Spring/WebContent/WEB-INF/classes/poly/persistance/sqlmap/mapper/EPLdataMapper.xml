@@ -59,7 +59,7 @@
 			#{team_name},
 			#{logo},
 			#{ko_name},
-			#{season_name},
+			#{season},
 			#{recent_rank},
 			#{recent_won},
 			#{recent_draw},
@@ -111,9 +111,10 @@
            
 	</insert>
 	
+	<!-- 현재 시즌 정보 가져오기 -->
 	<select id="presentSeason" resultType="EPLDTO">
 	SELECT
-		SEASON_NAME
+		*
 	FROM
 		Present_EPL_Season
 	WHERE
@@ -121,13 +122,15 @@
 	</select>
 	
 	<!-- 현재시즌 EPL 팀 정보 가져오기 -->
-	<select id="getEPLTeams" parameterType="EPLDTO" resultType="EPLDTO">
+	<select id="getEPLTeam" resultType="EPLDTO">
 	SELECT
 		*
 	FROM
-		EPL_TEAMS
+		EPL_TEAMS a
+	NATURAL JOIN 
+		Present_EPL_Season b
 	WHERE
-		SEASON = #{season_name}
+		a.SEASON = b.SEASON
 	ORDER BY
 		RECENT_RANK ASC
 	</select>

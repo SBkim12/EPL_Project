@@ -33,7 +33,7 @@ while(it.hasNext()){
 	EPLDTO rDTO = (EPLDTO)it.next();
 	
 	out.println("season_id : " + CmmUtil.nvl(rDTO.getSeason_id()) + "<br>");
-	out.println("season_name : " + CmmUtil.nvl(rDTO.getSeason_name()) + "<br>");
+	out.println("season_name : " + CmmUtil.nvl(rDTO.getSeason()) + "<br>");
 	out.println("start_date : " + CmmUtil.nvl(rDTO.getStart_date()) + "<br>");
 	out.println("end_date : " + CmmUtil.nvl(rDTO.getEnd_date()) + "<br><hr>");
 }
