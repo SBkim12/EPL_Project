@@ -1,15 +1,11 @@
 package poly.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -23,6 +19,7 @@ import poly.dto.EPLDTO;
 import poly.service.INewsService;
 import poly.service.impl.comm.AbstractgetUrlFordata;
 import poly.util.dateUtil;
+import poly.util.BigTransUtil;
 
 @Service("NewsService")
 public class NewsService extends AbstractgetUrlFordata  implements INewsService{
@@ -176,7 +173,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 			
 		}
 		
-		
+		log.info("SkySports 뉴스 수집 완료!! 뉴스 개수 :: " + newsList.size());
 		
 		return 0;
 	}
@@ -216,22 +213,22 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 			//뉴스 페이지로 이동해서 크롤링
 			while(newsUrlList.hasNext()) {
 				try {
-					
-					//뉴스를 담을 맵 생성
+
+					// 뉴스를 담을 맵 생성
 					Map<String, Object> pMap = new LinkedHashMap<String, Object>();
-					
+
 					String newsUrl = newsUrlList.next().attr("href").toString();
-					
-					if(newsUrl.contains("/live/")) {
+
+					if (newsUrl.contains("/live/") || newsUrl.contains("/video/")) {
 						continue;
 					}
-					
+
 					log.info("news_url :: " + newsUrl);
-					
-					if(distinct.contains(newsUrl)) {
+
+					if (distinct.contains(newsUrl)) {
 						log.info("중복된 url 거르고 관련 팀 목록만 추가");
-						for(Map<String, Object> a :newsList) {
-							if(a.containsValue(newsUrl)) {
+						for (Map<String, Object> a : newsList) {
+							if (a.containsValue(newsUrl)) {
 								((ArrayList<String>) a.get("teams")).add(team);
 								break;
 							}
@@ -239,82 +236,93 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 						continue;
 					}
 					distinct.add(newsUrl);
-					
-					//뉴스기사 접속
+
+					// 뉴스기사 접속
 					doc = Jsoup.connect(newsUrl).get();
-					
-					//날짜 크롤링
+
+					// 날짜 크롤링
 					String news_date = doc.select("div.css-dcy86h > label").text().trim();
 					String day = news_date.trim().split(" ")[1];
 					String month = news_date.trim().split(" ")[2];
 					if (news_date.equals("")) {
 						log.info("날짜 없어서 패스");
 						continue;
-					}else if( day.equals(dateUtil.today_day) && month.equals(dateUtil.today_month) ){
+					} else if (day.equals(dateUtil.today_day) && month.equals(dateUtil.today_month)) {
 						news_date = dateUtil.today;
-					}else if( day.equals(dateUtil.yesterday_day) && month.equals(dateUtil.yesterday_month)){
+					} else if (day.equals(dateUtil.yesterday_day) && month.equals(dateUtil.yesterday_month)) {
 						news_date = dateUtil.yesterday;
-					}else {
+					} else {
 						log.info("최근 2일간의 기사가 아님 => 뉴스 날짜  :: " + news_date);
 						break;
 					}
 					log.info("news_date :: " + news_date);
-					
-					//뉴스 제목 크롤링
+
+					// 뉴스 제목 크롤링
 					String news_title = doc.select("h1").text();
-					if(news_title.trim().equals("")) {
+					if (news_title.trim().equals("")) {
 						log.info("제목 없어서 패스");
 						continue;
 					}
 					log.info("news_title :: " + news_title);
-					
-					//뉴스 이미지 크롤링
+
+					// 번역해서 넣기
+					String ko_title = "";
+
+					// 뉴스 이미지 크롤링
 					String img = doc.select("div.css-1nfcn93 > picture > img").attr("src");
-					if(img.trim().equals("")) {
+					if (img.trim().equals("")) {
 						log.info("이미지 없음 => 대체 이미지 넣음");
 						// 대체 이미지 입력
 						img = "../resource/images/the_guardian.png";
 						continue;
 					}
 					log.info("news_img :: " + img);
-					
+
 					List<String> contents = new ArrayList<>();
-					Elements element = doc.select("p.css-19dnnol");
+					Elements element = doc.select("p.css-19dnnol, div.article-body-viewer-selector > h2");
 					if (element.size() < 1) {
 						log.info("뉴스 본문 없음 패스");
 						continue;
-					}else {
+					} else {
 						log.info("뉴스 본문 1줄 이상 진행");
 					}
 					for (Element content : element) {
 
 						contents.add(content.text());
-						
+
 					}
-					log.info("news_body length :: " + contents.size());
+					log.info("news_contents length :: " + contents.size());
+
+					// 한국
+					String ko_contents = BigTransUtil.transNews(contents);
 					
-					//Map에 저장
+					log.info("한국 번역 : "+ ko_contents);
+
+					// Map에 저장
 					pMap.put("url", newsUrl);
 					pMap.put("title", news_title);
+					pMap.put("ko_title", ko_title);
 					pMap.put("date", news_date);
 					pMap.put("img", img);
 					pMap.put("contents", contents);
 					pMap.put("teams", teams);
-					
-					//리스트에 저장
+					pMap.put("ko_contents", ko_contents);
+
+					// 리스트에 저장
 					newsList.add(pMap);
-					
-					pMap=null;
-					
-				}catch (Exception e){
-					log.info("크롤링 뉴스 형태가 맞지 않음(크롤링 하지 않음)");	
-				}finally {
+
+					pMap = null;
+
+				} catch (Exception e) {
+					log.info("크롤링 뉴스 형태가 맞지 않음(크롤링 하지 않음)");
+				} finally {
 					log.info("--------------------------------------------------------------------------------");
 				}
 				
 			}
-			
 		}
+		
+		log.info("The Guardians 뉴스 수집 완료!! 뉴스 개수 :: " + newsList.size());
 		
 		return 0;
 	}
