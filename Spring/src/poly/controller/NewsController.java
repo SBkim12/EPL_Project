@@ -42,22 +42,27 @@ public class NewsController {
 		
 		rList = epldataService.getEPLteam();
 		
-		/*
-		log.info("SkytSports 뉴스 웹 크롤링 시작");
-		int res = newsService.skySportsNewsUpdate(rList);
 		
+		log.info("SkytSports 뉴스 웹 크롤링 및 DB업데이트 시작");
+		int res = newsService.skySportsNewsUpdate(rList);
 		
 		if(res>0) {
 			log.info("SkySports 뉴스 업데이트 성공");
 		}else {
 			log.info("SkySports 뉴스 업데이트 실패");
 		}
-		*/
+		log.info("SkytSports 뉴스 웹 크롤링 및 DB업데이트 종료");
+
 		
-		
-		log.info("The Guardian 뉴스 웹 크롤링 시작");
+		log.info("The Guardian 뉴스 웹 크롤링 및 DB업데이트 시작");
 		int res1 = newsService.theGuardianNewsUpdate();
 		
+		if(res1>0) {
+			log.info("The Guardian 뉴스 업데이트 성공");
+		}else {
+			log.info("The Guardian 뉴스 업데이트 실패");
+		}
+		log.info("SkytSports 뉴스 웹 크롤링 및 DB업데이트 종료");
 		
 		log.info(this.getClass().getName() + ".newsUpdate end!!");
 		return answer;

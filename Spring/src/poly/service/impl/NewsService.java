@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,22 +18,32 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import poly.dto.EPLDTO;
+import poly.persistance.mongo.INewsMongoMapper;
 import poly.service.INewsService;
 import poly.service.impl.comm.AbstractgetUrlFordata;
-import poly.util.dateUtil;
 import poly.util.BigTransUtil;
+import poly.util.TranslateUtil;
+import poly.util.dateUtil;
 
 @Service("NewsService")
 public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 
 	private Logger log = Logger.getLogger(this.getClass());
 	
+	@Resource(name = "NewsMongoMapper")
+	private INewsMongoMapper newsMongoMapper; 
 	
 	//skySports뉴스 크롤링 및 데이터 업데이트
 	@Override
+	//@Schedule(0 5 17 * *)
 	public int skySportsNewsUpdate(List<EPLDTO> rList) throws Exception {
 		
+		log.info(this.getClass().getName() + ".theGuardianNewsUpdate start!");
+		
 		List<Map<String, Object>> newsList = new LinkedList<Map<String,Object>>();
+		
+		//url 중복을 방지하기위해 저장
+		HashSet<String> distinct = new HashSet<>();
 		
 		EPLDTO pDTO = new EPLDTO();
 		for(int i=0; i<rList.size(); i++) {
@@ -43,9 +55,6 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 			if(team.endsWith("FC")){
 				team = team.substring(0,team.lastIndexOf("FC")-1).trim();
 			}
-			
-			//url 중복을 방지하기위해 저장
-			HashSet<String> distinct = new HashSet<>();
 			
 			//db에 들어갈 팀 목록(중복된 뉴스가 없을 경우 사용)
 			List<String> teams = new ArrayList<>();
@@ -119,6 +128,9 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 						continue;
 					}
 					log.info("news_title :: " + news_title);
+					
+					// 번역해서 넣기
+					String ko_title = TranslateUtil.trans(news_title);
 
 					// 이미지 주소 크롤링
 					String img = doc.select("img.sdc-article-image__item").attr("src");
@@ -146,14 +158,22 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					}
 					log.info("news_body length :: " + contents.size());
 					
+					// 한국
+					String ko_content = BigTransUtil.transNews(contents);
 					
-					//Map에 저장
+					log.info("한국 번역 : "+ ko_content);
+					
+					String[] ko_contents = ko_content.split("\r\n");
+					
+					// Map에 저장
 					pMap.put("url", newsUrl);
 					pMap.put("title", news_title);
+					pMap.put("ko_title", ko_title);
 					pMap.put("date", news_date);
 					pMap.put("img", img);
 					pMap.put("contents", contents);
 					pMap.put("teams", teams);
+					pMap.put("ko_contents", ko_contents);
 					
 					//리스트에 저장
 					newsList.add(pMap);
@@ -175,12 +195,25 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		
 		log.info("SkySports 뉴스 수집 완료!! 뉴스 개수 :: " + newsList.size());
 		
-		return 0;
+		// 컬렉션 명 설정
+		String colNm = dateUtil.today_year_month + "_The_Guardian";
+
+		log.info("몽고DB 뉴스 입력");
+		int res = 0;
+		if (newsList.size() > 0) {
+			res = newsMongoMapper.newsInsert(newsList, colNm);
+		}
+		
+		log.info(this.getClass().getName() + ".theGuardianNewsUpdate end!");
+		
+		return res;
 	}
 
 
 	@Override
 	public int theGuardianNewsUpdate() throws Exception {
+		
+		log.info(this.getClass().getName() + ".theGuardianNewsUpdate start!");
 		
 		List<Map<String, Object>> newsList = new LinkedList<Map<String,Object>>();
 		
@@ -193,13 +226,13 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		
 		Iterator<Element> newsHomeList = element_urlGet.iterator();
 		
+		//url 중복을 방지하기위해 저장
+		HashSet<String> distinct = new HashSet<>();
+		
 		//각각의 팀 뉴스 홈으로 이동 
 		while(newsHomeList.hasNext()) {
 			String teamNewsHome = newsHomeList.next().attr("href").toString();
 			doc = Jsoup.connect(teamNewsHome).get();
-			
-			//url 중복을 방지하기위해 저장
-			HashSet<String> distinct = new HashSet<>();
 			
 			//db에 들어갈 팀 목록(중복된 뉴스가 없을 경우 사용)
 			String team = doc.select("h1.index-page-header__title").text().trim();
@@ -225,10 +258,11 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 
 					log.info("news_url :: " + newsUrl);
 
-					if (distinct.contains(newsUrl)) {
+					//중복 url 거르기
+					if(distinct.contains(newsUrl)) {
 						log.info("중복된 url 거르고 관련 팀 목록만 추가");
-						for (Map<String, Object> a : newsList) {
-							if (a.containsValue(newsUrl)) {
+						for(Map<String, Object> a :newsList) {
+							if(a.containsValue(newsUrl)) {
 								((ArrayList<String>) a.get("teams")).add(team);
 								break;
 							}
@@ -294,9 +328,11 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					log.info("news_contents length :: " + contents.size());
 
 					// 한국
-					String ko_contents = BigTransUtil.transNews(contents);
+					String ko_content = BigTransUtil.transNews(contents);
 					
-					log.info("한국 번역 : "+ ko_contents);
+					log.info("한국 번역 : "+ ko_content);
+					
+					String[] ko_contents = ko_content.split("\r\n");
 
 					// Map에 저장
 					pMap.put("url", newsUrl);
@@ -318,63 +354,23 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 				} finally {
 					log.info("--------------------------------------------------------------------------------");
 				}
-				
 			}
 		}
 		
 		log.info("The Guardians 뉴스 수집 완료!! 뉴스 개수 :: " + newsList.size());
 		
-		return 0;
+		//컬렉션 명 설정
+		String colNm = dateUtil.today_year_month+"_The_Guardian";
+		
+		log.info("몽고DB 뉴스 입력");
+		int res =0;
+		if(newsList.size()>0) {
+			res = newsMongoMapper.newsInsert(newsList, colNm);
+		}
+		
+		log.info(this.getClass().getName() + ".theGuardianNewsUpdate end!");
+		
+		return res;
 	}
-	
-	
-	
-//	public List<String> Selenium_skySports(String url) {
-//		
-//		List<String> rList = new ArrayList<>();
-//		
-//		// WebDriver 경로 설정
-//		System.setProperty("webdriver.chrome.driver", "C:\\chromedriver\\chromedriver.exe");
-//		
-//		// WebDriver 옵션 설정
-//		ChromeOptions options = new ChromeOptions();
-//		options.addArguments("--start-maximized"); // 전체화면으로 실행
-//		options.addArguments("headless");
-//		options.addArguments("--disable-gpu");
-//		options.addArguments("--disable-popup-blocking"); // 팝업 무시
-//		options.addArguments("--disable-default-apps"); // 기본앱 사용안함
-//
-//		// WebDriver 객체 생성
-//		ChromeDriver driver = new ChromeDriver(options);
-//		// 페이지 대기 시간 최대 5초 설정
-//		WebDriverWait wait = new WebDriverWait(driver, 5);
-//		
-//		try {
-//			// 웹페이지 요청
-//			driver.get(url);
-//			
-//			String html_content = driver.getPageSource();
-//			
-//			Document doc = Jsoup.parse(html_content);
-//			
-//			Elements element = doc.select("div#widgetLite-9 > div > div > a");
-//			#widgetLite-9 > div > div:nth-child(11) > a
-//			
-//			
-////			Elements element = doc.select("span.sdc-article-header__long-title");
-////			
-////			Iterator<Element> newsUrl = element.select
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			driver.close();
-//		}
-//		
-//		
-//		return rList;
-//	}
-	
-	
 
 }

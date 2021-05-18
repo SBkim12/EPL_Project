@@ -17,13 +17,18 @@ public class dateUtil {
 	private static SimpleDateFormat day = new SimpleDateFormat("d", Locale.UK);
 	private static SimpleDateFormat en_month = new SimpleDateFormat("MMMM", Locale.UK);
 	
+	private static SimpleDateFormat year_month = new SimpleDateFormat("yyyy_MM", Locale.UK);
+	
 	//활용
 	public static String today = SDF.format(date);
 	public static String today_day = day.format(date);
 	public static String today_month = en_month.format(date);
+	public static String today_year_month = year_month.format(date);
 	
 	public static String yesterday = SDF.format(yesterday_date);
 	public static String yesterday_day = day.format(yesterday_date);
 	public static String yesterday_month = en_month.format(yesterday_date);
+	
+	
 	
 }

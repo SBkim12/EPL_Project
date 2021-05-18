@@ -24,12 +24,11 @@ public class BigTransUtil {
 			if(enNews.get(i).length()<1) {
 				continue;
 			}
-			if(enNews.get(i).length()+sb.length()<3000) {
+			if(enNews.get(i).length()+sb.length()<4500) {
 				sb.append(enNews.get(i));
 				sb.append("\r\n");
 			}else {
 				contents.add(sb.toString());
-				System.out.println(sb);
 				//koNews+=trans(sb);
 				sb.setLength(0);
 				sb.append(enNews.get(i));
@@ -39,7 +38,6 @@ public class BigTransUtil {
 		if(sb.length()>0) {
 			contents.add(sb.toString());
 			//koNews+=trans(sb);
-			System.out.println(sb);
 		}
 		
 		String ko_contents = trans(contents);
@@ -56,7 +54,7 @@ public class BigTransUtil {
 		// WebDriver 옵션 설정
 		ChromeOptions options = new ChromeOptions();
 		//options.addArguments("--start-maximized"); // 전체화면으로 실행
-		//options.addArguments("headless");
+		options.addArguments("headless");
 		options.addArguments("--disable-gpu");
 		options.addArguments("--disable-popup-blocking"); // 팝업 무시
 		options.addArguments("--disable-default-apps"); // 기본앱 사용안함
@@ -79,16 +77,26 @@ public class BigTransUtil {
 			WebElement ko = driver.findElement(By.xpath("//*[@id=\"txtTarget\"]"));
 			WebElement x = driver.findElement(By.xpath("//*[@id=\"sourceEditArea\"]/button"));
 			
+			Iterator<String> test = contents.iterator();
+			
+			while(test.hasNext()) {
+				System.out.print(test.next());
+			}
+			
 			Iterator<String> it = contents.iterator();
 			
 			while(it.hasNext()) {
 				// 뉴스 입력
-				en.sendKeys(it.next());
-				Thread.sleep(6000);
+				String splited_contents = "0";
+				splited_contents+=it.next();
+				en.sendKeys(splited_contents);
+				Thread.sleep(10000);
 				
 				//번역 받아오기
 				ko_contents+=ko.getText();
-				Thread.sleep(2000);
+				Thread.sleep(3000);
+				
+				//입력 초기화
 				x.click();
 			}
 
