@@ -1,6 +1,8 @@
 package poly.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -46,6 +48,8 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		HashSet<String> distinct = new HashSet<>();
 		
 		EPLDTO pDTO = new EPLDTO();
+		
+		//각 축구팀 뉴스 사이트 접속 및 URL 획득
 		for(int i=0; i<rList.size(); i++) {
 
 			pDTO = rList.get(i);
@@ -57,20 +61,22 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 			}
 			
 			//db에 들어갈 팀 목록(중복된 뉴스가 없을 경우 사용)
-			List<String> teams = new ArrayList<>();
-			teams.add(team);
+			Map<String, String> team_map = new HashMap<String, String>();
+			List<Map<String, String>> teams = new ArrayList<Map<String, String>>();
+			team_map.put("team_name", team);
+			teams.add(team_map);
 			
 			//팀이름을 url의 형식에 맞춰 변경하고 합치기
 			String teamForUrl = team.replaceAll(" ", "-").replace("&", "and").concat("-news").toLowerCase();
 			String url = "https://www.skysports.com/"+teamForUrl;
 			log.info("팀이름을 활용한 url 형식 :: " + url);
 			
-			//팀 뉴스 사이트 접속
+			//팀 뉴스 사이트 접속 및 
 			Document doc = Jsoup.connect(url).get();
 			Elements element_urlGet = doc.select("a.news-list__figure");
 			Iterator<Element> newsUrlList = element_urlGet.iterator();
 			
-			//뉴스 URL크롤링
+			//뉴스 기사 크롤링 및 기사 저장
 			while(newsUrlList.hasNext()) {
 
 				try {
@@ -94,7 +100,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 						log.info("중복된 url 거르고 관련 팀 목록만 추가");
 						for(Map<String, Object> a :newsList) {
 							if(a.containsValue(newsUrl)) {
-								((ArrayList<String>) a.get("teams")).add(team);
+								((ArrayList<Map<String, String>>) a.get("teams")).add(team_map);
 								break;
 							}
 						}
@@ -113,10 +119,8 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 						continue;
 					}else if( day.equals(dateUtil.today_day) && month.equals(dateUtil.today_month) ){
 						news_date = dateUtil.today;
-					}else if( day.equals(dateUtil.yesterday_day) && month.equals(dateUtil.yesterday_month)){
-						news_date = dateUtil.yesterday;
 					}else {
-						log.info("최근 2일간의 기사가 아님 => 뉴스 날짜  :: " + news_date);
+						log.info("오늘 기사 아님 => 뉴스 날짜  :: " + news_date);
 						break;
 					}
 					log.info("news_date :: " + news_date);
@@ -133,7 +137,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					String ko_title = TranslateUtil.trans(news_title);
 
 					// 이미지 주소 크롤링
-					String img = doc.select("img.sdc-article-image__item").attr("src");
+					String img = doc.select("img.sdc-article-image__item").attr("src").toString();
 					if (img.trim().equals("")) {
 						log.info("이미지 없음 => 대체 이미지 넣음");
 						// 대체 이미지 입력
@@ -154,7 +158,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					}
 					for (Element content : element.select(
 							"div.sdc-article-body.sdc-article-body--lead > p,div.sdc-article-body.sdc-article-body--lead > h3")) {
-						contents.add(content.toString());
+						contents.add(content.text());
 					}
 					log.info("news_body length :: " + contents.size());
 					
@@ -163,7 +167,10 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					
 					log.info("한국 번역 : "+ ko_content);
 					
-					String[] ko_contents = ko_content.split("\r\n");
+					String[] ko_contents_String = ko_content.split("\n");
+					List ko_contents = new ArrayList(Arrays.asList(ko_contents_String));
+					
+					log.info("번역 리스트 길이 :: " +ko_contents.size());
 					
 					// Map에 저장
 					pMap.put("url", newsUrl);
@@ -190,13 +197,14 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 			}
 			
 			pDTO = null;
-			
+			teams = null;
+			team_map = null;
 		}
 		
 		log.info("SkySports 뉴스 수집 완료!! 뉴스 개수 :: " + newsList.size());
 		
 		// 컬렉션 명 설정
-		String colNm = dateUtil.today_year_month + "_The_Guardian";
+		String colNm = dateUtil.today_year_month + "_Sky_Sports";
 
 		log.info("몽고DB 뉴스 입력");
 		int res = 0;
@@ -236,8 +244,10 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 			
 			//db에 들어갈 팀 목록(중복된 뉴스가 없을 경우 사용)
 			String team = doc.select("h1.index-page-header__title").text().trim();
-			List<String> teams = new ArrayList<>();
-			teams.add(team);
+			Map<String, String> team_map = new HashMap<String, String>();
+			List<Map<String, String>> teams = new ArrayList<Map<String, String>>();
+			team_map.put("team_name", team);
+			teams.add(team_map);
 			
 			element_urlGet = doc.select("div.fc-item__content a");
 			 
@@ -263,7 +273,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 						log.info("중복된 url 거르고 관련 팀 목록만 추가");
 						for(Map<String, Object> a :newsList) {
 							if(a.containsValue(newsUrl)) {
-								((ArrayList<String>) a.get("teams")).add(team);
+								((ArrayList<Map<String, String>>) a.get("teams")).add(team_map);
 								break;
 							}
 						}
@@ -283,10 +293,8 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 						continue;
 					} else if (day.equals(dateUtil.today_day) && month.equals(dateUtil.today_month)) {
 						news_date = dateUtil.today;
-					} else if (day.equals(dateUtil.yesterday_day) && month.equals(dateUtil.yesterday_month)) {
-						news_date = dateUtil.yesterday;
 					} else {
-						log.info("최근 2일간의 기사가 아님 => 뉴스 날짜  :: " + news_date);
+						log.info("오늘 기사 아님 => 뉴스 날짜  :: " + news_date);
 						break;
 					}
 					log.info("news_date :: " + news_date);
@@ -300,7 +308,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					log.info("news_title :: " + news_title);
 
 					// 번역해서 넣기
-					String ko_title = "";
+					String ko_title = TranslateUtil.trans(news_title);
 
 					// 뉴스 이미지 크롤링
 					String img = doc.select("div.css-1nfcn93 > picture > img").attr("src");
@@ -332,12 +340,15 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					
 					log.info("한국 번역 : "+ ko_content);
 					
-					String[] ko_contents = ko_content.split("\r\n");
-
+					String[] ko_contents_String = ko_content.split("\n");
+					List ko_contents = new ArrayList(Arrays.asList(ko_contents_String));
+					
+					log.info("한국 번역 리스트 길이 :: "+ko_contents.size());
+					
 					// Map에 저장
 					pMap.put("url", newsUrl);
 					pMap.put("title", news_title);
-					pMap.put("ko_title", ko_title);
+					pMap.put("ko_title",ko_title);
 					pMap.put("date", news_date);
 					pMap.put("img", img);
 					pMap.put("contents", contents);
@@ -348,14 +359,23 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					newsList.add(pMap);
 
 					pMap = null;
-
+					
 				} catch (Exception e) {
 					log.info("크롤링 뉴스 형태가 맞지 않음(크롤링 하지 않음)");
 				} finally {
 					log.info("--------------------------------------------------------------------------------");
 				}
+				
+				doc = null;
+				
 			}
+			
+			team_map = null;
+			teams = null;
+			
 		}
+		
+		distinct = null;
 		
 		log.info("The Guardians 뉴스 수집 완료!! 뉴스 개수 :: " + newsList.size());
 		
@@ -371,6 +391,33 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		log.info(this.getClass().getName() + ".theGuardianNewsUpdate end!");
 		
 		return res;
+	}
+
+
+	@Override
+	public List<Map<String, Object>> getMainNews(String team, String news) throws Exception {
+		log.info(this.getClass().getName() + ".getMainNews start!");
+		
+		//collection 이름
+		String colNm = dateUtil.today_year_month+news;
+		//뉴스개수
+		int no = 3;
+		
+		List<Map<String, Object>> rList = newsMongoMapper.getNews(colNm, no, team);
+		
+		if(rList.size()<1) {
+			colNm = dateUtil.month_ago()+news;
+			rList = newsMongoMapper.getNews(colNm, no, team);
+		}
+		
+		if(rList == null) {
+			rList = new LinkedList<Map<String, Object>>();
+		}
+		
+		log.info("뉴스 개수 :: "+rList.size());
+		
+		log.info(this.getClass().getName() + ".getMainNews end!");
+		return rList;
 	}
 
 }

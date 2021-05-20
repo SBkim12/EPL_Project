@@ -9,7 +9,7 @@
 	<properties>
 		<java-version>1.8</java-version>
 		<!-- MongoDB에서 제공하는 스프링 버전과 연동을 위해 권장하는 버전인 4.2.9 버전으로 기존 4.3.7에서 다운그레이드함 -->
-		<org.springframework-version>4.3.27.RELEASE</org.springframework-version>
+		<org.springframework-version>4.2.9.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
@@ -90,7 +90,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
-			<version>2.0.14.RELEASE</version>
+			<version>1.9.11.RELEASE</version>
 		</dependency>
 
 		<!-- logging -->
@@ -192,8 +192,6 @@
 			<artifactId>aspectjrt</artifactId>
 			<version>1.6.8</version>
 		</dependency>
-
-
 
 		<!-- MyBatis, DBCP -->
 		<dependency>

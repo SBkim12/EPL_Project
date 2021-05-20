@@ -54,7 +54,7 @@ public class DataUpdateController {
 	@RequestMapping(value = "seasonDataUpdate")
 	@ResponseBody
 	public List<EPLDTO> seasonDataUpdate(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
-		log.info(this.getClass().getName() + ".seasonDateUpdate start!");
+		log.info(this.getClass().getName() + ".seasonDataUpdate start!");
 		
 		String key = SportsDataUtil.APIKey;
 		String EPL = SportsDataUtil.EPL;
@@ -65,7 +65,7 @@ public class DataUpdateController {
 		
 		rList = epldataService.updateSeasonRank(url);
 		
-		log.info(this.getClass().getName() + ".seasonDateUpdate end!");
+		log.info(this.getClass().getName() + ".seasonDataUpdate end!");
 		return rList;
 	}
 	

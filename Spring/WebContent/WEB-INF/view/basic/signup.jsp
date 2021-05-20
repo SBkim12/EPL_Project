@@ -81,7 +81,7 @@
 								rDTO = new EPLDTO();
 							}
 						%>
-						<option value="<%=CmmUtil.nvl(rDTO.getKo_name())%>"><%=CmmUtil.nvl(rDTO.getKo_name())%></option>	
+						<option value="<%=CmmUtil.nvl(rDTO.getTeam_name())%>"><%=CmmUtil.nvl(rDTO.getKo_name())%></option>	
 						<%}%>
 					</select></div>
 				</div>

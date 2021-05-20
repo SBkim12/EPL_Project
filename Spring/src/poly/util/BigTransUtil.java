@@ -77,11 +77,11 @@ public class BigTransUtil {
 			WebElement ko = driver.findElement(By.xpath("//*[@id=\"txtTarget\"]"));
 			WebElement x = driver.findElement(By.xpath("//*[@id=\"sourceEditArea\"]/button"));
 			
-			Iterator<String> test = contents.iterator();
-			
-			while(test.hasNext()) {
-				System.out.print(test.next());
-			}
+//			Iterator<String> test = contents.iterator();
+//			
+//			while(test.hasNext()) {
+//				System.out.print(test.next());
+//			}
 			
 			Iterator<String> it = contents.iterator();
 			

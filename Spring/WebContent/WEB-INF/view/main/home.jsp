@@ -2,9 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%
 	String member_id = (String) request.getAttribute("member_id");
-String favorite_team = (String) request.getAttribute("favorite_team");
-String member_name = (String) request.getAttribute("member_name");
-String member_point = (String) request.getAttribute("member_point");
+	String favorite_team = (String) request.getAttribute("favorite_team");
+	String member_name = (String) request.getAttribute("member_name");
+	String member_point = (String) request.getAttribute("member_point");
 %>
 
 
@@ -237,6 +237,7 @@ String member_point = (String) request.getAttribute("member_point");
 							</div>
 						</div>
 					</div>
+					
 				</div>
 			</div>
 		</div>
