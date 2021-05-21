@@ -54,7 +54,7 @@ public class BigTransUtil {
 		// WebDriver 옵션 설정
 		ChromeOptions options = new ChromeOptions();
 		//options.addArguments("--start-maximized"); // 전체화면으로 실행
-		//options.addArguments("headless");
+		options.addArguments("headless");
 		options.addArguments("--disable-gpu");
 		options.addArguments("--disable-popup-blocking"); // 팝업 무시
 		options.addArguments("--disable-default-apps"); // 기본앱 사용안함
@@ -62,7 +62,7 @@ public class BigTransUtil {
 		// WebDriver 객체 생성
 		ChromeDriver driver = new ChromeDriver(options);
 		
-		// 페이지 대기 시간 최대 2초 설정
+		// 페이지 대기 시간 최대 3초 설정
 		WebDriverWait wait = new WebDriverWait(driver, 3);
 		
 		String ko_contents = "";
@@ -71,19 +71,15 @@ public class BigTransUtil {
 
 			// 웹페이지 요청
 			driver.get("https://papago.naver.com/");
+			Thread.sleep(3000);
 			
 			WebElement en = driver.findElement(By.xpath("//*[@id=\"sourceEditArea\"]"));
-			WebElement ko = driver.findElement(By.xpath("//*[@id=\"txtTarget\"]"));
 			WebElement x = driver.findElement(By.xpath("//*[@id=\"sourceEditArea\"]/button"));
-			
-//			Iterator<String> test = contents.iterator();
-//			
-//			while(test.hasNext()) {
-//				System.out.print(test.next());
-//			}
-			
+			WebElement ko = null;
 			Iterator<String> it = contents.iterator();
 			
+			
+			int i=0;
 			while(it.hasNext()) {
 				// 뉴스 입력
 				String splited_contents = "0";
@@ -91,12 +87,21 @@ public class BigTransUtil {
 				en.sendKeys(splited_contents);
 				Thread.sleep(8000);
 				
-				//번역 받아오기
-				ko_contents+=ko.getText();
-				Thread.sleep(3000);
+				if(i==0) {
+					ko = driver.findElement(By.xpath("//*[@id=\"txtTarget\"]/span"));
+					i++;
+				}else {
+					//번역 받아오기
+					ko_contents+=ko.getText();
+					Thread.sleep(4000);
+					
+					
+					//입력 초기화
+					x.click();
+				}
 				
-				//입력 초기화
-				x.click();
+				
+				
 			}
 
 			

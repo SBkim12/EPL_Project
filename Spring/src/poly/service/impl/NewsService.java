@@ -1,5 +1,6 @@
 package poly.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -71,7 +72,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 			log.info("팀이름을 활용한 url 형식 :: " + url);
 
 			// 팀 뉴스 사이트 접속 및
-			Document doc = Jsoup.connect(url).get();
+			Document doc = Jsoup.connect(url).timeout(30000).get();
 			Elements element_urlGet = doc.select("a.news-list__figure");
 			Iterator<Element> newsUrlList = element_urlGet.iterator();
 
@@ -107,7 +108,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					}
 					distinct.add(newsUrl);
 
-					doc = Jsoup.connect(newsUrl).get();
+					doc = Jsoup.connect(newsUrl).timeout(30000).get();
 
 					// 날짜 크롤링
 					String news_date = doc.select("p.sdc-article-date__date-time").text();
@@ -146,7 +147,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 
 					// 뉴스 본문 크롤링
 					List<String> contents = new ArrayList<>();
-					Elements element = doc.select("div.sdc-article-body.sdc-article-body--lead");
+					Elements element = doc.select("div.sdc-article-body");
 					if (element.select(
 							"div.sdc-article-body.sdc-article-body--lead > p, div.sdc-article-body.sdc-article-body--lead > h3")
 							.size() < 1) {
@@ -227,7 +228,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		// 가디언즈 사이트(팀 뉴스 사이트 주소 보유한 페이지)git
 		String url = "https://www.theguardian.com/football/teams";
 
-		Document doc = Jsoup.connect(url).get();
+		Document doc = Jsoup.connect(url).timeout(30000).get();
 
 		Elements element_urlGet = doc.select("#premier-league > div > div > div > ul a");
 
@@ -239,7 +240,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		// 각각의 팀 뉴스 홈으로 이동
 		while (newsHomeList.hasNext()) {
 			String teamNewsHome = newsHomeList.next().attr("href").toString();
-			doc = Jsoup.connect(teamNewsHome).get();
+			doc = Jsoup.connect(teamNewsHome).timeout(30000).get();
 
 			// db에 들어갈 팀 목록(중복된 뉴스가 없을 경우 사용)
 			String team = doc.select("h1.index-page-header__title").text().trim();
@@ -281,7 +282,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					distinct.add(newsUrl);
 
 					// 뉴스기사 접속
-					doc = Jsoup.connect(newsUrl).get();
+					doc = Jsoup.connect(newsUrl).timeout(30000).get();
 
 					// 날짜 크롤링
 					String news_date = doc.select("div.css-dcy86h > label").text().trim();
