@@ -71,35 +71,29 @@ public class BigTransUtil {
 
 			// 웹페이지 요청
 			driver.get("https://papago.naver.com/");
-			Thread.sleep(3000);
+			Thread.sleep(1000);
 			
 			WebElement en = driver.findElement(By.xpath("//*[@id=\"sourceEditArea\"]"));
+			WebElement ko = driver.findElement(By.xpath("//*[@id=\"txtTarget\"]"));
 			WebElement x = driver.findElement(By.xpath("//*[@id=\"sourceEditArea\"]/button"));
-			WebElement ko = null;
+			
 			Iterator<String> it = contents.iterator();
 			
 			
-			int i=0;
 			while(it.hasNext()) {
 				// 뉴스 입력
 				String splited_contents = "0";
 				splited_contents+=it.next();
 				en.sendKeys(splited_contents);
-				Thread.sleep(8000);
+				Thread.sleep(10000);
+
 				
-				if(i==0) {
-					ko = driver.findElement(By.xpath("//*[@id=\"txtTarget\"]/span"));
-					i++;
-				}else {
-					//번역 받아오기
-					ko_contents+=ko.getText();
-					Thread.sleep(4000);
-					
-					
-					//입력 초기화
-					x.click();
-				}
-				
+				// 번역 받아오기
+				ko_contents += ko.getText();
+				Thread.sleep(3000);
+
+				// 입력 초기화
+				x.click();
 				
 				
 			}

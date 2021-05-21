@@ -134,7 +134,23 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					log.info("news_title :: " + news_title);
 
 					// 번역해서 넣기
-					String ko_title = TranslateUtil.trans(news_title);
+					String ko_title = "";
+					try {
+						ko_title = TranslateUtil.trans(news_title);
+					}catch (Exception e) {
+						log.info("파파고 번역 제한 or 다른 문제");
+					}finally{
+						if(ko_title.equals("")) {
+							log.info("카카오번역기 이용");
+							try {
+							ko_title = TranslateUtil.kakaotrans(ko_title);
+							}
+							catch(Exception e){
+								log.info("카카오 번역도 끝");
+							}
+						}
+						log.info("ko_title :: "+ko_title);
+					}
 
 					// 이미지 주소 크롤링
 					String img = doc.select("img.sdc-article-image__item").attr("src").toString();
@@ -300,18 +316,35 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					log.info("news_date :: " + news_date);
 
 					// 뉴스 제목 크롤링
-					String news_title = doc.select("h1").text();
-					if (news_title.trim().equals("")) {
+					String news_title = doc.select("h1").text().trim();
+					if (news_title.equals("")) {
 						log.info("제목 없어서 패스");
 						continue;
 					}
 					log.info("news_title :: " + news_title);
 
 					// 번역해서 넣기
-					String ko_title = TranslateUtil.trans(news_title);
-
+					String ko_title = "";
+					try {
+						ko_title = TranslateUtil.trans(news_title);
+					}catch (Exception e) {
+						log.info("파파고 번역 제한 or 다른 문제");
+					}finally{
+						if(ko_title.equals("")) {
+							log.info("카카오번역기 이용");
+							try {
+								ko_title = TranslateUtil.kakaotrans(news_title);
+							}
+							catch(Exception e){
+								log.info("카카오 번역도 끝");
+							}
+						}
+						log.info("ko_title :: "+ko_title);
+					}
+					
+					
 					// 뉴스 이미지 크롤링
-					String img = doc.select("div.css-1nfcn93 > picture > img").attr("src");
+					String img = doc.select("img").attr("src").toString();
 					if (img.trim().equals("")) {
 						log.info("이미지 없음 => 대체 이미지 넣음");
 						// 대체 이미지 입력

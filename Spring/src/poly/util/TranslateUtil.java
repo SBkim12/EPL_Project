@@ -13,15 +13,63 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 
 public class TranslateUtil {
 	
+	//카카오 번역
+	public static String kakaotrans(String sentence) throws Exception {
+		
+		String apikey = "6dcebf263381743278fe3462808102ca"; // REST API 키
+
+		String postParams = "src_lang=en&target_lang=kr&query=";
+		String apiURL = "https://dapi.kakao.com/v2/translation/translate?" + postParams;
+
+		String sent = URLEncoder.encode(sentence, "UTF-8");
+		String queryURL = apiURL + sent;
+		URL url = new URL(queryURL);
+
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		String userCredentials = apikey;
+		String basicAuth = "KakaoAK " + userCredentials;
+		con.setRequestProperty("Authorization", basicAuth);
+		con.setRequestMethod("GET");
+		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		con.setRequestProperty("charset", "utf-8");
+		con.setUseCaches(false);
+		con.setDoInput(true);
+		con.setDoOutput(true);
+		int responseCode = con.getResponseCode();
+		System.out.println("response code : " + responseCode);
+
+		BufferedReader br;
+		if (responseCode == 200) {
+			br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		} else {
+			br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+		}
+
+		String inputLine;
+		StringBuffer res = new StringBuffer();
+		while ((inputLine = br.readLine()) != null) {
+			res.append(inputLine);
+		}
+		br.close();
+		JSONObject json = new JSONObject(res.toString());
+
+		String translated = ((JSONArray) json.getJSONArray("translated_text").get(0)).getString(0);
+
+		return translated;
+
+	}
+
+	//파파고 번역
 	public static String trans(String sentence) throws Exception {
         String clientId = "QJDBXrlWxdsKWWtsLV4q";
         String clientSecret = "brIhRQP_Ah"; // 암호
-
+        
         String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
         String text;
         try {

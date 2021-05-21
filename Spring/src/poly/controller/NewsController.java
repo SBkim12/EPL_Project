@@ -32,7 +32,7 @@ public class NewsController {
 	INewsService newsService;
 	
 	//뉴스 업데이트(영국 23시에  동작 => 한국시간 7시에 동작)
-	@Scheduled(cron = "0 0 7 * * ?")
+	@Scheduled(cron = "0 0 7 * * *")
 	@RequestMapping(value = "newsUpdate")
 	@ResponseBody
 	public String newsUpdate(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
