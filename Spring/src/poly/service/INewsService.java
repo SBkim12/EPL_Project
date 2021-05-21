@@ -13,4 +13,5 @@ public interface INewsService {
 
 	List<Map<String, Object>> getMainNews(String team, String news)throws Exception;
 
+
 }

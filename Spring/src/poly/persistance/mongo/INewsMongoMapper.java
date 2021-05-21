@@ -6,7 +6,6 @@ import java.util.Map;
 public interface INewsMongoMapper {
 
 	int newsInsert(List<Map<String, Object>> newsList, String news)throws Exception;
-
+	
 	List<Map<String, Object>> getNews(String colNm, int i, String team)throws Exception;
-
 }
