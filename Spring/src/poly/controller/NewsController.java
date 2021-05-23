@@ -31,8 +31,7 @@ public class NewsController {
 	@Resource(name = "NewsService")
 	INewsService newsService;
 	
-	//뉴스 업데이트(영국 23시에  동작 => 한국시간 7시에 동작)
-	@Scheduled(cron = "0 0 7 * * *")
+	//강제 업데이트 (DB에 url 없는 것들 추가 업데이트하는 걸로 추가 구현 할것)
 	@RequestMapping(value = "newsUpdate")
 	@ResponseBody
 	public String newsUpdate(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
@@ -69,6 +68,38 @@ public class NewsController {
 		
 		log.info(this.getClass().getName() + ".newsUpdate end!!");
 		return answer;
+	}
+	
+	//뉴스 업데이트(영국 23시에  동작 => 한국시간 7시에 동작)
+	@Scheduled(cron = "0 0 7 * * *")
+	public void news_update_schedule()throws Exception {
+		log.info(this.getClass().getName() + ".newsUpdate start!");
+
+		List<EPLDTO> rList = new ArrayList<EPLDTO>();
+
+		rList = epldataService.getEPLteam();
+
+		log.info("SkytSports 뉴스 웹 크롤링 및 DB업데이트 시작");
+		int res = newsService.skySportsNewsUpdate(rList);
+
+		if (res > 0) {
+			log.info("SkySports 뉴스 업데이트 성공");
+		} else {
+			log.info("SkySports 뉴스 업데이트 실패");
+		}
+		log.info("SkytSports 뉴스 웹 크롤링 및 DB업데이트 종료");
+
+		log.info("The Guardian 뉴스 웹 크롤링 및 DB업데이트 시작");
+		int res1 = newsService.theGuardianNewsUpdate();
+
+		if (res1 > 0) {
+			log.info("The Guardian 뉴스 업데이트 성공");
+		} else {
+			log.info("The Guardian 뉴스 업데이트 실패");
+		}
+		log.info("The Guardian 뉴스 웹 크롤링 및 DB업데이트 종료");
+
+		log.info(this.getClass().getName() + ".newsUpdate end!!");
 	}
 	
 	@RequestMapping(value = "mainNews")

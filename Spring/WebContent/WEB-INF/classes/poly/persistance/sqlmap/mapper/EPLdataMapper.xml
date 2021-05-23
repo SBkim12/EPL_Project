@@ -76,7 +76,7 @@
 			TEAM_NAME=#{team_name},
 			LOGO=#{logo},
 			KO_NAME=#{ko_name},
-			SEASON=#{season_name},
+			SEASON=#{season},
 			RECENT_RANK=#{recent_rank},
 			RECENT_WON=#{recent_won},
 			RECENT_DRAW=#{recent_draw},
@@ -94,18 +94,18 @@
 	INSERT INTO 
 			Present_EPL_Season(
 			IS_CURRENT,
-			SEASON_NAME,
+			SEASON,
 			START_DATE,
 			END_DATE
 		)VALUES(
 			#{is_current},
-			#{season_name},
+			#{season},
 			#{start_date},
 			#{end_date}
 		)
 		ON DUPLICATE KEY UPDATE
         	IS_CURRENT = #{is_current}
-           , SEASON_NAME = #{season_name}
+           , SEASON = #{season}
            , START_DATE = #{start_date}
            , END_DATE =  #{end_date}
            
