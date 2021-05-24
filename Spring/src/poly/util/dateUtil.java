@@ -9,10 +9,10 @@ public class dateUtil {
 	
 	private static Calendar cal = Calendar.getInstance();
 	
-	//영국 현재 시간(시스템 환경 시간을 영국시간으로 만듦)
+	//현재시간
 	private static Date now = new Date(cal.getTimeInMillis());
-	//한국 시간일 경우 8시간 빼기
-	private static Date date = new Date(now.getTime()+(1000*60*60*-8));
+	//어제시간
+	private static Date date = new Date(now.getTime()+(1000*60*60*-24));
 	
 
 	//날짜 형식

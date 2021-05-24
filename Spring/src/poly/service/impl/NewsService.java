@@ -98,9 +98,9 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					// 중복 url 거르기
 					if (distinct.contains(newsUrl)) {
 						log.info("중복된 url 거르고 관련 팀 목록만 추가");
-						for (Map<String, Object> a : newsList) {
-							if (a.containsValue(newsUrl)) {
-								((ArrayList<Map<String, String>>) a.get("teams")).add(team_map);
+						for (Map<String, Object> tMap : newsList) {
+							if (tMap.containsValue(newsUrl)) {
+								((ArrayList<Map<String, String>>) tMap.get("teams")).add(team_map);
 								break;
 							}
 						}
@@ -208,11 +208,9 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 				} finally {
 					log.info("--------------------------------------------------------------------------------");
 				}
-				
 				doc = null;
-
 			}
-
+			
 			pDTO = null;
 			teams = null;
 			team_map = null;
@@ -241,7 +239,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 
 		List<Map<String, Object>> newsList = new LinkedList<Map<String, Object>>();
 
-		// 가디언즈 사이트(팀 뉴스 사이트 주소 보유한 페이지)git
+		// 가디언즈 사이트(팀 뉴스 사이트 주소 보유한 페이지)
 		String url = "https://www.theguardian.com/football/teams";
 
 		Document doc = Jsoup.connect(url).timeout(30000).get();
@@ -287,9 +285,9 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					// 중복 url 거르기
 					if (distinct.contains(newsUrl)) {
 						log.info("중복된 url 거르고 관련 팀 목록만 추가");
-						for (Map<String, Object> a : newsList) {
-							if (a.containsValue(newsUrl)) {
-								((ArrayList<Map<String, String>>) a.get("teams")).add(team_map);
+						for (Map<String, Object> tMap : newsList) {
+							if (tMap.containsValue(newsUrl)) {
+								((ArrayList<Map<String, String>>) tMap.get("teams")).add(team_map);
 								break;
 							}
 						}

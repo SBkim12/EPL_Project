@@ -65,8 +65,8 @@ public class UserController {
 			
 			log.info("uDTO.Member_id : " + uDTO.getMember_id());
 			log.info("uDTO.Member_name : " + uDTO.getMember_name());
-			log.info("uDTO.favorite_team : " + uDTO.getMember_name());
-			log.info("uDTO.member_point : " + uDTO.getMember_name());
+			log.info("uDTO.favorite_team : " + uDTO.getFavorite_team());
+			log.info("uDTO.member_point : " + uDTO.getMember_point());
 			
 			session.setAttribute("member_id", uDTO.getMember_id());
 			session.setAttribute("member_name", uDTO.getMember_name());

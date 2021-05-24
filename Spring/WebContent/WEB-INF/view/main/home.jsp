@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-	String member_id = (String) request.getAttribute("member_id");
-String favorite_team = (String) request.getAttribute("favorite_team");
-String member_name = (String) request.getAttribute("member_name");
-String member_point = (String) request.getAttribute("member_point");
+	String member_id = (String) session.getAttribute("member_id");
+	String member_name = (String) session.getAttribute("member_name");
+	String favorite_team = (String) session.getAttribute("favorite_team");
+	String member_point = (String) session.getAttribute("member_point");
 %>
 
 
@@ -15,6 +15,7 @@ String member_point = (String) request.getAttribute("member_point");
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- 로딩 창  -->
 <script>
 	function loading_st() {
 	   layer_str = "<div id='loading_layer' style='display:block; position:absolute; text-align:center; width:100%;'><img src='../resource/images/loading-img.gif'/></div>"
@@ -27,6 +28,8 @@ String member_point = (String) request.getAttribute("member_point");
 	loading_st();
 	window.onload = loading_ed;
 </script>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script><!-- JQUERY 최신 버전-->
+<link rel="icon" href="../resource/images/icons/favicon.ico"/><!-- 사이트 이미지 위치를 못찾음 손 봐야됨 -->
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
 <link rel="stylesheet" href="../resource/fonts/icomoon/style.css">
@@ -64,28 +67,25 @@ String member_point = (String) request.getAttribute("member_point");
 			<div class="py-3">
 				<div class="container">
 					<div class="row align-items-center">
-						<div class="col-6 col-md-3">
-							<a href="#" class="text-secondary px-2 pl-0"> <span
-								id="member_name"> <%=member_name%>
-							</span> <span id="favorite_team"> <%=favorite_team%>
-							</span> <br> <span> <%=member_point%>
-							</span>
-							</a> <a href="#" class="text-secondary px-2"><span
-								class="icon-twitter"> </span> </a> <a href="#"
-								class="text-secondary px-2"> <span class="icon-linkedin">
-							</span>
-							</a>
+						<div class="col-6 col-md-3 text-center">
+							<div class="d-inline-block">
+								<a href="#" class="text-secondary px-2 pl-0">
+									<span id="favorite_team"> <%=favorite_team%> </span>
+								</a> 
+							</div>
 						</div>
 						<div class="col-6 col-md-9 text-right">
 							<div class="d-inline-block">
-								<a href="#" class="text-secondary p-2 d-flex align-items-center"><span
-									class="icon-envelope mr-3"></span> <span
-									class="d-none d-md-block">youremail@domain.com</span></a>
+								<a href="#" class="text-secondary p-2 d-flex align-items-center">
+									<span class="mr-3" ><i class="fas fa-coins"></i></span>
+								 	<span class="d-none d-md-block"><%=member_point%> Point</span>
+								</a>
 							</div>
 							<div class="d-inline-block">
-								<a href="#" class="text-secondary p-2 d-flex align-items-center"><span
-									class="icon-phone mr-0 mr-md-3"></span> <span
-									class="d-none d-md-block">+1 232 3532 321</span></a>
+								<a href="#" class="text-secondary p-2 d-flex align-items-center">
+									<span class="mr-3"><i class="fas fa-user"></i></span>
+									<span class="d-none d-md-block"><%=member_name%> </span>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -106,7 +106,7 @@ String member_point = (String) request.getAttribute("member_point");
 					</div>
 
 					<ul class="site-menu js-clone-nav d-none d-md-block">
-						<li class="has-children active"><a href="index.html">Home</a>
+						<li class="active"><a href="index.html">Home</a>
 							<!-- <ul class="dropdown arrow-top">
 								<li><a href="#">Menu One</a></li>
 								<li><a href="#">Menu Two</a></li>
@@ -119,14 +119,15 @@ String member_point = (String) request.getAttribute("member_point");
 									</ul></li>
 							</ul> -->
 						</li>
-						<li class="has-children"><a href="news.html">News</a>
+						<li><a href="news.html">News</a></li>
+						<li class="has-children"><a href="team.html">Teams</a>
 							<ul class="dropdown arrow-top">
-								<li><a href="#">Menu One</a></li>
-								<li><a href="#">Menu Two</a></li>
-								<li><a href="#">Menu Three</a></li>
-							</ul></li>
-						<li><a href="matches.html">Matches</a></li>
-						<li><a href="team.html">Team</a></li>
+								<li>1</li>
+								<li>1</li>
+								<li>1</li>
+								<li>1</li>
+							</ul>
+						</li>
 						<li><a href="about.html">About</a></li>
 						<li><a href="contact.html">Contact</a></li>
 						<li><a href="/Logout.do">LogOut</a></li>
@@ -136,8 +137,9 @@ String member_point = (String) request.getAttribute("member_point");
 		</header>
 
 
-
-		<div class="slide-one-item home-slider owl-carousel">
+		<!-- 슬라이드가 동작하지 않음  -->
+		<div class="slide-one-item home-slider owl-carousel" id="slide">
+			
 			<div class="site-blocks-cover overlay"
 				style="background-image: url(../resource/images/hero_bg_2.jpg);"
 				data-aos="fade" data-stellar-background-ratio="0.5">
@@ -154,9 +156,8 @@ String member_point = (String) request.getAttribute("member_point");
 					</div>
 				</div>
 			</div>
-
 			<div class="site-blocks-cover overlay"
-				style="background-image: url(../resource/images/hero_bg_4.jpg);"
+				style="background-image: url(../resource/images/hero_bg_2.jpg);"
 				data-aos="fade" data-stellar-background-ratio="0.5">
 				<div class="container">
 					<div class="row align-items-center justify-content-start">
@@ -171,9 +172,8 @@ String member_point = (String) request.getAttribute("member_point");
 					</div>
 				</div>
 			</div>
-
 			<div class="site-blocks-cover overlay"
-				style="background-image: url(../resource/images/hero_bg_3.jpg);"
+				style="background-image: url(../resource/images/hero_bg_2.jpg);"
 				data-aos="fade" data-stellar-background-ratio="0.5">
 				<div class="container">
 					<div class="row align-items-center justify-content-start">
@@ -188,6 +188,9 @@ String member_point = (String) request.getAttribute("member_point");
 					</div>
 				</div>
 			</div>
+			
+			
+			
 		</div>
 
 
@@ -1392,9 +1395,7 @@ String member_point = (String) request.getAttribute("member_point");
 		</div>
 	</div>
 
-
-
-
+	
 	<script src="../resource/js/jquery-3.3.1.min.js"></script>
 	<script src="../resource/js/jquery-migrate-3.0.1.min.js"></script>
 	<script src="../resource/js/jquery-ui.js"></script>
@@ -1525,7 +1526,26 @@ String member_point = (String) request.getAttribute("member_point");
 			}
 		}
 	</script>
-
+	
+	<!-- 뉴스 조회 -->
+	<script>
+	$(function(){
+		$.ajax({
+			url : "mainNews.do",
+			type : "post",
+			data : {"team" :  $("#favorite_team").val().trim()},
+			dataType : "json",
+			success : function(data) {
+				$.each(data, function(idx, val) {
+					console.log(idx + " " + val.ko_title);
+					$("#slide").append("<div class='site-blocks-cover overlay' style='background-image: url("+val.img +"' data-aos='fade' data-stellar-background-ratio='0.5'><div class='container'><div class='row align-items-center justify-content-start'><div class='col-md-6 text-center text-md-left' data-aos='fade-up' data-aos-delay='400'><h1 class='bg-text-line'>"+ val.ko_title +"</h1><p><a href='#' class='btn btn-primary btn-sm rounded-0 py-3 px-5'>Read More</a></p></div></div></div></div>");
+				});
+				$("#slide").addClass('slide-one-item home-slider owl-carousel');
+			}	
+		});
+	});
+	</script>
+	
 	<script src="../resource/js/main.js"></script>
 
 </body>

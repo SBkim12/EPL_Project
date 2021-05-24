@@ -70,8 +70,8 @@ public class NewsController {
 		return answer;
 	}
 	
-	//뉴스 업데이트(영국 23시에  동작 => 한국시간 7시에 동작)
-	@Scheduled(cron = "0 0 7 * * *")
+	//뉴스 업데이트(영국 0시 10분에  동작 => 한국시간 8시 10분에 동작)
+	@Scheduled(cron = "0 10 8 * * *")
 	public void news_update_schedule()throws Exception {
 		log.info(this.getClass().getName() + ".newsUpdate start!");
 
@@ -119,6 +119,23 @@ public class NewsController {
 		news = "_The_Guardian";
 
 		rList.addAll(newsService.getMainNews(team, news));
+		
+		//현재시즌 아닌팀을 불러 왔을 경우 현재시즌 1등팀 뉴스 가져오기
+		if(rList.size()<1) {
+			List<EPLDTO> mList = epldataService.getEPLteam();
+			//1등팀 가져오기
+			EPLDTO data = mList.get(0);
+			team = data.getName();
+			
+			//다시 뉴스 검색
+			news = "_Sky_Sports";
+			
+			rList = newsService.getMainNews(team, news);
+
+			news = "_The_Guardian";
+
+			rList.addAll(newsService.getMainNews(team, news));
+		}
 
 		log.info(this.getClass().getName() + ".mainNews End!");
 		return rList;
