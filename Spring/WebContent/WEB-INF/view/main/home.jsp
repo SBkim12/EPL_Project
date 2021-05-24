@@ -1,17 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.Map"%>
+<%@page import="poly.dto.EPLDTO"%>
 <%
 	String member_id = (String) session.getAttribute("member_id");
 	String member_name = (String) session.getAttribute("member_name");
 	String favorite_team = (String) session.getAttribute("favorite_team");
 	String member_point = (String) session.getAttribute("member_point");
+	List<Map<String, Object>> rList = (List<Map<String, Object>>) request.getAttribute("mainNews");
+	List<EPLDTO> mList = (List<EPLDTO>) request.getAttribute("teams");
 %>
 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Hompage</title>
+<title>Home</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,8 +34,9 @@
 	loading_st();
 	window.onload = loading_ed;
 </script>
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script><!-- JQUERY 최신 버전-->
-<link rel="icon" href="../resource/images/icons/favicon.ico"/><!-- 사이트 이미지 위치를 못찾음 손 봐야됨 -->
+<!-- JQUERY 최신 버전-->
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<link rel="icon" href="../resource/images/icons/favicon.ico"/>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
 <link rel="stylesheet" href="../resource/fonts/icomoon/style.css">
@@ -120,16 +127,19 @@
 							</ul> -->
 						</li>
 						<li><a href="news.html">News</a></li>
-						<li class="has-children"><a href="team.html">Teams</a>
+						<li class="has-children"><a href="/home.do">Teams</a>
 							<ul class="dropdown arrow-top">
-								<li>1</li>
-								<li>1</li>
-								<li>1</li>
-								<li>1</li>
+								<%
+								Iterator<EPLDTO> teams = mList.iterator();
+								while(teams.hasNext()){
+									EPLDTO team = teams.next();
+								%>
+								<li><a href="#"><%=team.getTeam_name()%></a></li>
+								<%}%>
 							</ul>
 						</li>
-						<li><a href="about.html">About</a></li>
 						<li><a href="contact.html">Contact</a></li>
+						<li><a href="about.html">myInfo</a></li>
 						<li><a href="/Logout.do">LogOut</a></li>
 					</ul>
 				</div>
@@ -137,60 +147,27 @@
 		</header>
 
 
-		<!-- 슬라이드가 동작하지 않음  -->
-		<div class="slide-one-item home-slider owl-carousel" id="slide">
-			
-			<div class="site-blocks-cover overlay"
-				style="background-image: url(../resource/images/hero_bg_2.jpg);"
-				data-aos="fade" data-stellar-background-ratio="0.5">
-				<div class="container">
-					<div class="row align-items-center justify-content-start">
-						<div class="col-md-6 text-center text-md-left" data-aos="fade-up"
-							data-aos-delay="400">
-							<h1 class="bg-text-line">Russia's World Cup Championship</h1>
+		<div class="slide-one-item home-slider owl-carousel owl-loaded owl-drag" id="slide">
+			<%
+			Iterator<Map<String, Object>> it = rList.iterator();
+			while (it.hasNext()) {
+				Map<String, Object> news = it.next(); %>
+			<div class='site-blocks-cover overlay' style="background-image: url(<%=news.get("img")%>);" data-aos='fade' data-stellar-background-ratio='0.5'>
+				<div class='container'>
+					<div class='row align-items-center justify-content-start'>
+						<div class='col-md-6 text-center text-md-left' data-aos='fade-up'
+							data-aos-delay='400'>
+							<h1 class='bg-text-line'><%=news.get("ko_title")%></h1>
 							<p>
-								<a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read
+								<a href='#' class='btn btn-primary btn-sm rounded-0 py-3 px-5'>Read
 									More</a>
 							</p>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="site-blocks-cover overlay"
-				style="background-image: url(../resource/images/hero_bg_2.jpg);"
-				data-aos="fade" data-stellar-background-ratio="0.5">
-				<div class="container">
-					<div class="row align-items-center justify-content-start">
-						<div class="col-md-6 text-center text-md-left" data-aos="fade-up"
-							data-aos-delay="400">
-							<h1 class="bg-text-line">Russia's World Cup Championship</h1>
-							<p>
-								<a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read
-									More</a>
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="site-blocks-cover overlay"
-				style="background-image: url(../resource/images/hero_bg_2.jpg);"
-				data-aos="fade" data-stellar-background-ratio="0.5">
-				<div class="container">
-					<div class="row align-items-center justify-content-start">
-						<div class="col-md-6 text-center text-md-left" data-aos="fade-up"
-							data-aos-delay="400">
-							<h1 class="bg-text-line">Russia's World Cup Championship</h1>
-							<p>
-								<a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read
-									More</a>
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			
-			
+
+			<%}%>
 		</div>
 
 
@@ -198,48 +175,29 @@
 			data-aos-delay="100">
 			<div class="container">
 				<div class="row">
+					<%
+					it = rList.iterator();
+					int i=0;
+					while (it.hasNext() && i<3) {
+						Map<String, Object> news = it.next();
+						List<String> ko_contents = (List<String>)news.get("ko_contents");
+					%>
 					<div class="col-md-6 col-lg-4">
 						<div class="p-3 p-md-5 feature-block-1 mb-5 mb-lg-0 bg"
-							style="background-image: url('../resource/images/img_1.jpg');">
-							<div class="text">
-								<h2 class="h5 text-white">Russia's World Cup Championship</h2>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-									Eos repellat autem illum nostrum sit distinctio!</p>
-								<p class="mb-0">
+							style="background-image: url('<%=news.get("img")%>');">
+							<div class="text" ><%=news.get("ko_title")%></h2>
+								<p class="mb-0" >
 									<a href="#" class="btn btn-primary btn-sm px-4 py-2 rounded-0">Read
 										More</a>
 								</p>
 							</div>
 						</div>
 					</div>
-					<div class="col-md-6 col-lg-4">
-						<div class="p-3 p-md-5 feature-block-1 mb-5 mb-lg-0 bg"
-							style="background-image: url('../resource/images/img_2.jpg');">
-							<div class="text">
-								<h2 class="h5 text-white">Russia's World Cup Championship</h2>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-									Eos repellat autem illum nostrum sit distinctio!</p>
-								<p class="mb-0">
-									<a href="#" class="btn btn-primary btn-sm px-4 py-2 rounded-0">Read
-										More</a>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-4">
-						<div class="p-3 p-md-5 feature-block-1 mb-5 mb-lg-0 bg"
-							style="background-image: url('../resource/images/img_3.jpg');">
-							<div class="text">
-								<h2 class="h5 text-white">Russia's World Cup Championship</h2>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-									Eos repellat autem illum nostrum sit distinctio!</p>
-								<p class="mb-0">
-									<a href="#" class="btn btn-primary btn-sm px-4 py-2 rounded-0">Read
-										More</a>
-								</p>
-							</div>
-						</div>
-					</div>
+					<%
+					i++;
+					}
+					%>
+
 				</div>
 			</div>
 		</div>
@@ -273,7 +231,6 @@
 							</div>
 						</div>
 					</div>
-
 
 				</div>
 
@@ -1527,24 +1484,70 @@
 		}
 	</script>
 	
-	<!-- 뉴스 조회 -->
+<!-- 	<script>
+      let resHTML = "";
+      resHTML += '<div class="site-blocks-cover overlay" style="background-image: url(../resource/images/hero_bg_3.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">';
+      resHTML += '<div class="container">';
+      resHTML += '<div class="row align-items-center justify-content-start">';
+      resHTML += '<div class="col-md-6 text-center text-md-left" data-aos="fade-up" data-aos-delay="400">';
+      resHTML += '<h1 class="bg-text-line">Russia\'s World Cup Championship</h1>';
+      resHTML += '<p><a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read More</a></p>';
+      resHTML += '</div>';
+      resHTML += '</div>';
+      resHTML += '</div>';
+      resHTML += '</div>';
+	
+      
+      
+      resHTML += '<div class="site-blocks-cover overlay" style="background-image: url(../resource/images/hero_bg_3.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">';
+      resHTML += '<div class="container">';
+      resHTML += '<div class="row align-items-center justify-content-start">';
+      resHTML += '<div class="col-md-6 text-center text-md-left" data-aos="fade-up" data-aos-delay="400">';
+      resHTML += '<h1 class="bg-text-line">Russia\'s World Cup Championship</h1>';
+      resHTML += '<p><a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read More</a></p>';
+      resHTML += '</div>';
+      resHTML += '</div>';
+      resHTML += '</div>';
+      resHTML += '</div>';
+      
+      resHTML += '<div class="site-blocks-cover overlay" style="background-image: url(../resource/images/hero_bg_3.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">';
+      resHTML += '<div class="container">';
+      resHTML += '<div class="row align-items-center justify-content-start">';
+      resHTML += '<div class="col-md-6 text-center text-md-left" data-aos="fade-up" data-aos-delay="400">';
+      resHTML += '<h1 class="bg-text-line">Russia\'s World Cup Championship</h1>';
+      resHTML += '<p><a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read More</a></p>';
+      resHTML += '</div>';
+      resHTML += '</div>';
+      resHTML += '</div>';
+      resHTML += '</div>';
+
+
+      $(".home-slider").append(resHTML);
+    </script> -->
+    
+ <%--    <!-- 뉴스 조회 -->
 	<script>
 	$(function(){
 		$.ajax({
 			url : "mainNews.do",
 			type : "post",
-			data : {"team" :  $("#favorite_team").val().trim()},
+			data : {"team" :  "<%=favorite_team%>"},
 			dataType : "json",
 			success : function(data) {
+				var resHTML = "";
 				$.each(data, function(idx, val) {
-					console.log(idx + " " + val.ko_title);
-					$("#slide").append("<div class='site-blocks-cover overlay' style='background-image: url("+val.img +"' data-aos='fade' data-stellar-background-ratio='0.5'><div class='container'><div class='row align-items-center justify-content-start'><div class='col-md-6 text-center text-md-left' data-aos='fade-up' data-aos-delay='400'><h1 class='bg-text-line'>"+ val.ko_title +"</h1><p><a href='#' class='btn btn-primary btn-sm rounded-0 py-3 px-5'>Read More</a></p></div></div></div></div>");
+					resHTML += "<div class='site-blocks-cover overlay' style='background-image: url("+val.img +"' data-aos='fade' data-stellar-background-ratio='0.5'>"
+					resHTML += "<div class='container'><div class='row align-items-center justify-content-start'>";
+					resHTML +="<div class='col-md-6 text-center text-md-left' data-aos='fade-up' data-aos-delay='400'>";
+					resHTML +="<h1 class='bg-text-line'>"+ val.ko_title +"</h1>" ;
+					resHTML +="<p><a href='#' class='btn btn-primary btn-sm rounded-0 py-3 px-5'>Read More</a></p>";
+					resHTML +="</div></div></div></div>";
 				});
-				$("#slide").addClass('slide-one-item home-slider owl-carousel');
+				$(".home-slider").append(resHTML);
 			}	
 		});
 	});
-	</script>
+	</script> --%>
 	
 	<script src="../resource/js/main.js"></script>
 

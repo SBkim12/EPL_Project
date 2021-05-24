@@ -11,7 +11,7 @@ public interface INewsService {
 
 	int theGuardianNewsUpdate()throws Exception;
 
-	List<Map<String, Object>> getMainNews(String team, String news)throws Exception;
+	List<Map<String, Object>> getMainNews(String team, String news, int no)throws Exception;
 
 
 }

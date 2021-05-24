@@ -108,17 +108,20 @@ public class NewsController {
 		log.info(this.getClass().getName() + ".mainNews start!");
 
 		//팀 값을 넘겨주는 경우 그 팀에 관한 뉴스 표시, 넘겨주지 않는 경우 유저 정보의 최애팀 뉴스 표시
-		//String team = request.getParameter("team")==null ? session.getAttribute("favorite_team").toString() : request.getParameter("team");
-
-		String team = "Aston Villa";
-
+		String team = request.getParameter("team")==null ? session.getAttribute("favorite_team").toString() : request.getParameter("team");
+		
+		log.info("team :: " +team);
+		
+		//각 뉴스사에서 가져올 뉴스 개수
+		int no = 3;
+		
 		String news = "_Sky_Sports";
 
-		List<Map<String, Object>> rList = newsService.getMainNews(team, news);
+		List<Map<String, Object>> rList = newsService.getMainNews(team, news, no);
 
 		news = "_The_Guardian";
 
-		rList.addAll(newsService.getMainNews(team, news));
+		rList.addAll(newsService.getMainNews(team, news, no));
 		
 		//현재시즌 아닌팀을 불러 왔을 경우 현재시즌 1등팀 뉴스 가져오기
 		if(rList.size()<1) {
@@ -130,11 +133,11 @@ public class NewsController {
 			//다시 뉴스 검색
 			news = "_Sky_Sports";
 			
-			rList = newsService.getMainNews(team, news);
+			rList = newsService.getMainNews(team, news, no);
 
 			news = "_The_Guardian";
 
-			rList.addAll(newsService.getMainNews(team, news));
+			rList.addAll(newsService.getMainNews(team, news, no));
 		}
 
 		log.info(this.getClass().getName() + ".mainNews End!");

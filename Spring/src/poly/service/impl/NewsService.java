@@ -1,6 +1,5 @@
 package poly.service.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -218,7 +217,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 
 		log.info("SkySports 뉴스 수집 완료!! 뉴스 개수 :: " + newsList.size());
 
-		// 컬렉션 명 설정
+		// 컬렉션 명 설정	
 		String colNm = dateUtil.today_year_month + "_Sky_Sports";
 
 		log.info("몽고DB 뉴스 입력");
@@ -425,13 +424,12 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getMainNews(String team, String news) throws Exception {
+	public List<Map<String, Object>> getMainNews(String team, String news, int no) throws Exception {
 		log.info(this.getClass().getName() + ".getMainNews start!");
 		
 		//collection 이름
 		String colNm = dateUtil.today_year_month+news;
 		//뉴스개수
-		int no = 3;
 		
 		List<Map<String, Object>> rList = newsMongoMapper.getNews(colNm, no, team);
 		

@@ -61,6 +61,9 @@ public class UserController {
 		String url = "";
 		if (uDTO == null) {
 			msg = "아이디 비밀번호를 확인하세요";
+			
+			url = "/index.do";
+			model.addAttribute("url", url);
 		} else {
 			
 			log.info("uDTO.Member_id : " + uDTO.getMember_id());
@@ -73,13 +76,13 @@ public class UserController {
 			session.setAttribute("favorite_team", uDTO.getFavorite_team());
 			session.setAttribute("member_point",uDTO.getMember_point());
 			
-			return "/main/home";
+			url = "/home.do";
+			model.addAttribute("url", url);
+			
+			return "/noAlert_redirect";
 		}
-
-		url = "/index.do";
 		
 		model.addAttribute("msg", msg);
-		model.addAttribute("url", url);
 
 		log.info("The/TheLoginProc end");
 

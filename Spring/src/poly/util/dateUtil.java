@@ -9,9 +9,9 @@ public class dateUtil {
 	
 	private static Calendar cal = Calendar.getInstance();
 	
-	//현재시간
+	//오늘
 	private static Date now = new Date(cal.getTimeInMillis());
-	//어제시간
+	//어제
 	private static Date date = new Date(now.getTime()+(1000*60*60*-24));
 	
 

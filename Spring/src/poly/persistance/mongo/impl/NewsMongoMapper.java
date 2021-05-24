@@ -1,5 +1,6 @@
 package poly.persistance.mongo.impl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -114,18 +115,23 @@ public class NewsMongoMapper extends AbstractMongoDBComon implements INewsMongoM
 				if (doc == null) {
 					doc = new Document();
 				}
-
+				
+				List<String> list = new ArrayList<>();
+				list.add("abc");
+				
 				String url = CmmUtil.nvl(doc.getString("url"));
 				String ko_title = CmmUtil.nvl(doc.getString("ko_title"));
 				String date = CmmUtil.nvl(doc.getString("date"));
 				String img = CmmUtil.nvl(doc.getString("img"));
-             
+				List<String> ko_contents = (List<String>)doc.get("ko_contents");
+				
 				Map<String, Object> rMap = new LinkedHashMap<String, Object>();
 				
 				rMap.put("url", url);
 				rMap.put("ko_title", ko_title);
 				rMap.put("date", date);
 				rMap.put("img", img);
+				rMap.put("ko_contents", ko_contents);
 				
 				rList.add(rMap);
 				
