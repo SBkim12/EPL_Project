@@ -135,4 +135,14 @@
 		RECENT_RANK ASC
 	</select>
 	
+	<!-- 필요로하는 팀 로고 가져오기 -->
+	<select id="getTeamLogo" parameterType="String" resultType="EPLDTO">
+	SELECT
+		LOGO
+	FROM
+		EPL_TEAMS
+	WHERE
+		TEAM_NAME = #{favorite_team}
+	</select>
+	
 </mapper>

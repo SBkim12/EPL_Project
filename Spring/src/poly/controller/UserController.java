@@ -70,11 +70,13 @@ public class UserController {
 			log.info("uDTO.Member_name : " + uDTO.getMember_name());
 			log.info("uDTO.favorite_team : " + uDTO.getFavorite_team());
 			log.info("uDTO.member_point : " + uDTO.getMember_point());
+			log.info("uDTO.getTeam_logo : " + uDTO.getTeam_logo());
 			
 			session.setAttribute("member_id", uDTO.getMember_id());
 			session.setAttribute("member_name", uDTO.getMember_name());
 			session.setAttribute("favorite_team", uDTO.getFavorite_team());
 			session.setAttribute("member_point",uDTO.getMember_point());
+			session.setAttribute("team_logo",uDTO.getTeam_logo());
 			
 			url = "/home.do";
 			model.addAttribute("url", url);
@@ -144,12 +146,17 @@ public class UserController {
 		String member_pwd = nvl(request.getParameter("pwd"));
 		String member_name = request.getParameter("name");
 		String favorite_team = request.getParameter("favorite_team");
-
+		
+		EPLDTO team = epldataService.getTeamLogo(favorite_team);
+		
+		String team_logo = team.getLogo();
+		
 		log.info("user_id : " + member_id);
 		log.info("user_pwd : " + member_pwd);
 		log.info("user_name : " + member_name);
 		log.info("favorite_team : " + favorite_team);
-
+		log.info("team_logo : " + team_logo);
+		
 		String HashEnc = EncryptUtil.enHashSHA256(member_pwd);
 
 		MemberDTO tDTO = new MemberDTO();
@@ -158,6 +165,7 @@ public class UserController {
 		tDTO.setMember_pwd(HashEnc);
 		tDTO.setMember_name(member_name);
 		tDTO.setFavorite_team(favorite_team);
+		tDTO.setTeam_logo(team_logo);
 		
 		log.info("tDTO.set end");
 		
@@ -173,7 +181,11 @@ public class UserController {
 
 		if (res > 0) {
 			msg = "회원 가입 완료";
-			session.setAttribute("member_id", tDTO.getMember_id());
+			session.setAttribute("member_id", member_id);
+			session.setAttribute("member_name", member_name);
+			session.setAttribute("favorite_team", favorite_team);
+			session.setAttribute("team_logo", team_logo);
+			session.setAttribute("member_point", 0);
 		} else {
 			msg = "회원 가입 실패";
 		}

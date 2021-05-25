@@ -7,9 +7,10 @@ import java.util.Locale;
 
 public class dateUtil {
 	
-	private static Calendar cal = Calendar.getInstance();
 	
-	//오늘
+	private static Calendar cal = Calendar.getInstance();
+
+	// 오늘
 	private static Date now = new Date(cal.getTimeInMillis());
 	//어제
 	private static Date date = new Date(now.getTime()+(1000*60*60*-24));
@@ -21,12 +22,15 @@ public class dateUtil {
 	public static SimpleDateFormat en_month = new SimpleDateFormat("MMMM", Locale.UK);
 	
 	private static SimpleDateFormat year_month = new SimpleDateFormat("yyyy_MM");
+	private static SimpleDateFormat month_day = new SimpleDateFormat("/MMMM/dd/", Locale.UK);
 	
 	//활용
 	public static String today = SDF.format(date);
 	public static String today_day = day.format(date);
 	public static String today_month = en_month.format(date);
 	public static String today_year_month = year_month.format(date);
+	//the guardians 날짜 체크
+	public static String today_month_day = month_day.format(date).toLowerCase();
 	
 	// 저번 달
 	public static String month_ago() {

@@ -18,4 +18,6 @@ public interface IEPLdataMapper {
 
 	List<EPLDTO> getEPLTeam();
 
+	EPLDTO getTeamLogo(String favorite_team);
+
 }

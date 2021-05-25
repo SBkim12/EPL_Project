@@ -293,24 +293,20 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 						continue;
 					}
 					distinct.add(newsUrl);
-
-					// 뉴스기사 접속
-					doc = Jsoup.connect(newsUrl).timeout(30000).get();
-
-					// 날짜 크롤링
-					String news_date = doc.select("div.css-dcy86h > label").text().trim();
-					String day = news_date.trim().split(" ")[1];
-					String month = news_date.trim().split(" ")[2];
-					if (news_date.equals("")) {
-						log.info("날짜 없어서 패스");
-						continue;
-					} else if (day.equals(dateUtil.today_day) && month.equals(dateUtil.today_month)) {
+					
+					// 주소를 통한 날짜 확인
+					String news_date = "";
+					String month_day = dateUtil.today_month_day; // month_day :: '/may/19/'의 형태
+					if(newsUrl.contains(month_day)) {
 						news_date = dateUtil.today;
-					} else {
-						log.info("오늘 기사 아님 => 뉴스 날짜  :: " + news_date);
+					}else {
+						log.info("오늘 기사 아님(위 url 확인)");
 						break;
 					}
 					log.info("news_date :: " + news_date);
+					
+					// 뉴스기사 접속
+					doc = Jsoup.connect(newsUrl).timeout(30000).get();
 
 					// 뉴스 제목 크롤링
 					String news_title = doc.select("h1").text().trim();
@@ -351,7 +347,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					log.info("news_img :: " + img);
 
 					List<String> contents = new ArrayList<>();
-					Elements element = doc.select("p.css-19dnnol, div.article-body-viewer-selector > h2");
+					Elements element = doc.select("div.article-body-viewer-selector > p, div.article-body-viewer-selector > h2");
 					if (element.size() < 1) {
 						log.info("뉴스 본문 없음 패스");
 						continue;

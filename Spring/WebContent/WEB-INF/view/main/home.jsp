@@ -5,14 +5,23 @@
 <%@page import="java.util.Map"%>
 <%@page import="poly.dto.EPLDTO"%>
 <%
+	//모든 페이지에 필수로 있어야하는 것들
 	String member_id = (String) session.getAttribute("member_id");
 	String member_name = (String) session.getAttribute("member_name");
 	String favorite_team = (String) session.getAttribute("favorite_team");
 	String member_point = (String) session.getAttribute("member_point");
+	String team_logo = (String) session.getAttribute("team_logo");
+	//메뉴에 있는 팀 리스트 및 순위
+	List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
+	
+	if(team_logo==null){
+		team_logo="../resource/images/EPL_Patch";
+	}
+	
+	//홈에만 있으면 되는것들
 	List<Map<String, Object>> rList = (List<Map<String, Object>>) request.getAttribute("mainNews");
-	List<EPLDTO> mList = (List<EPLDTO>) request.getAttribute("teams");
+	
 %>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,8 +43,6 @@
 	loading_st();
 	window.onload = loading_ed;
 </script>
-<!-- JQUERY 최신 버전-->
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <link rel="icon" href="../resource/images/icons/favicon.ico"/>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
@@ -74,7 +81,7 @@
 			<div class="py-3">
 				<div class="container">
 					<div class="row align-items-center">
-						<div class="col-6 col-md-3 text-center">
+						<div class="col-6 col-md-3 text-left">
 							<div class="d-inline-block">
 								<a href="#" class="text-secondary px-2 pl-0">
 									<span id="favorite_team"> <%=favorite_team%> </span>
@@ -103,7 +110,7 @@
 				role="navigation">
 				<div class="container position-relative">
 					<div class="site-logo">
-						<a href="index.html"><img src="../resource/images/EPL_Patch.png"
+						<a href="index.html"><img src="<%=team_logo%>"
 							alt="" style="height:100px"></a>
 					</div>
 
@@ -1363,6 +1370,7 @@
 	<script src="../resource/js/jquery.countdown.min.js"></script>
 	<script src="../resource/js/jquery.magnific-popup.min.js"></script>
 	<script src="../resource/js/aos.js"></script>
+	<script src="../resource/js/sweetalert.min.js"></script>
 	<!-- 웹소켓 채팅 -->
 	<script>
 	var element = $('.floating-chat');
@@ -1484,47 +1492,6 @@
 		}
 	</script>
 	
-<!-- 	<script>
-      let resHTML = "";
-      resHTML += '<div class="site-blocks-cover overlay" style="background-image: url(../resource/images/hero_bg_3.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">';
-      resHTML += '<div class="container">';
-      resHTML += '<div class="row align-items-center justify-content-start">';
-      resHTML += '<div class="col-md-6 text-center text-md-left" data-aos="fade-up" data-aos-delay="400">';
-      resHTML += '<h1 class="bg-text-line">Russia\'s World Cup Championship</h1>';
-      resHTML += '<p><a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read More</a></p>';
-      resHTML += '</div>';
-      resHTML += '</div>';
-      resHTML += '</div>';
-      resHTML += '</div>';
-	
-      
-      
-      resHTML += '<div class="site-blocks-cover overlay" style="background-image: url(../resource/images/hero_bg_3.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">';
-      resHTML += '<div class="container">';
-      resHTML += '<div class="row align-items-center justify-content-start">';
-      resHTML += '<div class="col-md-6 text-center text-md-left" data-aos="fade-up" data-aos-delay="400">';
-      resHTML += '<h1 class="bg-text-line">Russia\'s World Cup Championship</h1>';
-      resHTML += '<p><a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read More</a></p>';
-      resHTML += '</div>';
-      resHTML += '</div>';
-      resHTML += '</div>';
-      resHTML += '</div>';
-      
-      resHTML += '<div class="site-blocks-cover overlay" style="background-image: url(../resource/images/hero_bg_3.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">';
-      resHTML += '<div class="container">';
-      resHTML += '<div class="row align-items-center justify-content-start">';
-      resHTML += '<div class="col-md-6 text-center text-md-left" data-aos="fade-up" data-aos-delay="400">';
-      resHTML += '<h1 class="bg-text-line">Russia\'s World Cup Championship</h1>';
-      resHTML += '<p><a href="#" class="btn btn-primary btn-sm rounded-0 py-3 px-5">Read More</a></p>';
-      resHTML += '</div>';
-      resHTML += '</div>';
-      resHTML += '</div>';
-      resHTML += '</div>';
-
-
-      $(".home-slider").append(resHTML);
-    </script> -->
-    
  <%--    <!-- 뉴스 조회 -->
 	<script>
 	$(function(){

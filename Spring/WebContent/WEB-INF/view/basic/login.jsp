@@ -119,7 +119,6 @@
 	</div>
 
 	<div id="myModal" class="modal">
-
 		<!-- Modal content -->
 		<div class="modal-content">
 			<div class="modal-header">
@@ -159,12 +158,42 @@
 			$('#myModal').hide();
 		};
 		
+		//mail 알림창
+		(function mail(){
+			swal({
+				  text: 'Get new password\nPlease insert Email Address',
+				  content: "input",
+				  button: {
+				    text: "Email",
+				    closeModal: false,
+				  },
+				}).then(Email => {
+					if(!Email)throw null;
+				
+					return send(Email);
+				}).then(result => {
+					if(result==0){
+						swal("Fail", "등록되지 않은 Email입니다.", "warning");
+					}else if(result==1){
+						swal("Success", "Please check your Email", "success");
+					}else if(result==2){
+						swal("Fail", "메일 발송을 실패했습니다.", "warning");
+					}else{
+						swal("Fail", "비밀번호 변경을 실패했습니다.", "warning");
+					}
+				})
+				
+		})
+		
 		//임시 비밀번호 전송 -- 알림창 수정 필요
-		function send(){
-			var email = $('#target_mail').val().trim();
+		function send(Email){
+			/* var email = $('#target_mail').val().trim(); */
+			var email = Email;
 			if(email.match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
 				return alert("올바른 이메일을 입력해주세요");
 			}
+			
+			
 			
 			$.ajax({
 				url : "sendNewPwdProc.do",
@@ -184,8 +213,10 @@
 				}}); // ajax 끝
 
 		}
+		
 	</script>
-
+	<!--  알림 javascript -->
+	<script src="../resource/js/sweetalert.min.js"></script>
 	<!--===============================================================================================-->
 	<script src="../resource_login/vendor/jquery/jquery-3.2.1.min.js"></script>
 	<!--===============================================================================================-->

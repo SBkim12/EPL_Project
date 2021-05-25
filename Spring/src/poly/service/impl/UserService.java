@@ -31,7 +31,7 @@ public class UserService implements IUserService{
 
 	@Override
 	public MemberDTO reLoginInfo(MemberDTO uDTO) {
-		// TODO Auto-generated method stub
+		
 		return userMapper.reLoginInfo(uDTO);
 	}
 

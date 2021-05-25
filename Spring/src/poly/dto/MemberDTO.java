@@ -7,6 +7,7 @@ public class MemberDTO {
 	private String member_pwd;
 	private String member_id; 
 	private String favorite_team;
+	private String team_logo;
 	private String member_name ;
 	private String member_point;
 	
@@ -40,6 +41,12 @@ public class MemberDTO {
 	}
 	public void setMember_point(String member_point) {
 		this.member_point = member_point;
+	}
+	public String getTeam_logo() {
+		return team_logo;
+	}
+	public void setTeam_logo(String team_logo) {
+		this.team_logo = team_logo;
 	}
 	
 	

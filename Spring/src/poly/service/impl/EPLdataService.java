@@ -284,11 +284,23 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 	//EPL1부리그에 참여 중인 20팀 목록 불러오기
 	@Override
 	public List<EPLDTO> getEPLteam() throws Exception {
-		log.info(this.getClass().getName() + ".PresentEPLteam start");
+		log.info(this.getClass().getName() + ".getEPLteam start");
 		
 		//현재시즌 EPL팀 정보 가져오기
 		List<EPLDTO> rList = epldataMapper.getEPLTeam();
 
 		return rList;
 	}
+
+	@Override
+	public EPLDTO getTeamLogo(String favorite_team) throws Exception {
+		log.info(this.getClass().getName() + ".getTeamLogo start");
+		
+		//favorite_Team의 로고 가져오기
+		EPLDTO EPL = epldataMapper.getTeamLogo(favorite_team);
+		
+		log.info(this.getClass().getName() + ".getTeamLogo end!");
+		return EPL;
+	}
+
 }

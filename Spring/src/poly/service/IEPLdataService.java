@@ -14,4 +14,6 @@ public interface IEPLdataService {
 
 	List<EPLDTO> getEPLteam()throws Exception;
 
+	EPLDTO getTeamLogo(String favorite_team)throws Exception;
+
 }
