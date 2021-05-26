@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,5 +91,22 @@ public class DataUpdateController {
 		
 		log.info(this.getClass().getName() + ".seasonDateUpdate end!");
 		return answer;
+	}
+	
+	//하루에 한번씩 업데이트(축구 경기가 늦으면 5시에 끝나기때문에 6시에 동작)
+	@Scheduled(cron = "0 0 6 * * *")
+	public void seasonDataUpdate() throws Exception {
+		log.info(this.getClass().getName() + ".seasonDataUpdate start!");
+
+		String key = SportsDataUtil.APIKey;
+		String EPL = SportsDataUtil.EPL;
+
+		String url = "https://app.sportdataapi.com/api/v1/soccer/seasons?apikey=" + key + "&league_id=" + EPL;
+
+		List<EPLDTO> rList = new ArrayList<EPLDTO>();
+
+		rList = epldataService.updateSeasonRank(url);
+
+		log.info(this.getClass().getName() + ".seasonDataUpdate end!");
 	}
 }

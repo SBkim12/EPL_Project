@@ -14,6 +14,9 @@
 	//메뉴에 있는 팀 리스트 및 순위
 	List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 	
+	EPLDTO find = mList.get(0);
+	String season = find.getSeason();
+	
 	if(team_logo==null){
 		team_logo="../resource/images/EPL_Patch";
 	}
@@ -43,7 +46,117 @@
 	loading_st();
 	window.onload = loading_ed;
 </script>
-<link rel="icon" href="../resource/images/icons/favicon.ico"/>
+<style>
+.hidden {
+	display: none;
+}
+
+.table {
+	z-index: 1;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.table-row-head {
+	width: 100%;
+	height: 10vw;
+	display: flex;
+	border-bottom: 1px solid #ccc;
+}
+
+.table-row {
+	width: 100%;
+	height: 10vw;
+	display: flex;
+	border-bottom: 1px solid #ccc;
+	transition: all 0.1s linear;
+	cursor: pointer;
+}
+
+.table-row:hover {
+	transform: scale(1.05);
+}
+
+.table-header {
+	font-weight: bold;
+}
+
+.table-row-column {
+	width: 10%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.table-row-column-team {
+	width: 20%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.table-row-column-team-head {
+	width: 20%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.champions {
+	background: radial-gradient(farthest-side at 10% 50%, dodgerblue, transparent)
+}
+
+.europa {
+	background: radial-gradient(farthest-side at 10% 50%, lightgreen, transparent)
+}
+
+.relegation {
+	background: radial-gradient(farthest-side at 10% 50%, lightcoral, transparent)
+}
+
+.center_align {
+	align-items: center;
+	justify-content: center;
+}
+
+
+.table_icon {
+	width: 20px;
+}
+
+@media ( max-width : 1200px) {
+	.remove1 {
+		display: none;
+	}
+	.table-row-column-team {
+		width: 11%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.table-row-column {
+		width: 11%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.table-row-column-team-head {
+		width: 11%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+</style>
+<link rel="icon" type="image/png" href="../resource/images/icons/favicon.ico"/>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
 <link rel="stylesheet" href="../resource/fonts/icomoon/style.css">
@@ -212,978 +325,94 @@
 		<div class="site-blocks-vs site-section bg-light">
 			<div class="container">
 
-				<div
-					class="border mb-3 rounded d-block d-lg-flex align-items-center p-3 next-match">
-
-					<div
-						class="mr-auto order-md-1 w-60 text-center text-lg-left mb-3 mb-lg-0">
-						Next match
-						<div id="date-countdown"></div>
-					</div>
-
-					<div class="ml-auto pr-4 order-md-2">
-						<div class="h5 text-black text-uppercase text-center text-lg-left">
-							<div class="d-block d-md-inline-block mb-3 mb-lg-0">
-								<img src="../resource/images/img_1_sq.jpg" alt="Image"
-									class="mr-3 image"><span
-									class="d-block d-md-inline-block ml-0 ml-md-3 ml-lg-0">Sea
-									Hawlks </span>
-							</div>
-							<span
-								class="text-muted mx-3 text-normal mb-3 mb-lg-0 d-block d-md-inline ">vs</span>
-							<div class="d-block d-md-inline-block">
-								<img src="../resource/images/img_3_sq.jpg" alt="Image"
-									class="mr-3 image"><span
-									class="d-block d-md-inline-block ml-0 ml-md-3 ml-lg-0">Patriots</span>
-							</div>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="bg-image overlay-success rounded mb-5"
-					style="background-image: url('../resource/images/hero_bg_1.jpg');"
-					data-stellar-background-ratio="0.5">
-
-					<div class="row align-items-center">
-						<div class="col-md-12 col-lg-4 mb-4 mb-lg-0">
-
-							<div class="text-center text-lg-left">
-								<div class="d-block d-lg-flex align-items-center">
-									<div class="image mx-auto mb-3 mb-lg-0 mr-lg-3">
-										<img src="../resource/images/img_1_sq.jpg" alt="Image"
-											class="img-fluid">
-									</div>
-									<div class="text">
-										<h3 class="h5 mb-0 text-black">Sea Hawks</h3>
-										<span class="text-uppercase small country text-black">Brazil</span>
-									</div>
-								</div>
-							</div>
-
-						</div>
-						<div class="col-md-12 col-lg-4 text-center mb-4 mb-lg-0">
-							<div class="d-inline-block">
-								<p class="mb-2">
-									<small class="text-uppercase text-black font-weight-bold">Premier
-										League &mdash; Round 10</small>
-								</p>
-								<div
-									class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
-									<span class="h3">3:2</span>
-								</div>
-								<p class="mb-0">
-									<small class="text-uppercase text-black font-weight-bold">10
-										September / 7:30 AM</small>
-								</p>
-							</div>
-						</div>
-
-						<div class="col-md-12 col-lg-4 text-center text-lg-right">
-							<div class="">
-								<div class="d-block d-lg-flex align-items-center">
-									<div class="image mx-auto ml-lg-3 mb-3 mb-lg-0 order-2">
-										<img src="../resource/images/img_4_sq.jpg" alt="Image"
-											class="img-fluid">
-									</div>
-									<div class="text order-1">
-										<h3 class="h5 mb-0 text-black">Steelers</h3>
-										<span class="text-uppercase small country text-black">London</span>
-									</div>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-12">
-
-						<h2 class="h6 text-uppercase text-black font-weight-bold mb-3">Latest
-							Matches</h2>
-						<div class="site-block-tab">
-							<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-								<li class="nav-item"><a class="nav-link active"
-									id="pills-home-tab" data-toggle="pill" href="#pills-home"
-									role="tab" aria-controls="pills-home" aria-selected="true">Match
-										1</a></li>
-								<li class="nav-item"><a class="nav-link"
-									id="pills-profile-tab" data-toggle="pill" href="#pills-profile"
-									role="tab" aria-controls="pills-profile" aria-selected="false">Match
-										2</a></li>
-								<li class="nav-item"><a class="nav-link"
-									id="pills-contact-tab" data-toggle="pill" href="#pills-contact"
-									role="tab" aria-controls="pills-contact" aria-selected="false">Match
-										3</a></li>
-							</ul>
-							<div class="tab-content" id="pills-tabContent">
-								<div class="tab-pane fade show active" id="pills-home"
-									role="tabpanel" aria-labelledby="pills-home-tab">
-
-									<div class="row align-items-center">
-										<div class="col-md-12">
-
-
-											<div
-												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
-												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
-
-													<div class="text-center text-lg-left">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
-																<img src="../resource/images/img_1_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text">
-																<h3 class="h5 mb-0 text-black">Packers</h3>
-																<span class="text-uppercase small country">Brazil</span>
-															</div>
-														</div>
-													</div>
-
-												</div>
-												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
-													<div class="d-inline-block">
-														<div
-															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
-															<span class="h5">3:2</span>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-md-4 col-lg-4 text-center text-lg-right">
-													<div class="">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
-																<img src="../resource/images/img_4_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text order-1 w-100">
-																<h3 class="h5 mb-0 text-black">Steelers</h3>
-																<span class="text-uppercase small country">London</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<!-- END row -->
-
-											<div
-												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
-												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
-
-													<div class="text-center text-lg-left">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
-																<img src="../resource/images/img_1_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text">
-																<h3 class="h5 mb-0 text-black">Patriots</h3>
-																<span class="text-uppercase small country">Brazil</span>
-															</div>
-														</div>
-													</div>
-
-												</div>
-												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
-													<div class="d-inline-block">
-														<div
-															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
-															<span class="h5">3:2</span>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-md-4 col-lg-4 text-center text-lg-right">
-													<div class="">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
-																<img src="../resource/images/img_4_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text order-1 w-100">
-																<h3 class="h5 mb-0 text-black">Cowboys</h3>
-																<span class="text-uppercase small country">London</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<!-- END row -->
-
-											<div
-												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
-												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
-
-													<div class="text-center text-lg-left">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
-																<img src="../resource/images/img_1_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text">
-																<h3 class="h5 mb-0 text-black">Raiders</h3>
-																<span class="text-uppercase small country">Brazil</span>
-															</div>
-														</div>
-													</div>
-
-												</div>
-												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
-													<div class="d-inline-block">
-														<div
-															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
-															<span class="h5">3:2</span>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-md-4 col-lg-4 text-center text-lg-right">
-													<div class="">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
-																<img src="../resource/images/img_4_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text order-1 w-100">
-																<h3 class="h5 mb-0 text-black">Chiefs</h3>
-																<span class="text-uppercase small country">London</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<!-- END row -->
-
-										</div>
-
-									</div>
-								</div>
-								<div class="tab-pane fade" id="pills-profile" role="tabpanel"
-									aria-labelledby="pills-profile-tab">
-									<div class="row align-items-center">
-										<div class="col-md-12">
-
-
-											<div
-												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
-												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
-
-													<div class="text-center text-lg-left">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
-																<img src="../resource/images/img_1_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text">
-																<h3 class="h5 mb-0 text-black">Packers</h3>
-																<span class="text-uppercase small country">Brazil</span>
-															</div>
-														</div>
-													</div>
-
-												</div>
-												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
-													<div class="d-inline-block">
-														<div
-															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
-															<span class="h5">3:2</span>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-md-4 col-lg-4 text-center text-lg-right">
-													<div class="">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
-																<img src="../resource/images/img_4_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text order-1 w-100">
-																<h3 class="h5 mb-0 text-black">Steelers</h3>
-																<span class="text-uppercase small country">London</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<!-- END row -->
-
-											<div
-												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
-												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
-
-													<div class="text-center text-lg-left">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
-																<img src="../resource/images/img_1_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text">
-																<h3 class="h5 mb-0 text-black">Patriots</h3>
-																<span class="text-uppercase small country">Brazil</span>
-															</div>
-														</div>
-													</div>
-
-												</div>
-												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
-													<div class="d-inline-block">
-														<div
-															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
-															<span class="h5">3:2</span>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-md-4 col-lg-4 text-center text-lg-right">
-													<div class="">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
-																<img src="../resource/images/img_4_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text order-1 w-100">
-																<h3 class="h5 mb-0 text-black">Cowboys</h3>
-																<span class="text-uppercase small country">London</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<!-- END row -->
-
-											<div
-												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
-												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
-
-													<div class="text-center text-lg-left">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
-																<img src="../resource/images/img_1_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text">
-																<h3 class="h5 mb-0 text-black">Raiders</h3>
-																<span class="text-uppercase small country">Brazil</span>
-															</div>
-														</div>
-													</div>
-
-												</div>
-												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
-													<div class="d-inline-block">
-														<div
-															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
-															<span class="h5">3:2</span>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-md-4 col-lg-4 text-center text-lg-right">
-													<div class="">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
-																<img src="../resource/images/img_4_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text order-1 w-100">
-																<h3 class="h5 mb-0 text-black">Chiefs</h3>
-																<span class="text-uppercase small country">London</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<!-- END row -->
-
-										</div>
-
-									</div>
-								</div>
-								<div class="tab-pane fade" id="pills-contact" role="tabpanel"
-									aria-labelledby="pills-contact-tab">
-									<div class="row align-items-center">
-										<div class="col-md-12">
-
-
-											<div
-												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
-												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
-
-													<div class="text-center text-lg-left">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
-																<img src="../resource/images/img_1_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text">
-																<h3 class="h5 mb-0 text-black">Packers</h3>
-																<span class="text-uppercase small country">Brazil</span>
-															</div>
-														</div>
-													</div>
-
-												</div>
-												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
-													<div class="d-inline-block">
-														<div
-															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
-															<span class="h5">3:2</span>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-md-4 col-lg-4 text-center text-lg-right">
-													<div class="">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
-																<img src="../resource/images/img_4_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text order-1 w-100">
-																<h3 class="h5 mb-0 text-black">Steelers</h3>
-																<span class="text-uppercase small country">London</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<!-- END row -->
-
-											<div
-												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
-												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
-
-													<div class="text-center text-lg-left">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
-																<img src="../resource/images/img_1_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text">
-																<h3 class="h5 mb-0 text-black">Patriots</h3>
-																<span class="text-uppercase small country">Brazil</span>
-															</div>
-														</div>
-													</div>
-
-												</div>
-												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
-													<div class="d-inline-block">
-														<div
-															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
-															<span class="h5">3:2</span>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-md-4 col-lg-4 text-center text-lg-right">
-													<div class="">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
-																<img src="../resource/images/img_4_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text order-1 w-100">
-																<h3 class="h5 mb-0 text-black">Cowboys</h3>
-																<span class="text-uppercase small country">London</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<!-- END row -->
-
-											<div
-												class="row bg-white align-items-center ml-0 mr-0 py-4 match-entry">
-												<div class="col-md-4 col-lg-4 mb-4 mb-lg-0">
-
-													<div class="text-center text-lg-left">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small text-center mb-3 mb-lg-0 mr-lg-3">
-																<img src="../resource/images/img_1_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text">
-																<h3 class="h5 mb-0 text-black">Raiders</h3>
-																<span class="text-uppercase small country">Brazil</span>
-															</div>
-														</div>
-													</div>
-
-												</div>
-												<div class="col-md-4 col-lg-4 text-center mb-4 mb-lg-0">
-													<div class="d-inline-block">
-														<div
-															class="bg-black py-2 px-4 mb-2 text-white d-inline-block rounded">
-															<span class="h5">3:2</span>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-md-4 col-lg-4 text-center text-lg-right">
-													<div class="">
-														<div class="d-block d-lg-flex align-items-center">
-															<div
-																class="image image-small ml-lg-3 mb-3 mb-lg-0 order-2">
-																<img src="../resource/images/img_4_sq.jpg" alt="Image"
-																	class="img-fluid">
-															</div>
-															<div class="text order-1 w-100">
-																<h3 class="h5 mb-0 text-black">Chiefs</h3>
-																<span class="text-uppercase small country">London</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<!-- END row -->
-
-										</div>
-
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 
-
+		
+		
+		<!-- 리그 순위 테이블 --><!-- 나의 팀이면 style : border-bottom: 4px solid gold 넣기  -->
 		<div
 			class="site-section block-13 bg-primary fixed overlay-primary bg-image"
-			style="background-image: url('../resource/images/hero_bg_3.jpg');"
-			data-stellar-background-ratio="0.5">
+			style="background-image: url('../resource/images/EPL_Table.jpg'); background-position:center;"
+			>
 
 			<div class="container">
-				<div class="row mb-5">
+				<div class="row mb-2">
 					<div class="col-md-12 text-center">
-						<h2 class="text-white">More Game Highlights</h2>
+						<img src="../resource/images/EPL_rank_logo.png" alt="Image" style="width:200px;">
 					</div>
 				</div>
-
+				<div class="row text-white center_align" style="z-index: 1">
+					<div class="col-8 text-left">
+						<h6 class="center_align mr-2"
+							style="color: dodgerblue; display: inline-block">
+							<img src="../resource/images/champions.png" class="table_icon"
+								style="-webkit-filter: opacity(.5) drop-shadow(0 0 0 dodgerblue); filter: opacity(.5) drop-shadow(0 0 0 dodgerblue);">챔스
+						</h6>
+						<h6 class="center_align mr-2" style="color: lightgreen; display: inline-block"">
+							<img src="../resource/images/europa.png" class="table_icon"
+								style="-webkit-filter: opacity(.5) drop-shadow(0 0 0 lightgreen); filter: opacity(.5) drop-shadow(0 0 0 lightgreen);">유로파
+						</h6>
+						<h6 class="center_align" style="color: lightcoral; display: inline-block"">
+							<i class="fas fa-chevron-circle-down" class="table_icon"></i>강등
+						</h6>
+					</div>
+					<div class="col-4 text-right">
+						<h6 class=""><%=season%></h6>
+					</div>
+				</div>
 				<div class="row">
-					<div class="nonloop-block-13 owl-carousel">
-						<div class="item">
-							<!-- uses .block-12 -->
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_1.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
+					<div class="table text-white">
+						<div class="table-row-head table-header">
+							<div class="table-row-column">순위</div>
+							<div class="table-row-column-team-head table-center">팀</div>
+							<div class="table-row-column">승점</div>
+							<div class="table-row-column">승</div>
+							<div class="table-row-column">무</div>
+							<div class="table-row-column">패</div>
+							<div class="table-row-column">득점</div>
+							<div class="table-row-column">실점</div>
+							<div class="table-row-column">득실</div>
 						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_2.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
+						<%
+						teams = mList.iterator();
+						while (teams.hasNext()) {
+							EPLDTO team = teams.next();
+						if(team.getRecent_rank()<=4){
+						%>
+						<div class="table-row champions" onclick=goTeam(this)>
+						<%}else if(team.getRecent_rank()<=6){ %>
+						<div class="table-row europa" onclick=goTeam(this)>
+						<%}else if(team.getRecent_rank()>=18){ %>
+						<div class="table-row relegation" onclick=goTeam(this)>
+						<%}else{ %>
+						<div class="table-row" onclick=goTeam(this)>
+						<%} %>
+							<div class="table-row-column"><%=team.getRecent_rank()%></div>
+							<div class="table-row-column-team">
+								<img src="<%=team.getLogo()%>" style="width: 30px">
+								<span class="remove1"><%=team.getKo_name()%>
+								<span>
 							</div>
+							<div class="table-row-column"><%=team.getRecent_points()%></div>
+							<div class="table-row-column"><%=team.getRecent_won()%></div>
+							<div class="table-row-column"><%=team.getHome_draw()%></div>
+							<div class="table-row-column"><%=team.getHome_lost()%></div>
+							<div class="table-row-column"><%=team.getGoals_scored()%></div>
+							<div class="table-row-column"><%=team.getGoals_against()%></div>
+							<div class="table-row-column"><%=team.getGoals_scored()-team.getGoals_against()%></div>
+							<div class="hidden"><%=team.getTeam_name()%></div>
 						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_3.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_4.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<!-- uses .block-12 -->
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_1.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_2.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_3.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_4.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<!-- uses .block-12 -->
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_1.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_2.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_3.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_4.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<!-- uses .block-12 -->
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_1.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_2.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_3.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="item">
-							<div class="block-12">
-								<figure>
-									<img src="../resource/images/img_4.jpg" alt="Image"
-										class="img-fluid">
-								</figure>
-								<div class="text">
-									<span class="meta">May 20th 2018</span>
-									<div class="text-inner">
-										<h2 class="heading mb-3">
-											<a href="#" class="text-black">World Cup Championship</a>
-										</h2>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit. Ad culpa, consectetur! Eligendi illo, repellat
-											repudiandae cumque fugiat optio!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
+						<%} %>
 					</div>
 				</div>
 			</div>
 
 		</div>
-
+		
 		<div class="site-section">
 			<div class="container">
-				<div class="row mb-5">
-					<div class="col-md-12 text-center">
-						<h2 class="text-black">Latest News</h2>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6 col-lg-4">
-						<div class="post-entry">
-							<div class="image">
-								<img src="../resource/images/img_1.jpg" alt="Image"
-									class="img-fluid">
-							</div>
-							<div class="text p-4">
-								<h2 class="h5 text-black">
-									<a href="#">RealMad vs Striker Who Will Win?</a>
-								</h2>
-								<span class="text-uppercase date d-block mb-3"><small>By
-										Colorlib &bullet; Sep 25, 2018</small></span>
-								<p class="mb-0">Lorem ipsum dolor sit amet, consectetur
-									adipisicing elit. Fugiat beatae doloremque, ex corrupti
-									perspiciatis.</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-4">
-						<div class="post-entry">
-							<div class="image">
-								<img src="../resource/images/img_2.jpg" alt="Image"
-									class="img-fluid">
-							</div>
-							<div class="text p-4">
-								<h2 class="h5 text-black">
-									<a href="#">RealMad vs Striker Who Will Win?</a>
-								</h2>
-								<span class="text-uppercase date d-block mb-3"><small>By
-										Colorlib &bullet; Sep 25, 2018</small></span>
-								<p class="mb-0">Lorem ipsum dolor sit amet, consectetur
-									adipisicing elit. Fugiat beatae doloremque, ex corrupti
-									perspiciatis.</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-4">
-						<div class="post-entry">
-							<div class="image">
-								<img src="../resource/images/img_3.jpg" alt="Image"
-									class="img-fluid">
-							</div>
-							<div class="text p-4">
-								<h2 class="h5 text-black">
-									<a href="#">RealMad vs Striker Who Will Win?</a>
-								</h2>
-								<span class="text-uppercase date d-block mb-3"><small>By
-										Colorlib &bullet; Sep 25, 2018</small></span>
-								<p class="mb-0">Lorem ipsum dolor sit amet, consectetur
-									adipisicing elit. Fugiat beatae doloremque, ex corrupti
-									perspiciatis.</p>
-							</div>
-						</div>
-					</div>
-				</div>
+				
 			</div>
 		</div>
 
@@ -1491,6 +720,15 @@
 			}
 		}
 	</script>
+	<script>
+	function goTeam(team){
+		console.log(team);
+		let team_name = $(team).children("div.hidden")[0].innerHTML;
+		console.log(team_name);		
+	}
+	
+	</script>
+	
 	
  <%--    <!-- 뉴스 조회 -->
 	<script>
