@@ -1,22 +1,26 @@
 package poly.persistance.mongo.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.client.FindIterable;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ReplaceOptions;
+import com.mongodb.client.model.UpdateOptions;
 
 import poly.persistance.mongo.INewsMongoMapper;
 import poly.persistance.mongo.comm.AbstractMongoDBComon;
@@ -56,13 +60,13 @@ public class NewsMongoMapper extends AbstractMongoDBComon implements INewsMongoM
 			if (pMap == null) {
 				continue;
 			}
-			
-			//몽고 DB에서 url찾으면 continue;
-			
-			
+
 			// 레코드 한개씩 저장하기
-			col.insertOne(new Document(pMap));
-			
+			/*
+			 * col.updateOne(new Document("$url", pMap.get("url").toString()),new
+			 * Document(pMap), new UpdateOptions().upsert(true));
+			 */			
+			col.replaceOne(new Document("url", pMap.get("url").toString()),new Document(pMap), new ReplaceOptions().upsert(true));
 			pMap=null;
 		}
 
@@ -82,33 +86,35 @@ public class NewsMongoMapper extends AbstractMongoDBComon implements INewsMongoM
 		
 		List<Map<String, Object>> rList = new LinkedList<Map<String,Object>>();
 		
-		MongoCollection<Document> rCol = mongodb.getCollection(colNm);
 		
 		
-		//MongoDB 조회 쿼리
-		 BasicDBObject query = new BasicDBObject();
-		 
-         query.put("teams", new BasicDBObject()
-                 .append("$elemMatch", new BasicDBObject()
-                         .append("team_name", Pattern.compile(team))
-                 )
-         );
-         
-         BasicDBObject projection = new BasicDBObject();
-
-         projection.put("_id", 0.0);
-         projection.put("url", 1.0);
-         projection.put("ko_title", 1.0);
-         projection.put("date", 1.0);
-         projection.put("img", 1.0);
-         projection.put("ko_contents", 1.0);
-         
-         BasicDBObject sort = new BasicDBObject();
-
-         sort.put("date", -1);
-         
-         FindIterable<Document> rs = rCol.find(query).projection(projection).sort(sort).limit(limit);
-         Iterator<Document> cursor = rs.iterator();
+		//몽고DB 조회 쿼리
+		List<? extends Bson> pipeline = Arrays.asList(
+                new BasicDBObject()
+                        .append("$match", new BasicDBObject()
+                                .append("teams.team_name", team)
+                        ), 
+                new BasicDBObject()
+                        .append("$project", new BasicDBObject()
+                                .append("_id", 0.0)
+                                .append("url", 1.0)
+                                .append("ko_title", 1.0)
+                                .append("date", 1.0)
+                                .append("img", 1.0)
+                                .append("ko_contents", 1.0)
+                        ), 
+                new BasicDBObject()
+                        .append("$sort", new BasicDBObject()
+                                .append("date", -1.0)
+                        ), 
+                new BasicDBObject()
+                        .append("$limit", limit)
+        );
+		
+		MongoCollection<Document> col = mongodb.getCollection(colNm);
+		AggregateIterable<Document> rs = col.aggregate(pipeline).allowDiskUse(true);
+		Iterator<Document> cursor = rs.iterator();
+		
          while (cursor.hasNext()) {
 				Document doc = cursor.next();
 
@@ -140,8 +146,9 @@ public class NewsMongoMapper extends AbstractMongoDBComon implements INewsMongoM
          }
 		
 		cursor = null;
-		rCol = null;
-		projection = null;
+		rs = null;
+		col = null;
+		pipeline= null;
 		
 		log.info(this.getClass().getName() + ".getNews End!");
 		return rList;

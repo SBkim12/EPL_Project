@@ -233,7 +233,7 @@ a:hover {
 }
 
 .bg-image.overlay-primary:before {
-  background: rgba(46, 224, 242, 0.9);/* rgba(242, 58, 46, 0.9) */
+  background: rgba(176, 46, 242, 0.7);/* rgba(242, 58, 46, 0.9) */ /* rgba(46, 224, 242, 0.9); */
 }
 
 .bg-image.overlay-info:before {

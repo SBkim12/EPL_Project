@@ -85,7 +85,8 @@ public class NewsController {
 			log.info("SkySports 뉴스 업데이트 실패");
 		}
 		log.info("SkytSports 뉴스 웹 크롤링 및 DB업데이트 종료");
-
+		
+		
 		log.info(this.getClass().getName() + ".skySportsUpdate end!!");
 		return answer;
 	}
@@ -108,7 +109,8 @@ public class NewsController {
 			log.info("The Guardian 뉴스 업데이트 실패");
 		}
 		log.info("The Guardian 뉴스 웹 크롤링 및 DB업데이트 종료");
-
+		
+		
 		log.info(this.getClass().getName() + ".theGuardianUpdate end!!");
 		return answer;
 	}

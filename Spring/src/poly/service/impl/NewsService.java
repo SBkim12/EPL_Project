@@ -120,7 +120,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 						news_date = dateUtil.today;
 					} else {
 						log.info("오늘 기사 아님 => 뉴스 날짜  :: " + news_date);
-						break;
+						continue;
 					}
 					log.info("news_date :: " + news_date);
 
@@ -179,7 +179,10 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 
 					// 한국
 					String ko_content = BigTransUtil.transNews(contents);
-
+					if(ko_content.trim().length()<1) {
+						log.info("selelnium 번역 실패");
+						continue;
+					}
 					log.info("한국 번역 : " + ko_content);
 
 					String[] ko_contents_String = ko_content.split("\n");
@@ -225,7 +228,10 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		if (newsList.size() > 0) {
 			res = newsMongoMapper.newsInsert(newsList, colNm);
 		}
-
+		
+		//켜져있는 크롬 드라이버 프로세스 죽이기
+		Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe /T");
+		
 		log.info(this.getClass().getName() + ".theGuardianNewsUpdate end!");
 
 		return res;
@@ -301,7 +307,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 						news_date = dateUtil.today;
 					}else {
 						log.info("오늘 기사 아님(위 url 확인)");
-						break;
+						continue;
 					}
 					log.info("news_date :: " + news_date);
 					
@@ -348,11 +354,11 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 
 					List<String> contents = new ArrayList<>();
 					Elements element = doc.select("div.article-body-viewer-selector > p, div.article-body-viewer-selector > h2");
-					if (element.size() < 1) {
+					if (element.size() < 2) {
 						log.info("뉴스 본문 없음 패스");
 						continue;
 					} else {
-						log.info("뉴스 본문 1줄 이상 진행");
+						log.info("뉴스 본문 2줄 이상 진행");
 					}
 					for (Element content : element) {
 
@@ -363,14 +369,18 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 
 					// 한국
 					String ko_content = BigTransUtil.transNews(contents);
-
+					
+					if(ko_content.trim().length()<1) {
+						log.info("selelnium 번역 실패");
+						continue;
+					}
 					log.info("한국 번역 : " + ko_content);
-
+					
 					String[] ko_contents_String = ko_content.split("\n");
 					List ko_contents = new ArrayList(Arrays.asList(ko_contents_String));
-
+					
 					log.info("한국 번역 리스트 길이 :: " + ko_contents.size());
-
+					
 					// Map에 저장
 					pMap.put("url", newsUrl);
 					pMap.put("title", news_title);
@@ -398,7 +408,8 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 
 			team_map = null;
 			teams = null;
-
+			
+			
 		}
 
 		distinct = null;
@@ -413,6 +424,9 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		if (newsList.size() > 0) {
 			res = newsMongoMapper.newsInsert(newsList, colNm);
 		}
+		
+		// 켜져있는 크롬 드라이버 프로세스 죽이기
+		Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe /T");
 
 		log.info(this.getClass().getName() + ".theGuardianNewsUpdate end!");
 

@@ -24,7 +24,7 @@ public class BigTransUtil {
 			if(enNews.get(i).length()<1) {
 				continue;
 			}
-			if(enNews.get(i).length()+sb.length()<4500) {
+			if(enNews.get(i).length()+sb.length()<4980) {
 				sb.append(enNews.get(i));
 				sb.append("\r\n");
 			}else {
@@ -102,7 +102,7 @@ public class BigTransUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			driver.close();
+			driver.quit();
 		}
 		
 		

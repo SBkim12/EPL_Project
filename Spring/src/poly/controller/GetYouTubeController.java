@@ -23,7 +23,7 @@ public class GetYouTubeController {
 	@Resource(name = "GetPlayerVideoService")
 	IGetPlayerVideoService getPlayerVideoService;
 	
-	@RequestMapping(value = "test1")
+	@RequestMapping(value = "searchYoutube")
 	public String test1(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 		log.info("get youtube start");
 			
