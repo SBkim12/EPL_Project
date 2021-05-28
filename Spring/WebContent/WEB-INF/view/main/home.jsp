@@ -46,9 +46,8 @@
 	loading_st();
 	window.onload = loading_ed;
 </script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Stylish&display=swap');
-</style>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Stylish&display=swap" rel="stylesheet">
 <style>
 .myTeam {
 	border-bottom: 4px solid gold!important;
@@ -187,7 +186,7 @@
 		<div class="site-mobile-menu">
 			<div class="site-mobile-menu-header">
 				<div class="site-mobile-menu-logo">
-					<a href="#"><img src="../resource/images/EPL_Patch.png" alt="Image" ></a>
+					<a href="#"><img src="<%=team_logo%>" alt="Image" ></a>
 				</div>
 				<div class="site-mobile-menu-close mt-3">
 					<span class="icon-close2 js-menu-toggle"></span>
@@ -276,6 +275,7 @@
 		<div class="slide-one-item home-slider owl-carousel owl-loaded owl-drag" id="slide">
 			<%
 			Iterator<Map<String, Object>> it = rList.iterator();
+			int i=0;
 			while (it.hasNext()) {
 				Map<String, Object> news = it.next(); %>
 			<div class='site-blocks-cover overlay' style="background-image: url(<%=news.get("img")%>);" data-aos='fade' data-stellar-background-ratio='0.5'>
@@ -285,14 +285,18 @@
 							data-aos-delay='400'>
 							<h1 class='bg-text-line'><%=news.get("ko_title")%></h1>
 							<p>
-								<a class='btn btn-primary btn-sm rounded-0 py-3 px-5' data-toggle="modal" data-target="#<%=news.get("title")%>">Read More</a>
+								<a class='btn btn-primary btn-sm rounded-0 py-3 px-5' href="javascript:fnOpenNews('<%=i%>');">Read More</a>
 							</p>
 						</div>
 					</div>
 				</div>
 			</div>
 			
-			<%}%>
+			<%
+			i++;
+			news = null;
+			}
+			%>
 		</div>
 		
 		
@@ -306,6 +310,7 @@
 				<div class="row">
 					<%
 					it = rList.iterator();
+					i=0;
 					while (it.hasNext()) {
 						Map<String, Object> news = it.next();
 					%>
@@ -314,20 +319,23 @@
 							style="background-image: url('<%=news.get("img")%>');">
 							<div class="text" ><%=news.get("ko_title")%></h2>
 								<p class="mb-0" >
-									<a class="btn btn-primary btn-sm px-4 py-2 rounded-0" data-toggle="modal" data-target="#newspaper">Read More</a>
+									<a class="btn btn-primary btn-sm px-4 py-2 rounded-0" href="javascript:fnOpenNews('<%=i%>');">Read More</a>
 								</p>
 							</div>
 						</div>
 					</div>
 					
 					<%
+					i++;
+					news=null;
 					}
 					%>
 
 				</div>
 			</div>
 		</div>
-
+		
+		
 		<div class="site-blocks-vs site-section bg-light">
 			<div class="container">
 
@@ -382,7 +390,7 @@
 						teams = mList.iterator();
 						while (teams.hasNext()) {
 							EPLDTO team = teams.next();
-						if(team.getRecent_rank()<=4){
+							if(team.getRecent_rank()<=4){
 						%>
 						<div class="table-row champions" onclick=goTeam(this)>
 						<%}else if(team.getRecent_rank()<=6){ %>
@@ -407,7 +415,10 @@
 							<div class="table-row-column"><%=team.getGoals_scored()-team.getGoals_against()%></div>
 							<div class="hidden" name="<%=team.getTeam_name()%>"><%=team.getTeam_name()%></div>
 						</div>
-						<%} %>
+						<%
+						team=null;
+						} 
+						%>
 					</div>
 				</div>
 			</div>
@@ -446,61 +457,41 @@
 	</div>
 	<%
 	it = rList.iterator();
+	i=0;
 	while (it.hasNext()) {
 		Map<String, Object> news = it.next();
 		List<String> ko_contents = (List<String>) news.get("ko_contents");
 	%>
 	<!-- Newspaper Modal -->
-	<div class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="<%=news.get("title")%>" style="z-index:2000;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title" id="myModalLabel"><%=news.get("ko_title") %></h4>
-		</div>
-        <div class="modal-body">
-		<% 
-			Iterator<String> ko_content = ko_contents.iterator();
-			while(ko_content.hasNext()){
-			%>
-			<p><%=ko_content.next().toString()%></p>
-			<br>
-		<%		
-			}
-		%>
-		<div class="container-fluid">
-            <div class="row">
-              <div class="col-md-4">.col-md-4</div>
-              <div class="col-md-4 col-md-offset-4">.col-md-4 .col-md-offset-4</div>
-            </div>
-            <div class="row">
-              <div class="col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
-              <div class="col-md-2 col-md-offset-4">.col-md-2 .col-md-offset-4</div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 col-md-offset-3">.col-md-6 .col-md-offset-3</div>
-            </div>
-            <div class="row">
-              <div class="col-sm-9">
-                Level 1: .col-sm-9
-                <div class="row">
-                  <div class="col-xs-8 col-sm-6">
-                    Level 2: .col-xs-8 .col-sm-6
-                  </div>
-                  <div class="col-xs-4 col-sm-6">
-                    Level 2: .col-xs-4 .col-sm-6
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-        <%
-        }
+	<div class="modal fade modal-xl" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="<%=i%>" style="z-index:2000;">
+    	<div class="modal-dialog modal-lg">
+      		<div class="modal-content" style="font-family: 'Stylish', sans-serif;">
+        		<div class="modal-header">
+        			<h4 class="modal-title" id="myModalLabel"><%=news.get("ko_title") %></h4>
+          			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+        		<div class="modal-body">
+        		<img class="mb-3" src="<%=news.get("img")%>" style="width:100%">
+				<% 
+				Iterator<String> ko_content = ko_contents.iterator();
+				while(ko_content.hasNext()){
+				%>
+				<p><%=ko_content.next().toString()%></p>
+				<br>
+				<%		
+					}
+				%>
+          		</div>
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+		        </div>
+	    	</div>
+    	</div>
+   	</div>
+	    <%
+	    news=null;
+        i++;
+		}
         %>
 	
 	<script src="../resource/js/jquery-3.3.1.min.js"></script>
@@ -646,6 +637,14 @@
 		
 		elem.parent().addClass('myTeam');
 	})
+	
+	</script>
+	
+	<script>
+	function fnOpenNews(no){
+		console.log(no);
+	    $('#'+no).modal('show')  
+	}
 	</script>
 	
 	
