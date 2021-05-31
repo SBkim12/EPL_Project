@@ -1,0 +1,111 @@
+.myTeam {
+	border-bottom: 4px solid gold!important;
+}
+
+.hidden {
+	display: none;
+}
+
+.table {
+	z-index: 1;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.table-row-head {
+	width: 100%;
+	height: 10vw;
+	display: flex;
+	border-bottom: 1px solid #ccc;
+}
+
+.table-row {
+	width: 100%;
+	height: 10vw;
+	display: flex;
+	border-bottom: 1px solid #ccc;
+	transition: all 0.1s linear;
+	cursor: pointer;
+}
+
+.table-row:hover {
+	transform: scale(1.05);
+}
+
+.table-header {
+	font-weight: bold;
+}
+
+.table-row-column {
+	width: 10%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.table-row-column-team {
+	width: 20%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.table-row-column-team-head {
+	width: 20%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.champions {
+	background: radial-gradient(farthest-side at 10% 50%, dodgerblue, transparent)
+}
+
+.europa {
+	background: radial-gradient(farthest-side at 10% 50%, mediumseagreen, transparent)
+}
+
+.relegation {
+	background: radial-gradient(farthest-side at 10% 50%, gray, transparent)
+}
+
+.center_align {
+	align-items: center;
+	justify-content: center;
+}
+
+.table_icon {
+	width: 20px;
+}
+
+@media ( max-width : 1200px) {
+	.remove1 {
+		display: none;
+	}
+	.table-row-column-team {
+		width: 11%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.table-row-column {
+		width: 11%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.table-row-column-team-head {
+		width: 11%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}

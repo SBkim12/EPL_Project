@@ -104,14 +104,7 @@
         background-color: rgba(25, 147, 147, 0.2);
         word-wrap: break-word;
         max-width: 81%; }
-        .floating-chat .chat .messages li:before {
-          position: absolute;
-          top: 0;
-          width: 25px;
-          height: 25px;
-          border-radius: 25px;
-          content: '';
-          background-size: cover; }
+        
         .floating-chat .chat .messages li:after {
           position: absolute;
           top: 10px;
@@ -126,9 +119,7 @@
         float: right;
         margin-right: 45px;
         color: #0AD5C1; }
-      .floating-chat .chat .messages li.other:before {
-        right: -45px;
-        background-image: url(https://github.com/Thatkookooguy.png); }
+
       .floating-chat .chat .messages li.other:after {
         border-right: 10px solid transparent;
         right: -10px; }
@@ -139,9 +130,7 @@
         float: left;
         margin-left: 45px;
         color: #0EC879; }
-      .floating-chat .chat .messages li.self:before {
-        left: -45px;
-        background-image: url(https://github.com/ortichon.png); }
+      
       .floating-chat .chat .messages li.self:after {
         border-left: 10px solid transparent;
         left: -10px; }
@@ -168,6 +157,28 @@
         .floating-chat .chat .footer .text-box::-webkit-scrollbar-thumb {
           border-radius: 5px;
           background-color: rgba(25, 147, 147, 0.2); }
+
+.other .chat_logo{
+	position: absolute;
+    top: 0;
+	width: 25px;
+	height: 25px;
+	border-radius: 25px;
+	content: '';
+	background-size: cover;
+	right: -45px;
+}
+
+.self .chat_logo{
+	position: absolute;
+    top: 0;
+	width: 25px;
+	height: 25px;
+	border-radius: 25px;
+	content: '';
+	background-size: cover;
+	 left: -45px;
+}
 
 @keyframes show-chat-even {
   0% {

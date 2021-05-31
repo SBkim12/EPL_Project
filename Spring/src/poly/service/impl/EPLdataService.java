@@ -2,6 +2,9 @@ package poly.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +14,10 @@ import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import poly.dto.EPLDTO;
@@ -301,6 +308,148 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 		
 		log.info(this.getClass().getName() + ".getTeamLogo end!");
 		return EPL;
+	}
+
+	@Override
+	public List<Map<String, Object>> getEPLteamPlayer(String team) throws Exception {
+		
+		log.info(this.getClass().getName() +".getEPLteamPlayer start");
+		
+		String url = "https://www.premierleague.com/clubs";
+		
+		log.info(team);
+		//팀 목록 페이지 접속
+		Document doc = Jsoup.connect(url).timeout(30000).get();
+		
+		url = doc.select("div.indexSection > div > ul > li > a:contains("+team+")").get(0).attr("href").toString();
+		
+		url ="https://www.premierleague.com/"+url.replace("overview", "squad");
+		
+		log.info(url);
+		
+		//팀 페이지 접속
+		doc = Jsoup.connect(url).timeout(30000).get();
+		
+		String team_url = doc.select("#mainContent > header > div.wrapper > div > div > div.clubDetails > div.website > a").attr("href").toString();
+		log.info(team_url);
+		
+		Elements elem = doc.select("#mainContent > div.wrapper.col-12 > div > ul > li");
+		Iterator<Element> it = elem.iterator();
+		
+		//Map를 담을 리스트
+		List<Map<String, Object>> players = new LinkedList<Map<String, Object>>();
+		
+		while (it.hasNext()) {
+			
+			//정보 담을 Map
+			Map<String, Object> pMap = new LinkedHashMap<String, Object>();
+			
+			Element player = it.next();
+			
+			
+			String player_url ="https://www.premierleague.com/"+player.select("a").attr("href").toString();
+			player_url = player_url.replace("overview", "squad");
+			
+			String player_id = player.select("img").attr("data-player").toString();
+			String player_size = player.select("img").attr("data-size").toString();
+			String player_img = "https://resources.premierleague.com/premierleague/photos/players/"+player_size+"/"+player_id+".png";
+			
+			String player_no = player.select("span.number").text().trim();
+			String player_name = player.select("h4.name").text().trim();
+			String player_position = player.select("span.position").text().trim();
+			String player_country = player.select("span.playerCountry").text().trim();
+			
+			log.info("player_url :: " + player_url);
+			log.info("player_img :: " + player_img);
+			log.info("player_no :: " + player_no);
+			log.info("player_name :: " + player_name);
+			log.info("player_position :: " + player_position);
+			log.info("player_country :: " + player_country);
+			
+			pMap.put("player_url" , player_url);
+			pMap.put("player_img", player_img);
+			pMap.put("player_no", player_no);
+			pMap.put("player_name", player_name);
+			pMap.put("player_position", player_position);
+
+			Elements infoes = player.select("dl");
+			
+			Iterator<Element> Infoes = infoes.iterator();
+			int i=0;
+			while(Infoes.hasNext()) {
+				Element info = Infoes.next();
+				
+				String name = info.select("dt.label").text().replaceAll(" ", "_").trim();
+				
+				String value = info.select("dd.info").text().trim();
+				
+				log.info(name + " :: " +value);
+				pMap.put(name, value);
+				i++;
+				if(i>=4) {
+					break;
+				}
+			}
+			
+			log.info("---------------------------------------------------------------------------------");
+			players.add(pMap);
+			
+			pMap=null;
+		}
+		
+		//Elements elem = doc.select("#mainContent > div.wrapper.col-12 > div > ul > li");
+		//List<Map<String, Object>> players = new LinkedList<Map<String, Object>>();
+		
+		doc =null;
+
+		log.info(this.getClass().getName() + ".getEPLteamPlayer End!");
+		return players;
+	}
+
+	@Override
+	public List<Map<String, Object>> getEPLteamPlayerINFO(String url) throws Exception {
+		log.info(this.getClass().getName() +".getEPLteamPlayerINFO start");
+		
+		//시즌 아이디 구하기
+		String season_get_url = "https://www.premierleague.com/stats";
+		Document doc = Jsoup.connect(season_get_url).timeout(30000).get();
+		String season_url = doc.select("#mainContent > div.hasSideNav > nav > div > ul > li:nth-child(2) > a").attr("href").toString();
+		String season = season_url.substring(season_url.lastIndexOf("se="));
+		
+		url += "?"+season;
+		
+		log.info(url);
+		//선수 상세 페이지 접속
+		doc = Jsoup.connect(url)
+				.timeout(30000)
+				.header("origin", "http://search.example.com") // same-origin-polycy 로 인한 설정
+		        .header("referer", "http://search.example.com") // same-origin-polycy 로 인한 설정
+		        .ignoreContentType(true) // json 받아오려면 타입무시를 해야하는듯?
+		        .get();
+		
+		Elements elem  = doc.select("span.allStatContainer");
+		Iterator<Element> it = elem.iterator();
+		
+		// Map를 담을 리스트
+		List<Map<String, Object>> player_datas = new LinkedList<Map<String, Object>>();
+		
+		while(it.hasNext()) {
+			Element player_data = it.next();
+			//정보 담을 Map
+			Map<String, Object> pMap = new LinkedHashMap<String, Object>();
+			
+			String key = player_data.attr("data-stat").toString();
+			
+			String value = player_data.text();
+			
+			pMap.put(key, value);
+			
+			player_datas.add(pMap);
+			
+			pMap=null;
+		}
+		
+		return player_datas;
 	}
 
 }

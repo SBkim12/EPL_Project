@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.text.Document;
 
@@ -91,7 +93,7 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "home")
-	public String Homepage(HttpSession session, ModelMap model) throws Exception {
+	public String Homepage(HttpSession session, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		log.info("home start");
 		
@@ -173,6 +175,74 @@ public class MainController {
 		log.info("home end");
 		
 		return "/main/home";
+	}
+	
+	@RequestMapping(value = "/team")
+	public String team(HttpSession session, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		log.info("team start");
+		
+		String selected_team = request.getParameter("team_name");
+		String selected_team_logo = request.getParameter("team_logo");
+		
+		log.info("selected_team :: " +selected_team);
+		model.addAttribute("selected_team", selected_team);
+		model.addAttribute("selected_team_logo", selected_team_logo);
+		
+		String id = (String) session.getAttribute("member_id");
+		//아이디 session에 없을 경우 로그인 페이지 이동
+		if(id == null) {
+			session.invalidate();
+			
+			String msg = "아이디 비밀번호를 확인하세요";
+			String url = "/index.do";
+			
+			model.addAttribute("msg", msg);
+			model.addAttribute("url", url);
+			
+			return "/redirect";
+		}
+		
+		//home을 열기 위한 session 값이 없을시 값 불러오기
+		if(session.getAttribute("favorite_team") == null) {
+
+			MemberDTO uDTO = new MemberDTO();
+
+			uDTO.setMember_id((String) session.getAttribute("member_id"));
+			
+			log.info("userService start");
+			uDTO = userService.reLoginInfo(uDTO);
+			log.info("uDTO null? : " + (uDTO == null));
+			
+			//초기화 후
+			session.invalidate();
+			
+			log.info("uDTO.Member_id : " + uDTO.getMember_id());
+			log.info("uDTO.Member_name : " + uDTO.getMember_name());
+			log.info("uDTO.favorite_team : " + uDTO.getFavorite_team());
+			log.info("uDTO.member_point : " + uDTO.getMember_point());
+			log.info("uDTO.member_point : " + uDTO.getTeam_logo());
+			
+			//재입력
+			session.setAttribute("member_id", uDTO.getMember_id());
+			session.setAttribute("favorite_team", uDTO.getFavorite_team());
+			session.setAttribute("member_name", uDTO.getMember_name());
+			session.setAttribute("member_point", uDTO.getMember_point());
+			session.setAttribute("team_logo", uDTO.getTeam_logo());
+			
+		}
+		
+		//메뉴 팀 리스트 값 없을시
+		if(session.getAttribute("teams")==null) {
+			List<EPLDTO> mList = epldataService.getEPLteam();
+			session.setAttribute("teams", mList);
+		}
+		
+		
+		
+		log.info("team end");
+		
+		return "/main/team";
 	}
 	
 }
