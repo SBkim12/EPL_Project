@@ -54,6 +54,9 @@
     background-image: url("https://pbs.twimg.com/media/C1KWvW4XAAAXRrI.jpg:large");
     text-shadow: 2px 5px 2px black;
 }
+.overflow_hide{
+	overflow:hidden;
+}
 </style>
 </head>
 <body>
@@ -117,6 +120,32 @@
 		</footer>
 	</div>
 	
+	<!-- player_modal -->
+	<div class="modal fade modal-xl" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="player_modal" style="z-index:2000;">
+    	<div class="modal-dialog modal-lg">
+      		<div class="modal-content" style="font-family: 'Stylish', sans-serif;">
+        		<iframe id="iframe" name="iframe" src="" 
+        		style="width:100%; height:2000px;"  frameborder=0 framespacing=0	marginheight=0 marginwidth=0 vspace=0 scrolling=no></iframe>
+	    	</div>
+    	</div>
+   	</div>
+	
+	<script>
+	function fnOpenInfo(player){
+		
+		var url = $(player).children('div.player').children('span.hidden')[0].innerHTML;
+		console.log(url);
+		
+		$('#iframe').attr("src",url);
+		
+		var popup = $('#iframe').contents().find('body > section');
+		
+		console.log(popup);
+		
+		$('#player_modal').modal('show')  
+	}
+	</script>
+	
 	<jsp:include page="../chat.jsp"></jsp:include>
 	
 	
@@ -173,11 +202,11 @@
 				
 				var resHTML = "";
 				$.each(data, function(idx, val){
-					resHTML += "<div class='mb-4 mb-lg-0 col-6 col-md-4 col-lg-3 text-center'>"
+					resHTML += "<div class='mb-4 mb-lg-0 col-6 col-md-4 col-lg-3 text-center btn' onclick='fnOpenInfo(this);'>"
 					resHTML += "<div class='player mb-3'>";
 					resHTML += "<span class='team-number'>"+val.player_no+"</span>"
 					resHTML += "<img src='"+val.player_img+"' onerror='this.src=\"../resource/images/Photo-Missing.png\"' alt='Image' class='img-fluid image rounded-circle'>"
-					resHTML += "<h2>"+val.player_name+"</h2>"
+					resHTML += "<h5 class='overflow_hide'>"+val.player_name+"</h5>"
 					resHTML += "<span class='position'>"+val.player_position+"</span>"
 					resHTML += "<span class='hidden'>"+val.player_url+"</span>"
 					resHTML += "</div>"
@@ -241,39 +270,43 @@
 				$("#FORWARD").append(FORWARD);
 				
 				//팀 득점왕
-				resHTML += "<div class='mb-2 mb-lg-0 col-6 col-md-4 col-lg-3 text-center'>"
+				resHTML += "<div class='mb-2 mb-lg-0 col-6 col-md-4 col-lg-3 text-center btn' onclick='fnOpenInfo(this);' style='border-radius: 5rem;'>"
 				resHTML += "<h3>SCORE</h3>";
 				resHTML += "<div class='player mb-3'>";
 				resHTML += "<img src='"+bestSCORER_img+"' onerror='this.src=\"../resource/images/Photo-Missing.png\"' alt='Image' class='img-fluid image rounded-circle'>"
-				resHTML += "<h2>"+bestSCORER_name+"</h2>"
+				resHTML += "<h5 class='overflow_hide'>"+bestSCORER_name+"</h5>"
 				resHTML += "<span class='position'>득점 :: "+best_goal+"</span>"
+				resHTML += "<span class='hidden'>"+bestSCORER_url+"</span>"
 				resHTML += "</div></div>"
 			
 				//팀 어시왕
-				resHTML += "<div class='mb-2 mb-lg-0 col-6 col-md-4 col-lg-3 text-center'>"
+				resHTML += "<div class='mb-2 mb-lg-0 col-6 col-md-4 col-lg-3 text-center btn' onclick='fnOpenInfo(this);' style='border-radius: 5rem;'>"
 				resHTML += "<h3>ASSIST</h3>";
 				resHTML += "<div class='player mb-3'>";
 				resHTML += "<img src='"+bestASSIST_img+"' onerror='this.src=\"../resource/images/Photo-Missing.png\"' alt='Image' class='img-fluid image rounded-circle'>"
-				resHTML += "<h2>"+bestASSIST_name+"</h2>"
+				resHTML += "<h5 style='overflow=hidden'>"+bestASSIST_name+"</h5>"
 				resHTML += "<span class='position'>어시스트 :: "+best_assist+"</span>"
+				resHTML += "<span class='hidden'>"+bestASSIST_url+"</span>"
 				resHTML += "</div></div>"
 				
 				//팀 수비왕
-				resHTML += "<div class='mb-2 mb-lg-0 col-6 col-md-4 col-lg-3 text-center'>"
+				resHTML += "<div class='mb-2 mb-lg-0 col-6 col-md-4 col-lg-3 text-center btn' onclick='fnOpenInfo(this);' style='border-radius: 5rem;'>"
 				resHTML += "<h3>DEFENSE</h3>";
 				resHTML += "<div class='player mb-3'>";
 				resHTML += "<img src='"+bestDEFENDER_img+"' onerror='this.src=\"../resource/images/Photo-Missing.png\"' alt='Image' class='img-fluid image rounded-circle'>"
-				resHTML += "<h2>"+bestDEFENDER_name+"</h2>"
+				resHTML += "<h5 class='overflow_hide'>"+bestDEFENDER_name+"</h5>"
 				resHTML += "<span class='position'>클린시트 :: "+bestDEFENDER_clean+"</span><br>"
+				resHTML += "<span class='hidden'>"+bestDEFENDER_url+"</span>"
 				resHTML += "</div></div>"
 				
 				//팀 베스트 키퍼
-				resHTML += "<div class='mb-2 mb-lg-0 col-6 col-md-4 col-lg-3 text-center'>"
-				resHTML += "<h3>GOALKEEPER</h3>";
+				resHTML += "<div class='mb-2 mb-lg-0 col-6 col-md-4 col-lg-3 text-center btn' onclick='fnOpenInfo(this);' style='border-radius: 5rem;'>"
+				resHTML += "<h5>GOALKEEPER</h5>";
 				resHTML += "<div class='player mb-3'>";
 				resHTML += "<img src='"+bestGOALKEEPER_img+"' onerror='this.src=\"../resource/images/Photo-Missing.png\"' alt='Image' class='img-fluid image rounded-circle'>"
-				resHTML += "<h2>"+bestGOALKEEPER_name+"</h2>"
+				resHTML += "<h5 class='overflow_hide'>"+bestGOALKEEPER_name+"</h5>"
 				resHTML += "<span class='position'>클린시트 :: "+bestGOALKEEPER_clean+"</span>"
+				resHTML += "<span class='hidden'>"+bestGOALKEEPER_url+"</span>"
 				resHTML += "</div></div>"
 				
 				$("#BEST").append(resHTML);
@@ -281,6 +314,7 @@
 		});
 	});
 	</script>
+	
 		<script>
 			$(function() {
 				$(".teams").addClass("active");

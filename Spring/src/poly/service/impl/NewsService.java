@@ -69,153 +69,162 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 			String teamForUrl = team.replaceAll(" ", "-").replace("&", "and").concat("-news").toLowerCase();
 			String url = "https://www.skysports.com/" + teamForUrl;
 			log.info("팀이름을 활용한 url 형식 :: " + url);
+			
+			try {
+				// 팀 뉴스 사이트 접속 및
+				Document doc = Jsoup.connect(url).timeout(30000).get();
+				Elements element_urlGet = doc.select("a.news-list__figure");
+				Iterator<Element> newsUrlList = element_urlGet.iterator();
+				
+				// 뉴스 기사 크롤링 및 기사 저장
+				while (newsUrlList.hasNext()) {
 
-			// 팀 뉴스 사이트 접속 및
-			Document doc = Jsoup.connect(url).timeout(30000).get();
-			Elements element_urlGet = doc.select("a.news-list__figure");
-			Iterator<Element> newsUrlList = element_urlGet.iterator();
-
-			// 뉴스 기사 크롤링 및 기사 저장
-			while (newsUrlList.hasNext()) {
-
-				try {
-
-					Map<String, Object> pMap = new LinkedHashMap<String, Object>();
-
-					// 크롤링할 뉴스 url
-					String newsUrl = newsUrlList.next().attr("href").toString();
-
-					log.info("news_url :: " + newsUrl);
-
-					// 뉴스가 아닌 url 거르기
-					if (newsUrl.endsWith("transfer-centre") || newsUrl.contains("/live/") || newsUrl.contains("/video/")
-							|| newsUrl.contains("/story-telling/")) {
-						log.info("뉴스형식이 맞지 않음");
-						continue;
-					}
-
-					// 중복 url 거르기
-					if (distinct.contains(newsUrl)) {
-						log.info("중복된 url 거르고 관련 팀 목록만 추가");
-						for (Map<String, Object> tMap : newsList) {
-							if (tMap.containsValue(newsUrl)) {
-								((ArrayList<Map<String, String>>) tMap.get("teams")).add(team_map);
-								break;
-							}
-						}
-						continue;
-					}
-					distinct.add(newsUrl);
-
-					doc = Jsoup.connect(newsUrl).timeout(30000).get();
-
-					// 날짜 크롤링
-					String news_date = doc.select("p.sdc-article-date__date-time").text();
-					String day = news_date.trim().split(" ")[1];
-					String month = news_date.trim().split(" ")[2];
-					if (news_date.trim().equals("")) {
-						log.info("날짜 없어서 패스");
-						continue;
-					} else if (day.equals(dateUtil.today_day) && month.equals(dateUtil.today_month)) {
-						news_date = dateUtil.today;
-					} else {
-						log.info("오늘 기사 아님 => 뉴스 날짜  :: " + news_date);
-						continue;
-					}
-					log.info("news_date :: " + news_date);
-
-					// 제목 크롤링
-					String news_title = doc.select("span.sdc-article-header__long-title").text();
-					if (news_title.equals("")) {
-						log.info("제목 없어서 패스");
-						continue;
-					}
-					log.info("news_title :: " + news_title);
-
-					// 번역해서 넣기
-					String ko_title = "";
 					try {
-						ko_title = TranslateUtil.trans(news_title);
-					}catch (Exception e) {
-						log.info("파파고 번역 제한 or 다른 문제");
-					}finally{
-						if(ko_title.equals("")) {
-							log.info("카카오번역기 이용");
-							try {
-							ko_title = TranslateUtil.kakaotrans(ko_title);
-							}
-							catch(Exception e){
-								log.info("카카오 번역도 끝");
-							}
+
+						Map<String, Object> pMap = new LinkedHashMap<String, Object>();
+
+						// 크롤링할 뉴스 url
+						String newsUrl = newsUrlList.next().attr("href").toString();
+
+						log.info("news_url :: " + newsUrl);
+
+						// 뉴스가 아닌 url 거르기
+						if (newsUrl.endsWith("transfer-centre") || newsUrl.contains("/live/") || newsUrl.contains("/video/")
+								|| newsUrl.contains("/story-telling/")) {
+							log.info("뉴스형식이 맞지 않음");
+							continue;
 						}
-						log.info("ko_title :: "+ko_title);
+
+						// 중복 url 거르기
+						if (distinct.contains(newsUrl)) {
+							log.info("중복된 url 거르고 관련 팀 목록만 추가");
+							for (Map<String, Object> tMap : newsList) {
+								if (tMap.containsValue(newsUrl)) {
+									((ArrayList<Map<String, String>>) tMap.get("teams")).add(team_map);
+									break;
+								}
+							}
+							continue;
+						}
+						distinct.add(newsUrl);
+
+						doc = Jsoup.connect(newsUrl).timeout(30000).get();
+
+						// 날짜 크롤링
+						String news_date = doc.select("p.sdc-article-date__date-time").text();
+						String day = news_date.trim().split(" ")[1];
+						String month = news_date.trim().split(" ")[2];
+						if (news_date.trim().equals("")) {
+							log.info("날짜 없어서 패스");
+							continue;
+						} else if (day.equals(dateUtil.today_day) && month.equals(dateUtil.today_month)) {
+							news_date = dateUtil.today;
+						} else {
+							log.info("오늘 기사 아님 => 뉴스 날짜  :: " + news_date);
+							continue;
+						}
+						log.info("news_date :: " + news_date);
+
+						// 제목 크롤링
+						String news_title = doc.select("span.sdc-article-header__long-title").text();
+						if (news_title.equals("")) {
+							log.info("제목 없어서 패스");
+							continue;
+						}
+						log.info("news_title :: " + news_title);
+
+						// 번역해서 넣기
+						String ko_title = "";
+						try {
+							ko_title = TranslateUtil.trans(news_title);
+						}catch (Exception e) {
+							log.info("파파고 번역 제한 or 다른 문제");
+						}finally{
+							if(ko_title.equals("")) {
+								log.info("카카오번역기 이용");
+								try {
+								ko_title = TranslateUtil.kakaotrans(ko_title);
+								}
+								catch(Exception e){
+									log.info("카카오 번역도 끝");
+								}
+							}
+							log.info("ko_title :: "+ko_title);
+						}
+
+						// 이미지 주소 크롤링
+						String img = doc.select("img.sdc-article-image__item").attr("src").toString();
+						if (img.trim().equals("")) {
+							log.info("이미지 없음 => 대체 이미지 넣음");
+							// 대체 이미지 입력
+							img = "../resource/images/sky_sports.png";
+						}
+						log.info("news_img :: " + img);
+
+						// 뉴스 본문 크롤링
+						List<String> contents = new ArrayList<>();
+						Elements element = doc.select("div.sdc-article-body");
+						if (element.select(
+								"div.sdc-article-body.sdc-article-body--lead > p, div.sdc-article-body.sdc-article-body--lead > h3")
+								.size() < 1) {
+							log.info("뉴스 본문 없음 패스");
+							continue;
+						} else {
+							log.info("뉴스 본문 1줄 이상 진행");
+						}
+						for (Element content : element.select(
+								"div.sdc-article-body.sdc-article-body--lead > p,div.sdc-article-body.sdc-article-body--lead > h3")) {
+							contents.add(content.text());
+						}
+						log.info("news_body length :: " + contents.size());
+
+						// 한국
+						String ko_content = BigTransUtil.transNews(contents);
+						if(ko_content.trim().length()<contents.size()-10) {
+							log.info("selelnium 번역 실패");
+							continue;
+						}
+						log.info("한국 번역 : " + ko_content);
+
+						String[] ko_contents_String = ko_content.split("\n");
+						List ko_contents = new ArrayList(Arrays.asList(ko_contents_String));
+
+						log.info("번역 리스트 길이 :: " + ko_contents.size());
+
+						// Map에 저장
+						pMap.put("url", newsUrl);
+						pMap.put("title", news_title);
+						pMap.put("ko_title", ko_title);
+						pMap.put("date", news_date);
+						pMap.put("img", img);
+						pMap.put("contents", contents);
+						pMap.put("teams", teams);
+						pMap.put("ko_contents", ko_contents);
+
+						// 리스트에 저장
+						newsList.add(pMap);
+
+						pMap = null;
+
+					} catch (Exception e) {
+						log.info("크롤링 뉴스 형태가 맞지 않아 크롤이 종료");
+					} finally {
+						log.info("--------------------------------------------------------------------------------");
 					}
-
-					// 이미지 주소 크롤링
-					String img = doc.select("img.sdc-article-image__item").attr("src").toString();
-					if (img.trim().equals("")) {
-						log.info("이미지 없음 => 대체 이미지 넣음");
-						// 대체 이미지 입력
-						img = "../resource/images/sky_sports.png";
-					}
-					log.info("news_img :: " + img);
-
-					// 뉴스 본문 크롤링
-					List<String> contents = new ArrayList<>();
-					Elements element = doc.select("div.sdc-article-body");
-					if (element.select(
-							"div.sdc-article-body.sdc-article-body--lead > p, div.sdc-article-body.sdc-article-body--lead > h3")
-							.size() < 1) {
-						log.info("뉴스 본문 없음 패스");
-						continue;
-					} else {
-						log.info("뉴스 본문 1줄 이상 진행");
-					}
-					for (Element content : element.select(
-							"div.sdc-article-body.sdc-article-body--lead > p,div.sdc-article-body.sdc-article-body--lead > h3")) {
-						contents.add(content.text());
-					}
-					log.info("news_body length :: " + contents.size());
-
-					// 한국
-					String ko_content = BigTransUtil.transNews(contents);
-					if(ko_content.trim().length()<1) {
-						log.info("selelnium 번역 실패");
-						continue;
-					}
-					log.info("한국 번역 : " + ko_content);
-
-					String[] ko_contents_String = ko_content.split("\n");
-					List ko_contents = new ArrayList(Arrays.asList(ko_contents_String));
-
-					log.info("번역 리스트 길이 :: " + ko_contents.size());
-
-					// Map에 저장
-					pMap.put("url", newsUrl);
-					pMap.put("title", news_title);
-					pMap.put("ko_title", ko_title);
-					pMap.put("date", news_date);
-					pMap.put("img", img);
-					pMap.put("contents", contents);
-					pMap.put("teams", teams);
-					pMap.put("ko_contents", ko_contents);
-
-					// 리스트에 저장
-					newsList.add(pMap);
-
-					pMap = null;
-
-				} catch (Exception e) {
-					log.info("크롤링 뉴스 형태가 맞지 않아 크롤이 종료");
-				} finally {
-					log.info("--------------------------------------------------------------------------------");
+					doc = null;
 				}
-				doc = null;
+				
+			}catch (Exception e){
+				
+				log.info("팀 뉴스 목록 접속 실패");
+				
+			}finally {
+				
+				pDTO = null;
+				teams = null;
+				team_map = null;
 			}
 			
-			pDTO = null;
-			teams = null;
-			team_map = null;
 		}
 
 		log.info("SkySports 뉴스 수집 완료!! 뉴스 개수 :: " + newsList.size());
@@ -370,7 +379,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					// 한국
 					String ko_content = BigTransUtil.transNews(contents);
 					
-					if(ko_content.trim().length()<1) {
+					if(ko_content.trim().length()<2) {
 						log.info("selelnium 번역 실패");
 						continue;
 					}

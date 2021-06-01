@@ -26,12 +26,13 @@
 	height: 10vw;
 	display: flex;
 	border-bottom: 1px solid #ccc;
-	transition: all 0.1s linear;
+	transition: all 0.2s linear;
 	cursor: pointer;
 }
 
 .table-row:hover {
-	transform: scale(1.05);
+	transform: scale(1.02);
+	box-shadow: 0 5px 40px -5px rgb(0 0 0 / 72%);
 }
 
 .table-header {

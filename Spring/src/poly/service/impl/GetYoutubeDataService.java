@@ -12,25 +12,26 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 
 import poly.dto.YouTubeDTO;
-import poly.service.IGetPlayerVideoService;
+import poly.service.IGetYoutubeDataService;
 import poly.service.impl.comm.AbstractgetUrlFordata;
 import poly.util.CmmUtil;
 
-@Service("GetPlayerVideoService")
-public class GetPlayerVideoService extends AbstractgetUrlFordata  implements IGetPlayerVideoService {
+@Service("GetYoutubeDataService")
+public class GetYoutubeDataService extends AbstractgetUrlFordata  implements IGetYoutubeDataService {
 
 	// 로그생성
 	private Logger log = Logger.getLogger(this.getClass());
 
 	@Override
-	public Map<String, Object> GetPlayerVideo(YouTubeDTO pDTO) throws Exception {
+	public List<YouTubeDTO> GetTeamVideo(String url) throws Exception {
+
 		log.info(this.getClass().getName() + ".getPlayerVideo start!");
 
 		// JSON 읽은 값을 Controller에 전달하기 위한 결과 변수
 		Map<String, Object> rMap = new HashMap<>();
 
 		// JSON 결과 받아오기
-		String json = getUrlForJSON(CmmUtil.nvl(pDTO.getUrl()));
+		String json = getUrlForJSON(url);
 
 		// String 변수의 문자열을 json 형태의 데이터 구조로 변경하기 위한 객체를 메모리에 올림
 		JSONParser parser = new JSONParser();
@@ -75,12 +76,11 @@ public class GetPlayerVideoService extends AbstractgetUrlFordata  implements IGe
 			// 저장된 DTO를 리스트에 저장
 			rList.add(rDTO);
 		}
-		// Controller에 저장할 데이터 저장
-		rMap.put("res", rList);
 
 		log.info(this.getClass().getName() + ".getPlayerVideo end!");
-
-		return rMap;
+		
+		return rList;
 	}
+
 
 }

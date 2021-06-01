@@ -55,27 +55,4 @@ public class EPLDataController {
 		return playerInfo;
 	}
 	
-	@RequestMapping(value = "getEPLteamPlayerINFO")
-	@ResponseBody
-	public List<Map<String, Object>> getEPLteamPlayerINFO(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
-		log.info(this.getClass().getName() + ".getEPLteamPlayerINFO start!");
-		
-		//String url = request.getParameter("url");
-		String url = "https://www.premierleague.com/players/4495/Andreas-Christensen/stats";
-		
-		
-		List<Map<String, Object>> playerInfo= new LinkedList<Map<String, Object>>();
-		
-		playerInfo = epldataService.getEPLteamPlayerINFO(url);
-		
-		if(playerInfo ==null) {
-			playerInfo = new LinkedList<Map<String, Object>>();
-		}
-			
-		
-		log.info(this.getClass().getName() + ".getEPLteamPlayerINFO end!");
-
-		return playerInfo;
-	}
-	
 }

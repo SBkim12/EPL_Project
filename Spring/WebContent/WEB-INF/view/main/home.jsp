@@ -124,12 +124,69 @@
 			</div>
 		</div>
 		
+		<!-- 팀 하이라이트 영상 -->
+		<div class="site-blocks-vs site-section bg-light">
+			<div class="container" >
+				<div class="row mb-5">
+					<div class="col-md-12 text-center">
+						<h2 class="text-black">Latest Hilights</h2>
+					</div>
+				</div>
+				<div class="row" id="Team_Hilight">
+				</div>
+			</div>
+		</div>
+		
+            
+              
+                <img src="images/img_1.jpg" alt="Image" class="img-fluid">
+              </div>
+              <div class="text p-4">
+                <h2 class="h5 text-black"><a href="#">RealMad vs Striker Who Will Win?</a></h2>
+                <span class="text-uppercase date d-block mb-3"><small>By Colorlib • Sep 25, 2018</small></span>
+                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat beatae doloremque, ex corrupti perspiciatis.</p>
+              </div>
+            </div>
+          </div>
+		 	<!-- 유튜브 영상 조회 -->
+	<script>
+	$(function(){
+		$.ajax({
+			url : "RelatedVideo.do",
+			type : "post",
+			data : {"team" :  "<%=favorite_team%>"},
+			dataType : "json",
+			success : function(data) {
+				var resHTML = "";
+				$.each(data, function(idx, val) {
+					
+					console.log(val.video_id);
+					console.log(val.video_title);
+					console.log(val.video_thumbnails);
+					
+					resHTML += "<div class='col-md-6 col-lg-4'>";
+					resHTML += "<div class='post-entry'>";
+					resHTML += "<div class='image'>";
+					resHTML += "<figure>";
+					resHTML += "<img src='../resource/images/img_3.jpg' alt='Image Placeholder' class='img-fluid rounded'>";
+					resHTML += "<a href='https://youtu.be/lrqVko4_00M' class='play-button popup-vimeo'>;
+					resHTML += "<span class='icon-play'></span>";
+					resHTML += "</a></figure></div>";
+					resHTML += "<div class='text p-4'></div>";
+					resHTML += "</div></div>";
+				});
+				$("#Team_Hilight").append(resHTML);
+				
+			}	
+		});
+	});
+	</script>
 		
 		<!-- 리그 순위 테이블 -->
 		<div class="site-section block-13 bg-primary fixed overlay-primary bg-image"
 			style="background-image: url('../resource/images/EPL_Table.jpg'); background-position:center;background-origin: content-box;">
 
-			<div id="rank_table" class="container">
+			<div  class="container">
 				<div class="row mb-2">
 					<div class="col-md-12 text-center">
 						<img src="../resource/images/EPL_rank_logo.png" alt="Image" style="width:200px;">
@@ -151,10 +208,10 @@
 						</h6>
 					</div>
 					<div class="col-4 text-right">
-						<h6 class=""><%=season%></h6>
+						
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" id="rank_table">
 					<div class="table text-white">
 						<div class="table-row-head table-header">
 							<div class="table-row-column">순위</div>
@@ -208,12 +265,6 @@
 
 		</div>
 		
-		<div class="site-section">
-			<div class="container">
-				
-			</div>
-		</div>
-
 		<footer class="site-footer border-top">
 			
 		</footer>
@@ -302,31 +353,7 @@
 	
 	
 	
- <%--    
- 	<!-- 뉴스 조회 -->
-	<script>
-	$(function(){
-		$.ajax({
-			url : "mainNews.do",
-			type : "post",
-			data : {"team" :  "<%=favorite_team%>"},
-			dataType : "json",
-			success : function(data) {
-				var resHTML = "";
-				$.each(data, function(idx, val) {
-					resHTML += "<div class='site-blocks-cover overlay' style='background-image: url("+val.img +"' data-aos='fade' data-stellar-background-ratio='0.5'>"
-					resHTML += "<div class='container'><div class='row align-items-center justify-content-start'>";
-					resHTML +="<div class='col-md-6 text-center text-md-left' data-aos='fade-up' data-aos-delay='400'>";
-					resHTML +="<h1 class='bg-text-line'>"+ val.ko_title +"</h1>" ;
-					resHTML +="<p><a href='#' class='btn btn-primary btn-sm rounded-0 py-3 px-5'>Read More</a></p>";
-					resHTML +="</div></div></div></div>";
-				});
-				$(".home-slider").append(resHTML);
-			}	
-		});
-	});
-	</script>
-	 --%>
+
 	
 	<script src="../resource/js/main.js"></script>
 	<script>

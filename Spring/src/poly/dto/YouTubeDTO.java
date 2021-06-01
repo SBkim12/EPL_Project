@@ -5,19 +5,6 @@ public class YouTubeDTO {
 	private String video_title;
 	private String video_thumbnails;
 
-	// 호출 URL
-	private String url;
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	
-	
 	public String getVideo_id() {
 		return video_id;
 	}

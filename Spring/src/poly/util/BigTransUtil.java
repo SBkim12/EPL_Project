@@ -54,11 +54,16 @@ public class BigTransUtil {
 
 		// WebDriver 옵션 설정
 		ChromeOptions options = new ChromeOptions();
-		//options.addArguments("--start-maximized"); // 전체화면으로 실행
-		options.addArguments("headless");
+		options.addArguments("--headless");
+		options.addArguments("window-size=1400,1500");
 		options.addArguments("--disable-gpu");
-		options.addArguments("--disable-popup-blocking"); // 팝업 무시
-		options.addArguments("--disable-default-apps"); // 기본앱 사용안함
+		options.addArguments("--no-sandbox");
+		options.addArguments("start-maximized");
+		options.addArguments("enable-automation");
+		options.addArguments("--disable-infobars");
+		options.addArguments("--disable-dev-shm-usage");
+		options.addArguments("--disable-popup-blocking");
+		options.addArguments("--disable-default-apps"); 
 
 		// WebDriver 객체 생성
 		ChromeDriver driver = new ChromeDriver(options);

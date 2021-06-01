@@ -19,6 +19,4 @@ public interface IEPLdataService {
 
 	List<Map<String, Object>> getEPLteamPlayer(String team)throws Exception;
 
-	List<Map<String, Object>> getEPLteamPlayerINFO(String url)throws Exception;
-
 }

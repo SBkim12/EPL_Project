@@ -31,11 +31,13 @@ public class NewsController {
 	@Resource(name = "NewsService")
 	INewsService newsService;
 	
-	// 뉴스 업데이트(영국 0시 10분에 동작 => 한국시간 8시 10분에 동작)
-	@Scheduled(cron = "0 10 8 * * *")
+	// 뉴스 업데이트(영국 0시 30분에 동작 => 한국시간 8시 30분에 동작)
+	@Scheduled(cron = "0 30 8 * * *")
 	public void news_update_schedule() throws Exception {
 		log.info(this.getClass().getName() + ".newsUpdate start!");
-
+		
+		String starttime = poly.util.dateUtil.present_time;
+		
 		List<EPLDTO> rList = new ArrayList<EPLDTO>();
 
 		rList = epldataService.getEPLteam();
@@ -61,10 +63,15 @@ public class NewsController {
 			log.info("The Guardian 뉴스 업데이트 실패");
 		}
 		
+		String endtime = poly.util.dateUtil.present_time;
+		
+		log.info("start :: " +starttime);
+		log.info("end :: " +endtime);
+		log.info("뉴스 수집 날짜 :: "+ poly.util.dateUtil.today_month_day);
 
 		log.info(this.getClass().getName() + ".newsUpdate end!!");
 	}
-	
+
 	// 강제 업데이트 (DB에 url 없는 것들 추가 업데이트하는 걸로 추가 구현 할것)
 	@RequestMapping(value = "skySportsUpdate")
 	@ResponseBody

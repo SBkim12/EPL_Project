@@ -315,11 +315,17 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 		
 		log.info(this.getClass().getName() +".getEPLteamPlayer start");
 		
+		//시즌 아이디 구하기
+		String season_get_url = "https://www.premierleague.com/stats";
+		Document doc = Jsoup.connect(season_get_url).timeout(30000).get();
+		String season_url = doc.select("#mainContent > div.hasSideNav > nav > div > ul > li:nth-child(2) > a").attr("href").toString();
+		String season = season_url.substring(season_url.lastIndexOf("se="));
+		
 		String url = "https://www.premierleague.com/clubs";
 		
 		log.info(team);
 		//팀 목록 페이지 접속
-		Document doc = Jsoup.connect(url).timeout(30000).get();
+		doc = Jsoup.connect(url).timeout(30000).get();
 		
 		url = doc.select("div.indexSection > div > ul > li > a:contains("+team+")").get(0).attr("href").toString();
 		
@@ -347,8 +353,9 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 			Element player = it.next();
 			
 			
-			String player_url ="https://www.premierleague.com/"+player.select("a").attr("href").toString();
-			player_url = player_url.replace("overview", "squad");
+			String player_url ="https://www.premierleague.com"+player.select("a").attr("href").toString();
+			player_url = player_url.replace("overview", "stats");
+			player_url += "?"+season;
 			
 			String player_id = player.select("img").attr("data-player").toString();
 			String player_size = player.select("img").attr("data-size").toString();
@@ -406,50 +413,5 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 		return players;
 	}
 
-	@Override
-	public List<Map<String, Object>> getEPLteamPlayerINFO(String url) throws Exception {
-		log.info(this.getClass().getName() +".getEPLteamPlayerINFO start");
-		
-		//시즌 아이디 구하기
-		String season_get_url = "https://www.premierleague.com/stats";
-		Document doc = Jsoup.connect(season_get_url).timeout(30000).get();
-		String season_url = doc.select("#mainContent > div.hasSideNav > nav > div > ul > li:nth-child(2) > a").attr("href").toString();
-		String season = season_url.substring(season_url.lastIndexOf("se="));
-		
-		url += "?"+season;
-		
-		log.info(url);
-		//선수 상세 페이지 접속
-		doc = Jsoup.connect(url)
-				.timeout(30000)
-				.header("origin", "http://search.example.com") // same-origin-polycy 로 인한 설정
-		        .header("referer", "http://search.example.com") // same-origin-polycy 로 인한 설정
-		        .ignoreContentType(true) // json 받아오려면 타입무시를 해야하는듯?
-		        .get();
-		
-		Elements elem  = doc.select("span.allStatContainer");
-		Iterator<Element> it = elem.iterator();
-		
-		// Map를 담을 리스트
-		List<Map<String, Object>> player_datas = new LinkedList<Map<String, Object>>();
-		
-		while(it.hasNext()) {
-			Element player_data = it.next();
-			//정보 담을 Map
-			Map<String, Object> pMap = new LinkedHashMap<String, Object>();
-			
-			String key = player_data.attr("data-stat").toString();
-			
-			String value = player_data.text();
-			
-			pMap.put(key, value);
-			
-			player_datas.add(pMap);
-			
-			pMap=null;
-		}
-		
-		return player_datas;
-	}
 
 }
