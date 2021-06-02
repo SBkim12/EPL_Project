@@ -19,4 +19,6 @@ public interface IEPLdataService {
 
 	List<Map<String, Object>> getEPLteamPlayer(String team)throws Exception;
 
+	EPLDTO getkoname(String team)throws Exception;
+
 }

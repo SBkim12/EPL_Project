@@ -132,60 +132,17 @@
 						<h2 class="text-black">Latest Hilights</h2>
 					</div>
 				</div>
+				<!-- 영상이 들어가는 곳 -->
 				<div class="row" id="Team_Hilight">
+					
 				</div>
 			</div>
 		</div>
 		
-            
-              
-                <img src="images/img_1.jpg" alt="Image" class="img-fluid">
-              </div>
-              <div class="text p-4">
-                <h2 class="h5 text-black"><a href="#">RealMad vs Striker Who Will Win?</a></h2>
-                <span class="text-uppercase date d-block mb-3"><small>By Colorlib • Sep 25, 2018</small></span>
-                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat beatae doloremque, ex corrupti perspiciatis.</p>
-              </div>
-            </div>
-          </div>
-		 	<!-- 유튜브 영상 조회 -->
-	<script>
-	$(function(){
-		$.ajax({
-			url : "RelatedVideo.do",
-			type : "post",
-			data : {"team" :  "<%=favorite_team%>"},
-			dataType : "json",
-			success : function(data) {
-				var resHTML = "";
-				$.each(data, function(idx, val) {
-					
-					console.log(val.video_id);
-					console.log(val.video_title);
-					console.log(val.video_thumbnails);
-					
-					resHTML += "<div class='col-md-6 col-lg-4'>";
-					resHTML += "<div class='post-entry'>";
-					resHTML += "<div class='image'>";
-					resHTML += "<figure>";
-					resHTML += "<img src='../resource/images/img_3.jpg' alt='Image Placeholder' class='img-fluid rounded'>";
-					resHTML += "<a href='https://youtu.be/lrqVko4_00M' class='play-button popup-vimeo'>;
-					resHTML += "<span class='icon-play'></span>";
-					resHTML += "</a></figure></div>";
-					resHTML += "<div class='text p-4'></div>";
-					resHTML += "</div></div>";
-				});
-				$("#Team_Hilight").append(resHTML);
-				
-			}	
-		});
-	});
-	</script>
 		
 		<!-- 리그 순위 테이블 -->
 		<div class="site-section block-13 bg-primary fixed overlay-primary bg-image"
 			style="background-image: url('../resource/images/EPL_Table.jpg'); background-position:center;background-origin: content-box;">
-
 			<div  class="container">
 				<div class="row mb-2">
 					<div class="col-md-12 text-center">
@@ -262,7 +219,6 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 		
 		<footer class="site-footer border-top">
@@ -352,14 +308,53 @@
 	</script>
 	
 	
-	
+	<!-- 유튜브 영상 조회 -->
+	<script>
+	$(function(){
+		$.ajax({
+			url : "GetTeamHilights.do",
+			type : "post",
+			data : {"team" :  "<%=favorite_team%>"},
+			dataType : "json",
+			success : function(data) {
+				var resHTML = "";
+				$.each(data, function(idx, val) {
+					
+					var video_url = "https://www.youtube.com/watch?v="+val.video_id;
+					
+					resHTML += "<div class='col-md-6 col-lg-4 '>";
+					resHTML += "<div class='post-entry cursor-pointer'>";
+					resHTML += "<div class='block-16'>";
+					resHTML += "<figure name='"+video_url+"' onclick='fnOpenYoutube(this);'>";
+					resHTML += "<img src='"+val.video_thumbnails+"' alt='Image Placeholder' class='img-fluid rounded w-100'>";
+					resHTML += "<span class='play-button'>";
+					resHTML += "<span class='icon-play'></span>";
+					resHTML += "</span></figure></div>";
+					resHTML += "<div class='text-center p-1 mb-1'>"+val.video_title+"</div>";
+					resHTML += "</div></div>";
+				});
+				$("#Team_Hilight").append(resHTML);
+				
+			}	
+		});
+	});
+	</script>
 
-	
 	<script src="../resource/js/main.js"></script>
 	<script>
 	$(function(){
 		$(".home").addClass("active");
 	});
 	</script>
+	
+	<script>
+		function fnOpenYoutube(url){
+			var url = $(url).attr('name');
+			console.log(url);
+			
+			window.open(url, "_blank")
+		}
+		</script>
+	
 </body>
 </html>

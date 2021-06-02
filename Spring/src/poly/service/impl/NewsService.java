@@ -117,8 +117,8 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 						if (news_date.trim().equals("")) {
 							log.info("날짜 없어서 패스");
 							continue;
-						} else if (day.equals(dateUtil.today_day) && month.equals(dateUtil.today_month)) {
-							news_date = dateUtil.today;
+						} else if (day.equals(dateUtil.today_day()) && month.equals(dateUtil.today_month())) {
+							news_date = dateUtil.today();
 						} else {
 							log.info("오늘 기사 아님 => 뉴스 날짜  :: " + news_date);
 							continue;
@@ -230,7 +230,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		log.info("SkySports 뉴스 수집 완료!! 뉴스 개수 :: " + newsList.size());
 
 		// 컬렉션 명 설정	
-		String colNm = dateUtil.today_year_month + "_Sky_Sports";
+		String colNm = dateUtil.today_year_month() + "_Sky_Sports";
 
 		log.info("몽고DB 뉴스 입력");
 		int res = 0;
@@ -311,9 +311,9 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 					
 					// 주소를 통한 날짜 확인
 					String news_date = "";
-					String month_day = dateUtil.today_month_day; // month_day :: '/may/19/'의 형태
+					String month_day = dateUtil.today_month_day(); // month_day :: '/MMM/dd/'의 형태
 					if(newsUrl.contains(month_day)) {
-						news_date = dateUtil.today;
+						news_date = dateUtil.today();
 					}else {
 						log.info("오늘 기사 아님(위 url 확인)");
 						continue;
@@ -426,7 +426,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		log.info("The Guardians 뉴스 수집 완료!! 뉴스 개수 :: " + newsList.size());
 
 		// 컬렉션 명 설정
-		String colNm = dateUtil.today_year_month + "_The_Guardian";
+		String colNm = dateUtil.today_year_month() + "_The_Guardian";
 
 		log.info("몽고DB 뉴스 입력");
 		int res = 0;
@@ -447,7 +447,7 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		log.info(this.getClass().getName() + ".getMainNews start!");
 		
 		//collection 이름
-		String colNm = dateUtil.today_year_month+news;
+		String colNm = dateUtil.today_year_month()+news;
 		//뉴스개수
 		
 		List<Map<String, Object>> rList = newsMongoMapper.getNews(colNm, no, team);

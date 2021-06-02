@@ -20,4 +20,6 @@ public interface IEPLdataMapper {
 
 	EPLDTO getTeamLogo(String favorite_team);
 
+	EPLDTO getKoname(String team);
+
 }

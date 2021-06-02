@@ -20,6 +20,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import net.bytebuddy.asm.Advice.This;
 import poly.dto.EPLDTO;
 import poly.persistance.mapper.IEPLdataMapper;
 import poly.service.IEPLdataService;
@@ -329,7 +330,7 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 		
 		url = doc.select("div.indexSection > div > ul > li > a:contains("+team+")").get(0).attr("href").toString();
 		
-		url ="https://www.premierleague.com/"+url.replace("overview", "squad");
+		url ="https://www.premierleague.com"+url.replace("overview", "squad");
 		
 		log.info(url);
 		
@@ -411,6 +412,16 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 
 		log.info(this.getClass().getName() + ".getEPLteamPlayer End!");
 		return players;
+	}
+
+	@Override
+	public EPLDTO getkoname(String team) throws Exception {
+		log.info(this.getClass().getName() + ".getkoname start!");
+
+		EPLDTO qDTO = epldataMapper.getKoname(team);
+
+		log.info(this.getClass().getName() + ".getkoname start!");
+		return qDTO;
 	}
 
 

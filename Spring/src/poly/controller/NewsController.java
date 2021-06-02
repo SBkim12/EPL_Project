@@ -1,6 +1,7 @@
 package poly.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,11 +33,11 @@ public class NewsController {
 	INewsService newsService;
 	
 	// 뉴스 업데이트(영국 0시 30분에 동작 => 한국시간 8시 30분에 동작)
-	@Scheduled(cron = "0 30 8 * * *")
+	@Scheduled(cron = "0 10 8 * * *")
 	public void news_update_schedule() throws Exception {
 		log.info(this.getClass().getName() + ".newsUpdate start!");
 		
-		String starttime = poly.util.dateUtil.present_time;
+		String start = poly.util.dateUtil.hh_mm_ss();
 		
 		List<EPLDTO> rList = new ArrayList<EPLDTO>();
 
@@ -63,11 +64,11 @@ public class NewsController {
 			log.info("The Guardian 뉴스 업데이트 실패");
 		}
 		
-		String endtime = poly.util.dateUtil.present_time;
+		String end = poly.util.dateUtil.hh_mm_ss();
 		
-		log.info("start :: " +starttime);
-		log.info("end :: " +endtime);
-		log.info("뉴스 수집 날짜 :: "+ poly.util.dateUtil.today_month_day);
+		log.info(start + " ~ " + end);
+		
+		log.info("뉴스 수집 날짜 :: "+ poly.util.dateUtil.today_month_day());
 
 		log.info(this.getClass().getName() + ".newsUpdate end!!");
 	}
@@ -165,9 +166,6 @@ public class NewsController {
 		log.info(this.getClass().getName() + ".mainNews End!");
 		return rList;
 	}
-	
-	
-	
 	
 	
 }

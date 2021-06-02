@@ -13,7 +13,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import poly.dto.EPLDTO;
 import poly.dto.YouTubeDTO;
+import poly.service.IEPLdataService;
 import poly.service.IGetYoutubeDataService;
 
 @Controller
@@ -24,19 +26,26 @@ public class GetYouTubeController {
 	@Resource(name = "GetYoutubeDataService")
 	IGetYoutubeDataService getYoutubeDataService;
 	
+	@Resource(name = "EPLdataService")
+	IEPLdataService epldataService;
 	
-	@RequestMapping(value = "RelatedVideo")
+	
+	@RequestMapping(value = "GetTeamHilights")
 	@ResponseBody
-	public List<YouTubeDTO> RelatedVideo(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
-		log.info("get RelatedVideo start");
+	public List<YouTubeDTO> GetTeamHilights(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+		log.info("GetTeamHilights start");
 			
 		
-		String team = request.getParameter("team").trim().replaceAll(" ", "+");
+		String team = request.getParameter("team").trim();
 		
-		//영문 , 한글 팀명 모두 입력 할것
+		// 한국 유튜브 채널이므로 한글만 입력해서 정확도 올리기
+		EPLDTO rDTO = epldataService.getkoname(team);
+		
+		String ko_name = rDTO.getKo_name().trim();
 		
 		//검색 내용
-		String search = "Chelsea+FC+첼시";
+		String search = ((ko_name+" "+team).replaceAll(" FC", "").trim()).replaceAll(" ", "+");
+		log.info("검색 값 :: "+search);
 		//Youtube Data API KEy
 		String key = "AIzaSyDdn4XkqugGpv7pmDGIj8jOilkDzHmqES8";
 		// 검색 갯수
@@ -53,7 +62,7 @@ public class GetYouTubeController {
 		List<YouTubeDTO> rList = getYoutubeDataService.GetTeamVideo(url);
 		
 		
-		log.info(this.getClass().getName() + ".RelatedVideo end!");
+		log.info(this.getClass().getName() + ".GetTeamHilights end!");
 		return rList;
 	}
 	

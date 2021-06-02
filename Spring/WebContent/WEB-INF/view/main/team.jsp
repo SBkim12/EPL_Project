@@ -115,6 +115,21 @@
 				
 			</div>
 		</div>
+		
+		<!-- 팀 하이라이트 영상 -->
+		<div class="site-blocks-vs site-section bg-light">
+			<div class="container" >
+				<div class="row mb-5">
+					<div class="col-md-12 text-center">
+						<h2 class="text-black">Latest Hilights</h2>
+					</div>
+				</div>
+				<!-- 영상이 들어가는 곳 -->
+				<div class="row" id="Team_Hilight">
+					
+				</div>
+			</div>
+		</div>
 
 		<footer class="site-footer border-top"> 
 		</footer>
@@ -319,8 +334,41 @@
 			$(function() {
 				$(".teams").addClass("active");
 			});
-		</script>
-		<script src="../resource/js/main.js"></script>
+	</script>
+	<script src="../resource/js/main.js"></script>
+	<!-- 유튜브 영상 조회 -->
+	<script>
+	$(function(){
+		$.ajax({
+			url : "GetTeamHilights.do",
+			type : "post",
+			data : {"team" :  "<%=selected_team%>"},
+			dataType : "json",
+			success : function(data) {
+				var resHTML = "";
+				$.each(data, function(idx, val) {
+					
+					var video_url = "https://www.youtube.com/watch?v="+val.video_id;
+					
+					resHTML += "<div class='col-md-6 col-lg-4 '>";
+					resHTML += "<div class='post-entry cursor-pointer'>";
+					resHTML += "<div class='block-16'>";
+					resHTML += "<figure name='"+video_url+"' onclick='fnOpenYoutube(this);'>";
+					resHTML += "<img src='"+val.video_thumbnails+"' alt='Image Placeholder' class='img-fluid rounded w-100'>";
+					resHTML += "<span class='play-button'>";
+					resHTML += "<span class='icon-play'></span>";
+					resHTML += "</span></figure></div>";
+					resHTML += "<div class='text-center p-1 mb-1'>"+val.video_title+"</div>";
+					resHTML += "</div></div>";
+				});
+				$("#Team_Hilight").append(resHTML);
+				
+			}
+
+		});
+	});
+	</script>
+		
 
 </body>
 </html>

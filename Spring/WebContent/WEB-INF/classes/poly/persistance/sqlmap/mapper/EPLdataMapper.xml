@@ -145,4 +145,14 @@
 		TEAM_NAME = #{favorite_team}
 	</select>
 	
+	<!-- 한국 이름 가져오기 -->
+	<select id="getKoname" parameterType="String" resultType="EPLDTO">
+	SELECT
+		KO_NAME
+	FROM
+		EPL_TEAMS
+	WHERE
+		TEAM_NAME = #{team}
+	</select>
+	
 </mapper>
