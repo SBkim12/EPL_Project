@@ -118,102 +118,64 @@
 		</div>
 	</div>
 
-	<div id="myModal" class="modal">
-		<!-- Modal content -->
-		<div class="modal-content">
-			<div class="modal-header">
-				<p style="text-align: center;">
-					<span style="font-size: 14pt;"><b><span
-							style="font-size: 24pt;">Get new password</span></b></span>
-				</p>
-				<button type="button" class="close" onClick="close_pop();">
-					<i class="fas fa-times"></i>
-				</button>
-			</div>
-			<br> <br>
-			<div class="row p-l-30 p-r-30">
-				<input class="input100" type="text" name="email" id="target_mail"
-					placeholder="enter Email" style="width: 100%">
-			</div>
-			<p>
-				<br />
-			</p>
-			<div onClick="send();"
-				style="cursor: pointer; background-color: #ACF6CA; text-align: center; padding-bottom: 10px; padding-top: 10px; margin: 0 20%; border-radius: 15px;">
-				<span>Get Password&nbsp&nbsp<i class="far fa-paper-plane"></i></span>
-			</div>
-		</div>
-	</div>
-
 
 	<script type="text/javascript">
 	
-		//팝업 Open 기능
-		function open_pop() {
-			$('#myModal').show();
-		};
-		
-		//팝업 Close 기능
-		function close_pop(flag) {
-			$('#myModal').hide();
-		};
 		
 		//mail 알림창
-		(function mail(){
-			swal({
-				  text: 'Get new password\nPlease insert Email Address',
-				  content: "input",
-				  button: {
-				    text: "Email",
-				    closeModal: false,
-				  },
-				}).then(Email => {
-					if(!Email)throw null;
-				
-					return send(Email);
-				}).then(result => {
-					if(result==0){
-						swal("Fail", "등록되지 않은 Email입니다.", "warning");
-					}else if(result==1){
-						swal("Success", "Please check your Email", "success");
-					}else if(result==2){
-						swal("Fail", "메일 발송을 실패했습니다.", "warning");
-					}else{
-						swal("Fail", "비밀번호 변경을 실패했습니다.", "warning");
-					}
-				})
-				
-		})
-		
-		//임시 비밀번호 전송 -- 알림창 수정 필요
-		function send(Email){
-			/* var email = $('#target_mail').val().trim(); */
-			var email = Email;
-			if(email.match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
-				return alert("올바른 이메일을 입력해주세요");
-			}
-			
-			
-			
-			$.ajax({
-				url : "sendNewPwdProc.do",
-				type : "post",
-				data : {"email" : email},
-				success : function(data) {
-					if (data == 0) {
-						alert("회원정보가 없는 이메일 입니다.");	
-					}else if(data== 1){
-						alert("임시 비밀번호가 발송 되었습니다.");
-						close_pop();
-					}else if(data == 2){
-						alert("임시 비밀번호 발송에 실패했습니다.");
-					}else{
-						alert("전산에 오류로 임시 비밀번호 변경을 실패했습니다.");
-					}
-				}}); // ajax 끝
 
+
+		function open_pop() {
+			Swal.fire({
+				title : 'Get new password\nPlease insert Email Address',
+				input : 'email',
+				showCancelButton : true,
+				confirmButtonText : 'Submit',
+				showLoaderOnConfirm : true,
+			}).then(function(data) {
+				if (data.isConfirmed) {
+					var email = data.value;
+					$.ajax({
+						type : "POST",
+						url : "sendNewPwdProc.do",
+						dataType : "json",
+						data : {
+							"email" : email
+						},
+						success : function(data) {
+							console.log(data)
+							if (data == 0) {
+								Swal.fire({
+									icon : 'error',
+									title : 'Oops...',
+									text : '회원정보가 없는 이메일 입니다!',
+								});
+							} else if (data == 1) {
+								Swal.fire({
+									icon : 'success',
+									title : '임시 비밀번호가 발송 되었습니다.',
+									showConfirmButton : false,
+									timer : 1000
+								})
+							} else if (data == 2) {
+								Swal.fire({
+									icon : 'error',
+									title : 'Oops...',
+									text : '임시 비밀번호 발송에 실패했습니다!',
+								});
+							} else {
+								Swal.fire({
+									icon : 'error',
+									title : 'Oops...',
+									text : '전산에 오류로 임시 비밀번호 변경을 실패했습니다!',
+								});
+							}
+
+						}
+					});
+				}
+			});
 		}
-		
 	</script>
 	<!--  알림 javascript -->
 	<script src="../resource/js/sweetalert.min.js"></script>

@@ -166,6 +166,31 @@ public class NewsController {
 		log.info(this.getClass().getName() + ".mainNews End!");
 		return rList;
 	}
+	@RequestMapping(value = "GetTeamNews")
+	@ResponseBody
+	public List<Map<String, Object>> GetTeamNews(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+		log.info(this.getClass().getName() + ".GetTeamNews start!");
+		
+		//팀 값을 넘겨주는 경우 그 팀에 관한 뉴스 표시, 넘겨주지 않는 경우 유저 정보의 최애팀 뉴스 표시
+		String team = request.getParameter("team")==null ? session.getAttribute("favorite_team").toString() : request.getParameter("team");
+		
+		if (team.endsWith("FC")) {
+			team = team.substring(0, team.lastIndexOf("FC") - 1).trim();
+		}
+		log.info("team :: " +team);
+		
+		
+		String news = "_Sky_Sports";
+		
+		List<Map<String, Object>> rList = newsService.getTeamNews(team, news);
+		
+		news = "_The_Guardian";
+		
+		rList.addAll(newsService.getTeamNews(team, news));
+		
+		log.info(this.getClass().getName() + ".GetTeamNews End!");
+		return rList;
+	}
 	
 	
 }

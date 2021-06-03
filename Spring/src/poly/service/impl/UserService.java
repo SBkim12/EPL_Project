@@ -41,6 +41,24 @@ public class UserService implements IUserService{
 		return userMapper.changePwd(uDTO);
 	}
 
+	@Override
+	public MemberDTO pwdCheck(MemberDTO uDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return userMapper.pwdCheck(uDTO);
+	}
+
+	@Override
+	public int ChangeMyteam(MemberDTO uDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return userMapper.ChangeMyteam(uDTO);
+	}
+
+	@Override
+	public int ChangeMyName(MemberDTO uDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return userMapper.ChangeMyName(uDTO);
+	}
+
 
 	
 }

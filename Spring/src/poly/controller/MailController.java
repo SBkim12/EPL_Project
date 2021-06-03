@@ -72,7 +72,7 @@ public class MailController {
 			result = 1;
 		} else {
 			log.info(this.getClass().getName() + "mail.sendMail fail");
-			result = 2;
+			return 2;
 		}
 		
 		log.info("비밀 번호 암호화");

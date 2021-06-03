@@ -302,7 +302,7 @@
 		let team_id = $(team).children("div.hidden")[1].innerHTML;
 		console.log(team_id);	
 		
-		$("#"+team_id).submit();
+		$("."+team_id)[0].submit();
 	}
 	
 	</script>

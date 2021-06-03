@@ -224,7 +224,128 @@ public class UserController {
 		log.info("idCheck end");
 		return res;
 	}
+	
+	// PWD Check
+	@RequestMapping(value = "/pwdCheck", method = RequestMethod.POST)
+	@ResponseBody
+	public int pwdCheck(HttpServletRequest request,  HttpSession session) throws Exception {
+		log.info("pwdCheck start");
+		MemberDTO uDTO = new MemberDTO();
+		
+		String member_pwd = request.getParameter("member_pwd");
+		String member_id =  session.getAttribute("member_id").toString();
+		
+		log.info("비밀 번호 암호화");
+		String HashEnc = EncryptUtil.enHashSHA256(member_pwd);
+		uDTO.setMember_pwd(HashEnc);
+		uDTO.setMember_id(member_id);
+		
+		log.info("userService.pwdCheck Start");
+		MemberDTO pwdCheck = userService.pwdCheck(uDTO);
+		log.info("userService.pwdCheck End");
+		
+		int res = 0;
 
+		log.info("id 확인");
+		if (pwdCheck != null) {
+			log.info("값이 있음");
+			res = 1;
+		}
+		log.info("result : " + res);
+
+		log.info("pwdCheck end");
+		return res;
+	}
+	
+	// PWD Change
+	@RequestMapping(value = "/changePwd", method = RequestMethod.POST)
+	@ResponseBody
+	public int changePwd(HttpServletRequest request, HttpSession session) throws Exception {
+		log.info("changePwd start");
+		
+		MemberDTO uDTO = new MemberDTO();
+		
+		String member_pwd = request.getParameter("member_pwd");
+		String member_id =  session.getAttribute("member_id").toString();
+		
+		log.info("비밀 번호 암호화");
+		String HashEnc = EncryptUtil.enHashSHA256(member_pwd);
+		uDTO.setMember_pwd(HashEnc);
+		uDTO.setMember_id(member_id);
+		
+		log.info("userService.changePwd Start");
+		int res = userService.changePwd(uDTO);
+		log.info("userService.changePwd End");
+
+		if (res != 0) {
+			log.info("비밀번호 변경 성공");
+			res = 1;
+		}
+		log.info("result : " + res);
+
+		log.info("changePwd end");
+		return res;
+	}
+	// ChangeMyteam
+	@RequestMapping(value = "/ChangeMyteam", method = RequestMethod.POST)
+	@ResponseBody
+	public int ChangeMyteam(HttpServletRequest request, HttpSession session) throws Exception {
+		log.info("ChangeMyteam start");
+		
+		MemberDTO uDTO = new MemberDTO();
+		
+		String favorite_team = request.getParameter("favorite_team");
+		String member_id =  session.getAttribute("member_id").toString();
+		EPLDTO team = epldataService.getTeamLogo(favorite_team);
+		String team_logo = team.getLogo();
+		
+		uDTO.setMember_id(member_id);
+		uDTO.setFavorite_team(favorite_team);
+		uDTO.setTeam_logo(team_logo);
+		
+		log.info("userService.changePwd Start");
+		int res = userService.ChangeMyteam(uDTO);
+		log.info("userService.changePwd End");
+		
+		if (res != 0) {
+			log.info("최애팀 변경 성공");
+			res = 1;
+			session.setAttribute("favorite_team", favorite_team);
+			session.setAttribute("team_logo", team_logo);
+		}
+		log.info("result : " + res);
+		
+		log.info("ChangeMyteam end");
+		return res;
+	}
+	// PWD Check
+	@RequestMapping(value = "/ChangeMyName", method = RequestMethod.POST)
+	@ResponseBody
+	public int ChangeMyName(HttpServletRequest request, HttpSession session) throws Exception {
+		log.info("ChangeMyName start");
+		
+		MemberDTO uDTO = new MemberDTO();
+		
+		String member_name = request.getParameter("member_name");
+		String member_id =  session.getAttribute("member_id").toString();
+		uDTO.setMember_id(member_id);
+		uDTO.setMember_name(member_name);
+		
+		log.info("userService.ChangeMyName Start");
+		int res = userService.ChangeMyName(uDTO);
+		log.info("userService.ChangeMyName End");
+		
+		if (res != 0) {
+			log.info("이름 변경 성공");
+			res = 1;
+			session.setAttribute("member_name", member_name);
+		}
+		log.info("result : " + res);
+		
+		log.info("ChangeMyName end");
+		return res;
+	}
+	
 
 	@RequestMapping("/callback")
 	public ModelAndView callback() {

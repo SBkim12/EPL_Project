@@ -15,5 +15,11 @@ public interface IUserMapper {
 	MemberDTO reLoginInfo(MemberDTO uDTO);
 
 	int changePwd(MemberDTO uDTO);
+
+	MemberDTO pwdCheck(MemberDTO uDTO);
+
+	int ChangeMyteam(MemberDTO uDTO);
+
+	int ChangeMyName(MemberDTO uDTO);
 	
 }

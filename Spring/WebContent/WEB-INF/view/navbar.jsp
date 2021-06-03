@@ -54,7 +54,7 @@
 			<div class="row align-items-center">
 				<div class="col-6 col-md-3 text-left">
 					<div class="d-inline-block">
-						<a href="#" class="text-secondary px-2 pl-0"> <span
+						<a href="/home.do" class="text-secondary px-2 pl-0"> <span
 							id="favorite_team"> <%=favorite_team%>
 						</span>
 						</a>
@@ -91,8 +91,20 @@
 			</div>
 
 			<ul class="site-menu js-clone-nav d-none d-md-block">
-				<li class="home"><a href="/home.do">Home</a></li>
-				<li><a href="/teams.do" class="News">News</a></li>
+				<li class="home"><a href="/home.do" >Home</a></li>
+				<li class="has-children myINfo"><a href="#">myInfo</a>
+					<ul class="dropdown arrow-top">
+						<li>
+							<li><a href="javascript:changePassword();">Change Password</a></li>
+							<li class="has-children"><a href="#">Change myInfo</a>
+								<ul class="dropdown">
+									<li><a href="javascript:changeMyTeam();">My FavoriteTeam</a></li>
+									<li><a href="javascript:changeMyName();">My name</a></li>
+								</ul>
+							</li>
+						</li>
+					</ul>
+				</li>
 				<li class="has-children teams"><a href="javascript:fnMove();">Teams</a>
 					<ul class="dropdown arrow-top">
 						<%
@@ -101,7 +113,7 @@
 							EPLDTO team = teams.next();
 						%>
 						<li>
-							<form id="<%=team.getTeam_id()%>" action="/team.do" method="post">
+							<form class="<%=team.getTeam_id()%>" action="/team.do" method="post">
 								<input type="hidden" name="team_name"
 									value="<%=team.getTeam_name()%>"> <input type="hidden"
 									name="team_logo" value="<%=team.getLogo()%>">
@@ -114,8 +126,9 @@
 						<%
 						}
 						%>
-					</ul></li>
-				<li><a href="about.html" class="myINfo">myInfo</a></li>
+					</ul>
+				</li>
+				<li class="News"><a href="/news.do" >News</a></li>	
 				<li><a href="/Logout.do">LogOut</a></li>
 			</ul>
 		</div>
@@ -132,5 +145,162 @@ function fnMove() {
 		$('html, body').animate({scrollTop : offset.top}, 400);
 	}
 }
+
+	function changePassword() {
+		Swal.fire({
+			title : 'Check your Password',
+			input : 'password',
+			showCancelButton : true,
+			confirmButtonText : 'Check',
+			showLoaderOnConfirm : true,
+		}).then(function(data) {
+			var member_pwd = data.value;
+			if (data.isConfirmed) {
+				$.ajax({
+					type : "POST",
+					url : "pwdCheck.do",
+					dataType : "json",
+					data : {
+						"member_pwd" : member_pwd
+					},
+					success : function(data) {
+						console.log(data)
+						if (data == 0) {
+							Swal.fire({
+								icon : 'error',
+								title : 'Oops...',
+								text : '비밀번호가 일치하지 않습니다!',
+							});
+						} else if (data == 1) {
+							Swal.fire({
+								title : 'Make New Password',
+								input : 'password',
+								showCancelButton : true,
+								confirmButtonText : 'Confirm',
+								showLoaderOnConfirm : true,
+							}).then(function(data) {
+								if (data.isConfirmed) {
+									var member_pwd = data.value;
+									$.ajax({
+										type : "POST",
+										url : "changePwd.do",
+										dataType : "json",
+										data : {
+											"member_pwd" : member_pwd
+										},
+										success : function(data) {
+											console.log(data)
+											if (data == 0) {
+												Swal.fire({
+													icon : 'error',
+													title : 'Oops...',
+													text : '비밀번호 변경 실패했습니다.!',
+												});
+											} else if (data == 1) {
+												Swal.fire({
+													icon : 'success',
+													title : '비밀번호 변경 성공했습니다.',
+													showConfirmButton : false,
+													timer : 1000
+												})
+											}
+
+										}
+									});
+								}
+							})
+						}
+					}
+				})
+			}
+		})
+	}
+
+	function changeMyTeam() {
+		Swal.fire({
+			title : 'Change My Favorite Team',
+			input : 'select',
+			inputOptions:{
+				<%
+				teams = mList.iterator();
+				while (teams.hasNext()) {
+					EPLDTO team = teams.next();
+				%>
+				'<%=team.getTeam_name()%>': '<%=team.getKo_name()%>',
+				<%}%>
+			},
+			inputPlaceholder: 'Select Your team',
+			showCancelButton: true,
+			confirmButtonText : 'Change',
+			showLoaderOnConfirm : true,
+		}).then(function(data) {
+			var team_name = data.value;
+			if (data.isConfirmed) {
+				$.ajax({
+					type : "POST",
+					url : "ChangeMyteam.do",
+					dataType : "json",
+					data : {
+						"favorite_team" : team_name
+					},success : function(data) {
+						console.log(data)
+						if (data == 0) {
+							Swal.fire({
+								icon : 'error',
+								title : 'Oops...',
+								text : '팀 변경 실패했습니다.!',
+							});
+						} else if (data == 1) {
+							Swal.fire({
+								icon : 'success',
+								title : '팀 변경 성공했습니다.',
+								showConfirmButton : false,
+								timer : 1000
+							})
+						}
+
+					}
+				})
+			}
+		})
+	}
+	function changeMyName() {
+		Swal.fire({
+			title : 'Change Your Name',
+			input : 'text',
+			showCancelButton : true,
+			confirmButtonText : 'Change',
+			showLoaderOnConfirm : true,
+		}).then(function(data){
+			var my_name = data.value;
+			if (data.isConfirmed) {
+				$.ajax({
+					type : "POST",
+					url : "ChangeMyName.do",
+					dataType : "json",
+					data : {
+						"member_name" : my_name
+					},success : function(data) {
+						console.log(data)
+						if (data == 0) {
+							Swal.fire({
+								icon : 'error',
+								title : 'Oops...',
+								text : '이름 변경 실패했습니다.!',
+							});
+						} else if (data == 1) {
+							Swal.fire({
+								icon : 'success',
+								title : '이름 변경 성공했습니다.',
+								showConfirmButton : false,
+								timer : 1000
+							})
+						}
+
+					}
+				})
+			}
+		})
+	}
 </script>
 

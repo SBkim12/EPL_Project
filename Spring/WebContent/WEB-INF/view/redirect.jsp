@@ -25,10 +25,6 @@ $(document).ready(function confirm(){
 	      }
 	    });
 })
-<%-- 
-alert("<%=msg %>")
-location.href = "<%=url %>"
- --%>
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>redirect</title>

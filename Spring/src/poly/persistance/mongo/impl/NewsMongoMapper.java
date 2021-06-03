@@ -153,5 +153,77 @@ public class NewsMongoMapper extends AbstractMongoDBComon implements INewsMongoM
 		log.info(this.getClass().getName() + ".getNews End!");
 		return rList;
 	}
+
+	@Override
+	public List<Map<String, Object>> getTeamNews(String colNm, String team) throws Exception {
+log.info(this.getClass().getName() + ".getNews End!");
+		
+		List<Map<String, Object>> rList = new LinkedList<Map<String,Object>>();
+		
+		
+		
+		//몽고DB 조회 쿼리
+		List<? extends Bson> pipeline = Arrays.asList(
+                new BasicDBObject()
+                        .append("$match", new BasicDBObject()
+                                .append("teams.team_name", team)
+                        ), 
+                new BasicDBObject()
+                        .append("$project", new BasicDBObject()
+                                .append("_id", 0.0)
+                                .append("url", 1.0)
+                                .append("ko_title", 1.0)
+                                .append("date", 1.0)
+                                .append("img", 1.0)
+                                .append("ko_contents", 1.0)
+                        ), 
+                new BasicDBObject()
+                        .append("$sort", new BasicDBObject()
+                                .append("date", -1.0)
+                        )
+        );
+		
+		MongoCollection<Document> col = mongodb.getCollection(colNm);
+		AggregateIterable<Document> rs = col.aggregate(pipeline).allowDiskUse(true);
+		Iterator<Document> cursor = rs.iterator();
+		
+         while (cursor.hasNext()) {
+				Document doc = cursor.next();
+
+				if (doc == null) {
+					doc = new Document();
+				}
+				
+				List<String> list = new ArrayList<>();
+				list.add("abc");
+				
+				String url = CmmUtil.nvl(doc.getString("url"));
+				String ko_title = CmmUtil.nvl(doc.getString("ko_title"));
+				String date = CmmUtil.nvl(doc.getString("date"));
+				String img = CmmUtil.nvl(doc.getString("img"));
+				List<String> ko_contents = (List<String>)doc.get("ko_contents");
+				
+				Map<String, Object> rMap = new LinkedHashMap<String, Object>();
+				
+				rMap.put("url", url);
+				rMap.put("ko_title", ko_title);
+				rMap.put("date", date);
+				rMap.put("img", img);
+				rMap.put("ko_contents", ko_contents);
+				
+				rList.add(rMap);
+				
+				rMap = null;
+				doc = null;
+         }
+		
+		cursor = null;
+		rs = null;
+		col = null;
+		pipeline= null;
+		
+		log.info(this.getClass().getName() + ".getNews End!");
+		return rList;
+	}
 	
 }

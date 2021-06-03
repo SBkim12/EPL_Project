@@ -33,24 +33,26 @@
 	</select>
 	
 	<!-- 회원 가입 -->
-	<insert id="userSignUp" parameterType="MemberDTO" >
+	<insert id="userSignUp"  parameterType="MemberDTO" >
 	INSERT INTO 
 		MEMBER_DATA(
 		MEMBER_ID,  
 		MEMBER_PWD,  
 		MEMBER_NAME, 
 		MEMBER_POINT,
-		FAVORITE_TEAM 
+		FAVORITE_TEAM,
+		TEAM_LOGO
 		)VALUES(
 		#{member_id},
 		#{member_pwd},
 		#{member_name},
 		0,
-		#{favorite_team}
+		#{favorite_team},
+		#{team_logo}
 		)
 	</insert>
 	
-	<update id="changePwd" parameterType="MemberDTO" >
+	<update id="changePwd" parameterType="MemberDTO"  >
 	UPDATE 
 		MEMBER_DATA
 	SET
@@ -58,6 +60,35 @@
 	WHERE
 		MEMBER_ID = #{member_id} 
 	</update>
+	
+	<update id="ChangeMyteam" parameterType="MemberDTO"  >
+	UPDATE 
+		MEMBER_DATA
+	SET
+		FAVORITE_TEAM = #{favorite_team},
+		TEAM_LOGO = #{team_logo}
+	WHERE
+		MEMBER_ID = #{member_id} 
+	</update>
+	
+	<update id="ChangeMyName" parameterType="MemberDTO"  >
+	UPDATE 
+		MEMBER_DATA
+	SET
+		MEMBER_NAME = #{member_name}
+	WHERE
+		MEMBER_ID = #{member_id} 
+	</update>
+	
+	<select id="pwdCheck" parameterType="MemberDTO" resultType="MemberDTO">
+	SELECT
+		*
+	FROM
+		MEMBER_DATA
+	WHERE
+		MEMBER_PWD = #{member_pwd} and
+		MEMBER_ID = #{member_id}
+	</select>
 	
 	
 </mapper>

@@ -20,13 +20,11 @@ List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 <head>
 <link rel="shortcut icon" href="../resource/images/icons/favicon.ico"
 	type="image/vnd.microsoft.icon">
-<title>EPL news</title>
+<title>MyInfo</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<style>
 
-</style>
 <!-- 로딩 창 -->
 <script src="../resource/js/loading.js"></script>
 
@@ -55,35 +53,14 @@ List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 		<!-- 내비 바 -->
 		<jsp:include page="../navbar.jsp"></jsp:include>
 
-		
-		<div class="site-section bg-light">
+
+		<!-- 일단 대기 -->
+		<div class="site-blocks-vs site-section bg-light">
 			<div class="container">
-				<div class="row">
-					<%
-					Iterator<EPLDTO> teams = mList.iterator();
-					while (teams.hasNext()) {
-						EPLDTO team = teams.next();
-					%>
-					<div class="mb-1 mb-lg-0 col-3 col-md-2 col-lg-1 text-center p-0">
-						<div class="player mb-2">
-							<img src="<%=team.getLogo()%>" name="<%=team.getTeam_name()%>" alt="Image" class="img-fluid image rounded-circle btn p-2" onclick='fnSearchNews(this);'>
-						</div>
-					</div>
-					<%
-					}
-					%>
-				</div>
-				<hr/>
-				<div class="text-center">
-					<h2 id="team_name">Select Team!</h2>
-				</div>
-				<hr/>
-				<div class="row" id="news">
-				</div>
+				<i class="flag flag-germany"></i>
+				<i class="germany flag"></i>
 			</div>
 		</div>
-		
-
 
 		<footer class="site-footer border-top"> </footer>
 	</div>
@@ -107,45 +84,8 @@ List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 	
 	<script>
 		$(function() {
-			$(".News").addClass("active");
+			$(".MyInfo").addClass("active");
 		});
-	</script>
-	
-	<!-- 뉴스 조회 -->
-	<script>
-	function fnSearchNews(team){
-		var team = $(team).attr('name');
-		$("#team_name").text(team);
-		$.ajax({
-			url : "GetTeamNews.do",
-			type : "post",
-			data : {"team": team},
-			dataType : "json",
-			success : function(data) {
-				$("#news").children().remove();
-				var resHTML = "";
-				$.each(data, function(idx, val) {
-					var contents = val.ko_contents[0].substring(0,40)+"...";
-					resHTML += "<div class='col-md-6 col-lg-4 '>";
-					resHTML += "<div class='post-entry cursor-pointer'>";
-					resHTML += "<div class='image'>";
-					resHTML += "<img src='"+val.img+"' alt='Image' class='img-fluid'>";
-					resHTML += "</div>";
-					resHTML += "<div class='text p-4'>";
-					resHTML += "<h2 class='h5 text-black'>"+val.ko_title+"</h2>";
-					resHTML += "<span class='text-uppercase date d-block mb-3'><small>"+val.date+"</small></span>";
-					resHTML += "<p class='mb-0'>"+contents+"</p>";
-					resHTML += "</div></div></div>";
-				});
-				$("#news").append(resHTML);
-			},beforeSend:function(){
-		        $('#loading_layer').css("display", "flex");
-		    },complete:function(){
-		        $('#loading_layer').css("display", "none");
-		    }
-
-		});
-	}
 	</script>
 
 

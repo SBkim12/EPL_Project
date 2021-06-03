@@ -138,6 +138,9 @@
 	<!-- player_modal -->
 	<div class="modal fade modal-xl" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="player_modal" style="z-index:2000;">
     	<div class="modal-dialog modal-lg">
+    		<div class="modal-header">
+          			<button type="button" class="close cursor-pointer" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+			</div>
       		<div class="modal-content" style="font-family: 'Stylish', sans-serif;">
         		<iframe id="iframe" name="iframe" src="" 
         		style="width:100%; height:2000px;"  frameborder=0 framespacing=0	marginheight=0 marginwidth=0 vspace=0 scrolling=no></iframe>

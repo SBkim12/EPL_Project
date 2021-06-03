@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -448,7 +449,6 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		
 		//collection 이름
 		String colNm = dateUtil.today_year_month()+news;
-		//뉴스개수
 		
 		List<Map<String, Object>> rList = newsMongoMapper.getNews(colNm, no, team);
 		
@@ -464,6 +464,30 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		log.info("뉴스 개수 :: "+rList.size());
 		
 		log.info(this.getClass().getName() + ".getMainNews end!");
+		return rList;
+	}
+
+	@Override
+	public List<Map<String, Object>> getTeamNews(String team, String news) throws Exception {
+		log.info(this.getClass().getName() + ".getTeamNews start!");
+		
+		// 이번달 뉴스
+		String colNm = dateUtil.today_year_month() + news;
+		List<Map<String, Object>> rList = newsMongoMapper.getTeamNews(colNm,team);
+
+		// 저번달 뉴스
+		colNm = dateUtil.month_ago() + news;
+		rList.addAll(newsMongoMapper.getTeamNews(colNm, team));
+		
+		if (rList == null) {
+			rList = new LinkedList<Map<String, Object>>();
+		}
+		
+		rList = rList.stream().sorted((o1, o2) -> o2.get("date").toString().compareTo(o1.get("date").toString()) ).collect(Collectors.toList());
+		
+		log.info("뉴스 개수 :: " + rList.size());
+
+		log.info(this.getClass().getName() + ".getTeamNews end!");
 		return rList;
 	}
 
