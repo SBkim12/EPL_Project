@@ -20,7 +20,7 @@ List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 <head>
 <link rel="shortcut icon" href="../resource/images/icons/favicon.ico"
 	type="image/vnd.microsoft.icon">
-<title>MyInfo</title>
+<title>EPL teams</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -84,7 +84,7 @@ List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 	
 	<script>
 		$(function() {
-			$(".MyInfo").addClass("active");
+			$(".Predict").addClass("active");
 		});
 	</script>
 

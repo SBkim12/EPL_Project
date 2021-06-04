@@ -66,7 +66,7 @@ public class NewsMongoMapper extends AbstractMongoDBComon implements INewsMongoM
 			 * col.updateOne(new Document("$url", pMap.get("url").toString()),new
 			 * Document(pMap), new UpdateOptions().upsert(true));
 			 */			
-			col.replaceOne(new Document("url", pMap.get("url").toString()),new Document(pMap), new ReplaceOptions().upsert(true));
+			col.replaceOne(new Document("title", pMap.get("title").toString()),new Document(pMap), new ReplaceOptions().upsert(true));
 			pMap=null;
 		}
 
