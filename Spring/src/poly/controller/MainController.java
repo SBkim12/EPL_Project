@@ -307,5 +307,13 @@ public class MainController {
 		return "/main/news";
 	}
 	
+	@RequestMapping(value = "/test")
+	public String test(HttpSession session, ModelMap model, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		log.info("test start");
+
+		return "/main/test";
+	}
 	
 }

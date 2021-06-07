@@ -93,11 +93,11 @@
 						style="cursor: pointer">Forgot password</span>
 				</div>
 
-				<div class="container-login100-form-btn">
+				<div class="container-login100-form-btn mt-5">
 					<button type="submit" class="login100-form-btn">Log In</button>
 				</div>
 
-				<div class="text-center p-t-57 p-b-20">
+				<!-- <div class="text-center p-t-57 p-b-20">
 					<span class="txt1"> Or login with </span>
 				</div>
 
@@ -107,7 +107,7 @@
 					</a> <a href="#" class="login100-social-item"> <img
 						src="../resource_login/images/icons/icon-google.png" alt="GOOGLE">
 					</a>
-				</div>
+				</div> -->
 
 				<div class="text-center">
 					<a href="SignUp.do" class="txt2 hov1"> Sign Up </a>

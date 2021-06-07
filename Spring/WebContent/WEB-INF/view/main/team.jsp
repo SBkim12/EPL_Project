@@ -148,21 +148,6 @@
     	</div>
    	</div>
 	
-	<script>
-	function fnOpenInfo(player){
-		
-		var url = $(player).children('div.player').children('span.hidden')[0].innerHTML;
-		console.log(url);
-		
-		$('#iframe').attr("src",url);
-		
-		var popup = $('#iframe').contents().find('body > section');
-		
-		console.log(popup);
-		
-		$('#player_modal').modal('show')  
-	}
-	</script>
 	
 	<jsp:include page="../chat.jsp"></jsp:include>
 	
@@ -370,8 +355,29 @@
 
 		});
 	});
-	</script>
+	
+	function fnOpenYoutube(url){
+		var url = $(url).attr('name');
+		console.log(url);
 		
-
+		window.open(url, "_blank")
+	}
+	</script>
+	
+	<script>
+	function fnOpenInfo(player){
+		
+		var url = $(player).children('div.player').children('span.hidden')[0].innerHTML;
+		console.log(url);
+		
+		$('#iframe').attr("src",url);
+		
+		var popup = $('#iframe').contents().find('body > section');
+		
+		console.log(popup);
+		
+		$('#player_modal').modal('show')  
+	}
+	</script>
 </body>
 </html>

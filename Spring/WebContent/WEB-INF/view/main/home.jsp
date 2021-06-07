@@ -34,10 +34,6 @@
 <!-- 로딩 창 -->
 <script src="../resource/js/loading.js"></script>
 
-<!-- news 글씨체 -->
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Stylish&display=swap" rel="stylesheet">
-
 
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
@@ -75,7 +71,7 @@
 					<div class='row align-items-center justify-content-start'>
 						<div class='col-md-6 text-center text-md-left' data-aos='fade-up'
 							data-aos-delay='400'>
-							<h1 class='bg-text-line'><%=news.get("ko_title")%></h1>
+							<h1 class='' style="text-shadow: 4px 4px black;"><%=news.get("ko_title")%></h1>
 							<p>
 								<a class='btn btn-primary btn-sm rounded-0 py-3 px-5' href="javascript:fnOpenNews('<%=i%>');">Read More</a>
 							</p>
@@ -236,13 +232,14 @@
 	%>
 	<div class="modal fade modal-xl" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="<%=i%>" style="z-index:2000;">
     	<div class="modal-dialog modal-lg">
-      		<div class="modal-content" style="font-family: 'Stylish', sans-serif;">
+      		<div class="modal-content">
         		<div class="modal-header">
         			<h4 class="modal-title" id="myModalLabel"><%=news.get("ko_title") %></h4>
           			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				</div>
         		<div class="modal-body">
         		<img class="mb-3" src="<%=news.get("img")%>" style="width:100%">
+        		<span class='text-uppercase date d-block mb-3'><small><%=news.get("date")%></small></span>
 				<% 
 				Iterator<String> ko_content = ko_contents.iterator();
 				while(ko_content.hasNext()){

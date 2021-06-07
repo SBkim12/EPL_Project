@@ -47,6 +47,12 @@ List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 
 <script src="https://kit.fontawesome.com/84865ac036.js"
 	crossorigin="anonymous"></script>
+<style>
+.overflow {
+	overflow: hidden;
+	height: 100px;
+}
+</style>
 </head>
 <body>
 
@@ -87,7 +93,27 @@ List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 
 		<footer class="site-footer border-top"> </footer>
 	</div>
-
+	
+	<!-- 뉴스 모달 -->
+	<div class="modal fade modal-xl" id="news-modal" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" style="z-index:2000;">
+    	<div class="modal-dialog modal-lg">
+      		<div class="modal-content" style="font-family: 'Stylish', sans-serif;">
+        		<div class="modal-header">
+        			<h4 class="modal-title" id="myModalLabel"></h4>
+          			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+        		<div class="mb-3" style="width:100%">
+        		<img class="mb-3"  id="img" src="" style="width:100%">
+        		</div>
+        		<div class="modal-body p-4">
+          		</div>
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+		        </div>
+	    	</div>
+    	</div>
+   	</div>
+	
 	<jsp:include page="../chat.jsp"></jsp:include>
 
 
@@ -125,16 +151,23 @@ List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 				$("#news").children().remove();
 				var resHTML = "";
 				$.each(data, function(idx, val) {
-					var contents = val.ko_contents[0].substring(0,40)+"...";
-					resHTML += "<div class='col-md-6 col-lg-4 '>";
-					resHTML += "<div class='post-entry cursor-pointer'>";
+					resHTML += "<div class='col-md-6 col-lg-4 mb-5'>";
+					resHTML += "<div class='post-entry cursor-pointer' onclick=fnOpenNews(this)>";
 					resHTML += "<div class='image'>";
 					resHTML += "<img src='"+val.img+"' alt='Image' class='img-fluid'>";
 					resHTML += "</div>";
-					resHTML += "<div class='text p-4'>";
+					resHTML += "<div class='text title pl-4 pr-4 pt-4'>";
 					resHTML += "<h2 class='h5 text-black'>"+val.ko_title+"</h2>";
+					resHTML += "</div>";
+					resHTML += "<div class='text body pl-4 pr-4 pb-4 overflow'>";
 					resHTML += "<span class='text-uppercase date d-block mb-3'><small>"+val.date+"</small></span>";
-					resHTML += "<p class='mb-0'>"+contents+"</p>";
+					for(var i in val.ko_contents){
+						if(i==0){
+							resHTML += "<p class='mb-0 pb-4'>"+val.ko_contents[i]+"</p>";
+						}else{
+							resHTML += "<p class='mb-0 pb-4'>"+val.ko_contents[i]+"</p>";
+						}
+					}
 					resHTML += "</div></div></div>";
 				});
 				$("#news").append(resHTML);
@@ -147,7 +180,22 @@ List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 		});
 	}
 	</script>
-
+	<script>
+	function fnOpenNews(news){
+		console.log(news);
+		var img = $(news).children('div.image').children('img').attr("src");
+		var title = $(news).children('div.title').children('h2')[0].innerHTML;
+		var contents = $(news).children('div.body').html();
+				
+		
+		$('.modal-title').html(title);
+		$('#img').attr("src", img);
+		$('.modal-body').html(contents);
+		
+		
+		$('#news-modal').modal('show');
+	}
+	</script>
 
 </body>
 </html>

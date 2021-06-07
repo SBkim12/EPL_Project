@@ -128,7 +128,6 @@
 						%>
 					</ul>
 				</li>
-				<li class="Predict"><a href="/Predict.do">Predict</a></li>	
 				<li class="News"><a href="/news.do" >News</a></li>	
 				<li><a href="/Logout.do">LogOut</a></li>
 			</ul>

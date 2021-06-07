@@ -2,6 +2,8 @@ package poly.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9,7 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -98,10 +99,16 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 
 						// 중복 url 거르기
 						if (distinct.contains(newsUrl)) {
-							log.info("중복된 url 거르고 관련 팀 목록만 추가");
+							log.info("중복 url 발견");
 							for (Map<String, Object> tMap : newsList) {
 								if (tMap.containsValue(newsUrl)) {
+									// 크롤링 되지 않은 url 거르기
+									if(tMap.get("teams")==null) {
+										log.info("크롤링 되지 않는 url");
+										break;
+									}
 									((ArrayList<Map<String, String>>) tMap.get("teams")).add(team_map);
+									log.info(tMap.get("teams"));
 									break;
 								}
 							}
@@ -299,10 +306,16 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 
 					// 중복 url 거르기
 					if (distinct.contains(newsUrl)) {
-						log.info("중복된 url 거르고 관련 팀 목록만 추가");
+						log.info("중복 url 발견");
 						for (Map<String, Object> tMap : newsList) {
 							if (tMap.containsValue(newsUrl)) {
+								// 크롤링 되지 않은 url 거르기
+								if(tMap.get("teams")==null) {
+									log.info("크롤링 되지 않는 url");
+									break;
+								}
 								((ArrayList<Map<String, String>>) tMap.get("teams")).add(team_map);
+								log.info(tMap.get("teams"));
 								break;
 							}
 						}
@@ -447,6 +460,9 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 	public List<Map<String, Object>> getMainNews(String team, String news, int no) throws Exception {
 		log.info(this.getClass().getName() + ".getMainNews start!");
 		
+		if (team.endsWith("FC")) {
+			team = team.substring(0, team.lastIndexOf("FC") - 1).trim();
+		}
 		//collection 이름
 		String colNm = dateUtil.today_year_month()+news;
 		
@@ -482,8 +498,6 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 		if (rList == null) {
 			rList = new LinkedList<Map<String, Object>>();
 		}
-		
-		rList = rList.stream().sorted((o1, o2) -> o2.get("date").toString().compareTo(o1.get("date").toString()) ).collect(Collectors.toList());
 		
 		log.info("뉴스 개수 :: " + rList.size());
 

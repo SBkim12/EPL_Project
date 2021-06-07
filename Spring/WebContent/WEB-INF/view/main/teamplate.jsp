@@ -57,8 +57,6 @@ List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 		<!-- 일단 대기 -->
 		<div class="site-blocks-vs site-section bg-light">
 			<div class="container">
-				<i class="flag flag-germany"></i>
-				<i class="germany flag"></i>
 			</div>
 		</div>
 
