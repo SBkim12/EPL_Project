@@ -16,14 +16,6 @@
 	</properties>
 
 	<dependencies>
-		<!-- Firebase -->
-		<dependency>
-		  <groupId>com.google.firebase</groupId>
-		  <artifactId>firebase-admin</artifactId>
-		  <version>7.3.0</version>
-		</dependency>
-
-		
 		<!-- WebSocket -->
 		<dependency>
 			<groupId>org.springframework</groupId>
