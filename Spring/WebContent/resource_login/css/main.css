@@ -165,7 +165,7 @@ iframe {
   z-index: 1;
 }
 
-.container-login100::before {
+/* .container-login100::before {
   content: "";
   display: block;
   position: absolute;
@@ -180,7 +180,7 @@ iframe {
   background: -moz-linear-gradient(left, rgba(0,168,255,0.5), rgba(185,0,255,0.5));
   background: linear-gradient(left, rgba(0,168,255,0.5), rgba(185,0,255,0.5));
   pointer-events: none;
-}
+} */
 
 .wrap-login100 {
   width: 390px;

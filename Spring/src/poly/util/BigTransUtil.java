@@ -50,8 +50,10 @@ public class BigTransUtil {
 	public static String trans(List<String> contents) {
 		
 		// WebDriver 경로 설정 (리눅스가면 변경해야함)
-		System.setProperty("webdriver.chrome.driver", "C:\\selenium\\chromedriver.exe");
-
+		System.setProperty("webdriver.chrome.driver","/usr/bin/chromedriver");
+		/* "C:\\selenium\\chromedriver.exe" */
+		/* "/usr/bin/chromedriver" */
+		
 		// WebDriver 옵션 설정
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--headless");
@@ -77,7 +79,7 @@ public class BigTransUtil {
 
 			// 웹페이지 요청
 			driver.get("https://papago.naver.com/");
-			Thread.sleep(1000);
+			Thread.sleep(4000);
 			
 			WebElement en = driver.findElement(By.xpath("//*[@id=\"sourceEditArea\"]"));
 			WebElement ko = driver.findElement(By.xpath("//*[@id=\"txtTarget\"]"));
@@ -96,7 +98,7 @@ public class BigTransUtil {
 				
 				// 번역 받아오기
 				ko_contents += ko.getText();
-				Thread.sleep(3000);
+				Thread.sleep(4000);
 
 				// 입력 초기화
 				x.click();

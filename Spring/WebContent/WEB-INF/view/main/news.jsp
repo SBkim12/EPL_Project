@@ -97,7 +97,7 @@ List<EPLDTO> mList = (List<EPLDTO>) session.getAttribute("teams");
 	<!-- 뉴스 모달 -->
 	<div class="modal fade modal-xl" id="news-modal" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" style="z-index:2000;">
     	<div class="modal-dialog modal-lg">
-      		<div class="modal-content" style="font-family: 'Stylish', sans-serif;">
+      		<div class="modal-content newspaper">
         		<div class="modal-header">
         			<h4 class="modal-title" id="myModalLabel"></h4>
           			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

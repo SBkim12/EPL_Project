@@ -1,5 +1,10 @@
 /* Base */
 
+.newspaper{
+	background-image: url(../images/newspaper.jpg) !important;
+	font-weight:bold;
+}
+
 body {
   line-height: 1.7;
   color: #4d4d4d;

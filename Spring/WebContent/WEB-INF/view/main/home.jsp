@@ -230,9 +230,9 @@
 		Map<String, Object> news = it.next();
 		List<String> ko_contents = (List<String>) news.get("ko_contents");
 	%>
-	<div class="modal fade modal-xl" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="<%=i%>" style="z-index:2000;">
+	<div class="modal fade modal-xl" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="<%=i%>" style="z-index:2000; background-img=''">
     	<div class="modal-dialog modal-lg">
-      		<div class="modal-content">
+      		<div class="modal-content newspaper">
         		<div class="modal-header">
         			<h4 class="modal-title" id="myModalLabel"><%=news.get("ko_title") %></h4>
           			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -68,7 +68,7 @@ String team_logo = (String) session.getAttribute("team_logo");
 			return;
 		}
 		// 웹소켓 객체 만드는 코드
-		ws = new WebSocket("ws://localhost:9005/echo.do");
+		ws = new WebSocket("ws://15.164.51.243/echo.do");/* localhost:9005 *//* 15.164.51.243 */
 
 		ws.onopen = function(event) {
 			if (event.data === undefined)
