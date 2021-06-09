@@ -50,9 +50,9 @@ public class BigTransUtil {
 	public static String trans(List<String> contents) {
 		
 		// WebDriver 경로 설정 (리눅스가면 변경해야함)
-		System.setProperty("webdriver.chrome.driver","/usr/bin/chromedriver");
-		/* "C:\\selenium\\chromedriver.exe" */
-		/* "/usr/bin/chromedriver" */
+		System.setProperty("webdriver.chrome.driver","C:\\selenium\\chromedriver.exe");
+		/* C:\\selenium\\chromedriver.exe */
+		/* /usr/bin/chromedriver */
 		
 		// WebDriver 옵션 설정
 		ChromeOptions options = new ChromeOptions();

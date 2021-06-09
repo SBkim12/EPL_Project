@@ -1,7 +1,6 @@
 package poly.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -101,7 +100,7 @@ public class NewsController {
 		return answer;
 	}
 	
-	// 강제 업데이트 (DB에 url 없는 것들 추가 업데이트하는 걸로 추가 구현 할것)
+	// 강제 업데이트
 	@RequestMapping(value = "theGuardianUpdate")
 	@ResponseBody
 	public String theGuardianUpdate(HttpSession session, HttpServletRequest request, HttpServletResponse response,

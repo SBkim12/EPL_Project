@@ -307,4 +307,5 @@ public class MainController {
 		return "/main/news";
 	}
 	
+	
 }

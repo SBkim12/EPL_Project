@@ -246,9 +246,6 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 			res = newsMongoMapper.newsInsert(newsList, colNm);
 		}
 		
-		//켜져있는 크롬 드라이버 프로세스 죽이기
-		Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe /T");
-		
 		log.info(this.getClass().getName() + ".theGuardianNewsUpdate end!");
 
 		return res;
@@ -448,9 +445,6 @@ public class NewsService extends AbstractgetUrlFordata  implements INewsService{
 			res = newsMongoMapper.newsInsert(newsList, colNm);
 		}
 		
-		// 켜져있는 크롬 드라이버 프로세스 죽이기
-		Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe /T");
-
 		log.info(this.getClass().getName() + ".theGuardianNewsUpdate end!");
 
 		return res;
