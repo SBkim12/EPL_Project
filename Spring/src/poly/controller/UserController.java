@@ -3,7 +3,9 @@ package poly.controller;
 import static poly.util.CmmUtil.nvl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import poly.dto.EPLDTO;
 import poly.dto.MemberDTO;
 import poly.service.IEPLdataService;
 import poly.service.IUserService;
+import poly.util.CmmUtil;
 import poly.util.EncryptUtil;
 
 @Controller
@@ -105,7 +108,7 @@ public class UserController {
 		return "/basic/login";
 	}
 
-	// 회원가입
+	// 회원가입 페이지 이동
 	@RequestMapping(value = "SignUp")
 	public String SignUp(HttpServletRequest request, ModelMap model)throws Exception {
 
@@ -326,8 +329,8 @@ public class UserController {
 		
 		MemberDTO uDTO = new MemberDTO();
 		
-		String member_name = request.getParameter("member_name");
-		String member_id =  session.getAttribute("member_id").toString();
+		String member_name = CmmUtil.nvl(request.getParameter("member_name"));
+		String member_id = CmmUtil.nvl( session.getAttribute("member_id").toString());
 		uDTO.setMember_id(member_id);
 		uDTO.setMember_name(member_name);
 		
@@ -346,7 +349,88 @@ public class UserController {
 		return res;
 	}
 	
+	
+		
+	
+	// 구글 로그인 진행
+	@RequestMapping(value = "/GoogleLoginProc")
+	@ResponseBody
+	public String GoogleLoginProc(HttpServletRequest request, Model model, HttpSession session) throws Exception {
 
+		log.info("GoogleLoginProc start");
+		String member_id = nvl(request.getParameter("id"));
+		String member_name = nvl(request.getParameter("name"));
+
+		log.info("member_id :" + member_id);
+		log.info("member_name :" + member_name);
+
+		MemberDTO uDTO = new MemberDTO();
+
+		uDTO.setMember_id(member_id);
+		
+		log.info("user data check");
+		uDTO = userService.reLoginInfo(uDTO);
+		log.info("uDTO null? : " + (uDTO == null));
+		
+		String result = "0";
+		if (uDTO == null) {
+			//구글 메일로 회원가입 진행
+			
+			List<EPLDTO> mList = epldataService.getEPLteam();
+			session.setAttribute("teams", mList);
+			
+			EPLDTO rDTO = mList.get(0);
+			String favorite_team = rDTO.getTeam_name();
+			String team_logo = rDTO.getLogo();
+			String HashEnc = EncryptUtil.enHashSHA256("");
+			
+			log.info(favorite_team);
+			log.info(team_logo);
+			
+			uDTO = new MemberDTO();
+			
+			uDTO.setMember_id(member_id);
+			uDTO.setFavorite_team(favorite_team);
+			uDTO.setTeam_logo(team_logo);
+			uDTO.setMember_name(member_name);
+			uDTO.setMember_pwd(HashEnc);
+			
+			int res = userService.UserSignUp(uDTO);
+			
+			if(res==1) {
+				session.setAttribute("member_id", uDTO.getMember_id());
+				session.setAttribute("member_name", uDTO.getMember_name());
+				session.setAttribute("favorite_team", uDTO.getFavorite_team());
+				session.setAttribute("member_point", 0);
+				session.setAttribute("team_logo",uDTO.getTeam_logo());
+				
+				result = "2";
+			}else {
+				result = "0";
+			}
+		} else {
+			//구글 메일로 로그인 진행
+			log.info("uDTO.Member_id : " + uDTO.getMember_id());
+			log.info("uDTO.Member_name : " + uDTO.getMember_name());
+			log.info("uDTO.favorite_team : " + uDTO.getFavorite_team());
+			log.info("uDTO.member_point : " + uDTO.getMember_point());
+			log.info("uDTO.getTeam_logo : " + uDTO.getTeam_logo());
+			
+			session.setAttribute("member_id", uDTO.getMember_id());
+			session.setAttribute("member_name", uDTO.getMember_name());
+			session.setAttribute("favorite_team", uDTO.getFavorite_team());
+			session.setAttribute("member_point",uDTO.getMember_point());
+			session.setAttribute("team_logo",uDTO.getTeam_logo());
+			
+			result="1";
+		}
+		
+		log.info("GoogleLoginProc end");
+
+		return result;
+
+	}
+	
 	@RequestMapping("/callback")
 	public ModelAndView callback() {
 		String message = "Simple Callback Page";

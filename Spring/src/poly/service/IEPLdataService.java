@@ -21,4 +21,8 @@ public interface IEPLdataService {
 
 	EPLDTO getkoname(String team)throws Exception;
 
+	String presentSeason()throws Exception;
+
+	List<Map<String, String>> getUpcomingGame(String team, String seasonId)throws Exception;
+
 }

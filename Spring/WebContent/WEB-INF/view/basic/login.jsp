@@ -41,30 +41,60 @@
 <!--===============================================================================================-->
 <script src="https://kit.fontawesome.com/84865ac036.js"
 	crossorigin="anonymous"></script>
-<style>
-/* The Modal (background) */
-.modal {
-	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
-	z-index: 1; /* Sit on top */
-	left: 0;
-	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgb(0, 0, 0); /* Fallback color */
-	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-	background-color: #fefefe;
-	margin: 15% auto; /* 15% from the top and centered */
-	padding: 20px;
-	border: 1px solid #888;
-	width: 80%; /* Could be more or less, depending on screen size */
-}
-</style>
+<script>
+ function googleLoginInit() {
+     gapi.load('auth2', function () {
+         /* Ready. Make a call to gapi.auth2.init or some other API */
+         let gAuth = gapi.auth2.init({
+             client_id: '948495532957-v4dpe3r0ft0kllgjcrq2e6i9vr2f37cm.apps.googleusercontent.com'
+         });
+         gAuth.then(function () {
+             gAuth.signIn().then(function () {
+                 let profile = gAuth.currentUser.get().getBasicProfile();
+                 let google_Email = profile.getEmail();
+                 let google_name = profile.getName();
+                 
+                 $.ajax({
+         			url : "GoogleLoginProc.do",
+         			type : "post",
+         			data : {"id" :  google_Email,
+         					"name" : google_name
+         					},
+         			dataType : "json",
+         			success : function(data) {
+         				if(data==1){
+         					Swal.fire({
+								icon : 'success',
+								title : '로그인 되었습니다.',
+								showConfirmButton : false,
+								timer : 1000
+							})
+         					location.href="/home.do";
+         				}else if(data==2){
+         					Swal.fire({
+								icon : 'success',
+								title : '회원 가입 되었습니다.',
+								showConfirmButton : false,
+								timer : 1000
+							})
+         					location.href="/home.do";
+         				}else{
+         					Swal.fire({
+								icon : 'error',
+								title : 'Oops...',
+								text : '구글 로그인에 실패 하였습니다.!',
+							});
+         				}
+         				
+         			}	
+         		});
+             });
+         }, function (error) {
+             alert(JSON.stringify(error, undefined, 2));
+         })
+     });
+ }
+</script>
 </head>
 <body>
 
@@ -97,17 +127,15 @@
 					<button type="submit" class="login100-form-btn">Log In</button>
 				</div>
 
-				<!-- <div class="text-center p-t-57 p-b-20">
+				<div class="text-center p-t-57 p-b-20">
 					<span class="txt1"> Or login with </span>
 				</div>
-
-				<div class="flex-c p-b-112">
-					<a href="#" class="login100-social-item"> <i
-						class="fa fa-facebook-f"></i>
-					</a> <a href="#" class="login100-social-item"> <img
-						src="../resource_login/images/icons/icon-google.png" alt="GOOGLE">
+				
+				<div class="flex-c p-b-40">
+					<a class="login100-social-itemg-signins2" onclick="googleLoginInit()">
+						<img src="../resource_login/images/icons/icon-google.png" alt="GOOGLE" >
 					</a>
-				</div> -->
+				</div>
 
 				<div class="text-center">
 					<a href="SignUp.do" class="txt2 hov1"> Sign Up </a>
@@ -196,6 +224,6 @@
 	<script src="../resource_login/vendor/countdowntime/countdowntime.js"></script>
 	<!--===============================================================================================-->
 	<script src="../resource_login/js/main.js"></script>
-
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
 </body>
 </html>

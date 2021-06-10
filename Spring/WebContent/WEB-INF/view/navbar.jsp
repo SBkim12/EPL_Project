@@ -129,14 +129,15 @@
 					</ul>
 				</li>
 				<li class="News"><a href="/news.do" >News</a></li>	
+				<li class="Predict"><a href="/predict.do" >Predict_Res</a></li>	
 				<li><a href="/Logout.do">LogOut</a></li>
 			</ul>
 		</div>
 	</nav>
 </header>
 
-<!-- teams를 클릭했을경우 순위표로 이동  -->
 <script>
+//teams를 클릭했을경우 순위표로 이동
 function fnMove() {
 	var offset = $("#rank_table").offset();
 	if(offset==null){
@@ -146,41 +147,43 @@ function fnMove() {
 	}
 }
 
-	function changePassword() {
-		Swal.fire({
-			title : 'Check your Password',
-			input : 'password',
-			showCancelButton : true,
-			confirmButtonText : 'Check',
-			showLoaderOnConfirm : true,
-		}).then(function(data) {
-			var member_pwd = data.value;
-			if (data.isConfirmed) {
-				$.ajax({
-					type : "POST",
-					url : "pwdCheck.do",
-					dataType : "json",
-					data : {
-						"member_pwd" : member_pwd
-					},
-					success : function(data) {
-						console.log(data)
-						if (data == 0) {
-							Swal.fire({
-								icon : 'error',
-								title : 'Oops...',
-								text : '비밀번호가 일치하지 않습니다!',
-							});
-						} else if (data == 1) {
-							Swal.fire({
-								title : 'Make New Password',
-								input : 'password',
-								showCancelButton : true,
-								confirmButtonText : 'Confirm',
-								showLoaderOnConfirm : true,
-							}).then(function(data) {
-								if (data.isConfirmed) {
-									var member_pwd = data.value;
+//비밀번호 변경
+function changePassword() {
+	Swal.fire({
+		title : 'Check your Password',
+		input : 'password',
+		showCancelButton : true,
+		confirmButtonText : 'Check',
+		showLoaderOnConfirm : true,
+	}).then(function(data) {
+		var member_pwd = data.value;
+		if (data.isConfirmed) {
+			$.ajax({
+				type : "POST",
+				url : "pwdCheck.do",
+				dataType : "json",
+				data : {
+					"member_pwd" : member_pwd
+				},
+				success : function(data) {
+					console.log(data)
+					if (data == 0) {
+						Swal.fire({
+							icon : 'error',
+							title : 'Oops...',
+							text : '비밀번호가 일치하지 않습니다!',
+						});
+					} else if (data == 1) {
+						Swal.fire({
+							title : 'Make New Password',
+							input : 'password',
+							showCancelButton : true,
+							confirmButtonText : 'Confirm',
+							showLoaderOnConfirm : true,
+						}).then(function(data) {
+							if (data.isConfirmed) {
+								var member_pwd = data.value.trim();
+								if(member_pwd!=""){
 									$.ajax({
 										type : "POST",
 										url : "changePwd.do",
@@ -207,73 +210,84 @@ function fnMove() {
 
 										}
 									});
+								}else{
+									Swal.fire({
+										icon : 'error',
+										title : 'Oops...',
+										text : '빈칸을 입력하시면 안되요!!',
+									});
 								}
-							})
-						}
+							}
+						})
 					}
-				})
-			}
-		})
-	}
+				}
+			})
+		}
+	})
+}
 
-	function changeMyTeam() {
-		Swal.fire({
-			title : 'Change My Favorite Team',
-			input : 'select',
-			inputOptions:{
-				<%
-				teams = mList.iterator();
-				while (teams.hasNext()) {
-					EPLDTO team = teams.next();
-				%>
-				'<%=team.getTeam_name()%>': '<%=team.getKo_name()%>',
-				<%}%>
-			},
-			inputPlaceholder: 'Select Your team',
-			showCancelButton: true,
-			confirmButtonText : 'Change',
-			showLoaderOnConfirm : true,
-		}).then(function(data) {
-			var team_name = data.value;
-			if (data.isConfirmed) {
-				$.ajax({
-					type : "POST",
-					url : "ChangeMyteam.do",
-					dataType : "json",
-					data : {
-						"favorite_team" : team_name
-					},success : function(data) {
-						console.log(data)
-						if (data == 0) {
-							Swal.fire({
-								icon : 'error',
-								title : 'Oops...',
-								text : '팀 변경 실패했습니다.!',
-							});
-						} else if (data == 1) {
-							Swal.fire({
-								icon : 'success',
-								title : '팀 변경 성공했습니다.',
-								showConfirmButton : false,
-								timer : 1000
-							})
-						}
-
+//선호 팀 변경
+function changeMyTeam() {
+	Swal.fire({
+		title : 'Change My Favorite Team',
+		input : 'select',
+		inputOptions:{
+			<%
+			teams = mList.iterator();
+			while (teams.hasNext()) {
+				EPLDTO team = teams.next();
+			%>
+			'<%=team.getTeam_name()%>': '<%=team.getKo_name()%>',
+			<%}%>
+		},
+		inputPlaceholder: 'Select Your team',
+		showCancelButton: true,
+		confirmButtonText : 'Change',
+		showLoaderOnConfirm : true,
+	}).then(function(data) {
+		var team_name = data.value;
+		if (data.isConfirmed) {
+			$.ajax({
+				type : "POST",
+				url : "ChangeMyteam.do",
+				dataType : "json",
+				data : {
+					"favorite_team" : team_name
+				},success : function(data) {
+					console.log(data)
+					if (data == 0) {
+						Swal.fire({
+							icon : 'error',
+							title : 'Oops...',
+							text : '팀 변경 실패했습니다.!',
+						});
+					} else if (data == 1) {
+						Swal.fire({
+							icon : 'success',
+							title : '팀 변경 성공했습니다.',
+							showConfirmButton : false,
+							timer : 1000
+						})
 					}
-				})
-			}
-		})
-	}
-	function changeMyName() {
-		Swal.fire({
-			title : 'Change Your Name',
-			input : 'text',
-			showCancelButton : true,
-			confirmButtonText : 'Change',
-			showLoaderOnConfirm : true,
-		}).then(function(data){
-			var my_name = data.value;
-			if (data.isConfirmed) {
+
+				}
+			})
+		}
+	})
+}
+
+//닉네임 변경
+function changeMyName() {
+	Swal.fire({
+		title : 'Change Your Name',
+		input : 'text',
+		showCancelButton : true,
+		confirmButtonText : 'Change',
+		showLoaderOnConfirm : true,
+	}).then(function(data){
+		var my_name = data.value.trim();
+		if (data.isConfirmed) {
+			if(my_name!=""){
 				$.ajax({
 					type : "POST",
 					url : "ChangeMyName.do",
@@ -299,8 +313,15 @@ function fnMove() {
 
 					}
 				})
+			}else{
+				Swal.fire({
+					icon : 'error',
+					title : 'Oops...',
+					text : '빈칸을 입력하시면 안되요!!',
+				});
 			}
-		})
-	}
+		}
+	})
+}
 </script>
 

@@ -9,6 +9,7 @@ public class dateUtil {
 
 	// 날짜 형식(skysports용)
 	public static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd E요일", Locale.KOREAN);
+	public static SimpleDateFormat EPL_match_time = new SimpleDateFormat("yyyy-MM-dd");
 	public static SimpleDateFormat day = new SimpleDateFormat("d", Locale.UK);
 	public static SimpleDateFormat en_month = new SimpleDateFormat("MMMM", Locale.UK);
 	
@@ -21,6 +22,14 @@ public class dateUtil {
 	//test
 	public static SimpleDateFormat time = new SimpleDateFormat("dd hh::mm::ss", Locale.UK);
 	
+	//EPL 현재시간과 비교
+	public static String now() {
+		Calendar cal = Calendar.getInstance();
+		Date now = new Date(cal.getTimeInMillis());
+		
+		String date = EPL_match_time.format(now.getTime());
+		return date;
+	}
 
 
 	// 저번 달

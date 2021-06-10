@@ -97,4 +97,20 @@ public class EPLDataController {
 		return rList;
 	}
 	
+	
+	@RequestMapping(value = "GetComingMatch")
+	@ResponseBody
+	public List<Map<String, String>> GetComingMatch(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+		log.info(this.getClass().getName() + ".GetComingMatch start!");
+		
+		String team =  request.getParameter("team").trim();
+		
+		String seasonId = epldataService.presentSeason();
+		
+		List<Map<String, String>> rList = epldataService.getUpcomingGame(team, seasonId);
+		
+		log.info(this.getClass().getName() + ".GetComingMatch end!");
+		
+		return rList;
+	}
 }

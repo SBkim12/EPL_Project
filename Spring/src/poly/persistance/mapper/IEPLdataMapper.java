@@ -22,4 +22,6 @@ public interface IEPLdataMapper {
 
 	EPLDTO getKoname(String team);
 
+	EPLDTO presentSeason();
+
 }

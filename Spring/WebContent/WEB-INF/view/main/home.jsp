@@ -135,6 +135,26 @@
 			</div>
 		</div>
 		
+		<!-- 예정 경기 정보 -->
+		<div class="site-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h2 class="h6 text-uppercase text-black font-weight-bold mb-3">Latest Matches</h2>
+					</div>
+					<div class="col-md-12">
+						<div class="row align-items-center">
+                    		<!-- 경기 정보 들어감 -->
+                    		<div class="col-md-12" id="matches">
+                    		
+
+                   		 	</div>
+                 	 	</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		
 		<!-- 리그 순위 테이블 -->
 		<div class="site-section block-13 bg-primary fixed overlay-primary bg-image"
@@ -262,7 +282,64 @@
 		}
         %>
 	
-	<!-- 채팅 박스 페이지 모듈화 -->
+	<!-- Predict Modal -->
+	<div class="modal" id="predict">
+		<div class="modal-dialog">
+       			<button type="button" class="close cursor-pointer" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<div class="modal-content">
+					<div
+						class="row bg-white align-items-center ml-0 mr-0 py-4">
+						<div class="col-md-4 col-lg-4 mb-lg-0">
+							<div class="text-center text-lg-left">
+								<div class="d-block align-items-center">
+									<div
+										class="image image-small text-center mb-3">
+										<img
+											src="../resource/images/EPL_Logo.png"
+											alt="Image" class="img-fluid" id="predict_home">
+									</div>
+								</div>
+								<div class="text-center mb-1">
+									<select name="home" id="home_score" style="width:30%">
+									<%for(int j=0; j<11; j++){ %>
+									<option><%=j%></option>
+									<%}%>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4" col-lg-4 text-center text-lg-right" style="text-align: -webkit-center;">
+							<div class='bg-black py-2 px-4 mb-2 text-white d-inline-block rounded cursor-pointer' id="predict_button" onclick='fnPredict()' style="text-align-last: center;">
+								<span class='h5'>predict</span>
+							</div>
+						</div>
+						<div class="col-md-4 col-lg-4 text-center">
+							<div class="">
+								<div class="d-block align-items-center">
+									<div class="image image-small text-center mb-3">
+										<img
+											src="../resource/images/EPL_Logo.png"
+											alt="Image" class="img-fluid" id="predict_away">
+									</div>
+								</div>
+								<div class="text-center mb-1">
+									<select name="home" id="away_score" style="width:30%">
+									<%for(int j=0; j<11; j++){ %>
+									<option><%=j%></option>
+									<%}%>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="text-center">
+													
+				</div>
+		</div>
+	</div>
+
+				<!-- 채팅 박스 페이지 모듈화 -->
 	<jsp:include page="../chat.jsp"></jsp:include>
 	
 	<script src="../resource/js/jquery-3.3.1.min.js"></script>
@@ -305,7 +382,7 @@
 	</script>
 	
 	
-	<!-- 유튜브 영상 조회 -->
+	<!-- 유튜브 영상 조회 및 영상 페이지 오픈 -->
 	<script>
 	$(function(){
 		$.ajax({
@@ -335,23 +412,136 @@
 			}	
 		});
 	});
+	
+	function fnOpenYoutube(url){
+		var url = $(url).attr('name');
+		console.log(url);
+		
+		window.open(url, "_blank")
+	}
 	</script>
 
 	<script src="../resource/js/main.js"></script>
+	
+	<!-- nav바 페이지 열린곳 활성화 -->
 	<script>
 	$(function(){
 		$(".home").addClass("active");
 	});
 	</script>
 	
+	<!-- 축구 예측 -->
 	<script>
-		function fnOpenYoutube(url){
-			var url = $(url).attr('name');
-			console.log(url);
+		var match_id ="";
+		var home_logo="";
+		var away_logo="";
+		var away="";
+		var home="";
+		
+		function fnOpenPredict(predict){
+			match_id = $(predict).attr('match_id');
+			home_logo = $(predict).attr('home_logo');
+			home = $(predict).attr('home');
+			away_logo = $(predict).attr('away_logo');
+			away = $(predict).attr('away');
+			console.log(match_id);
+			$("#home_score option:eq(0)").prop("selected", true);
+			$("#away_score option:eq(0)").prop("selected", true);
 			
-			window.open(url, "_blank")
+			document.getElementById("predict_home").src = home_logo;
+			document.getElementById("predict_away").src = away_logo;
+			$('#predict').modal('show');
 		}
-		</script>
+		
+		
+		function fnPredict(){
+			var home_score = document.getElementById("home_score").value;
+			var away_score = document.getElementById("away_score").value;
+			
+			$.ajax({
+				url : "PredictDataSave.do",
+				type : "post",
+				data : {"match_id" : match_id,
+						"home_score" : home_score,
+						"away_score" : away_score,
+						"away" : away,
+						"home" : home,
+						"away_logo" : away_logo,
+						"home_logo" : home_logo
+						},
+				dataType : "json",
+				success : function(data) {
+					$('#predict').modal('hide');
+					if(data==1){
+						Swal.fire({
+							icon : 'success',
+							title : '예측을 저장했습니다.',
+							showConfirmButton : false,
+							timer : 1000
+						});
+					}else{
+						Swal.fire({
+							icon : 'error',
+							title : 'Oops...',
+							text : '예측 저장에 실패했습니다.',
+						});
+					} 
+				}	
+			});
+		}
+	</script>
+	
+	<!-- 경기 일정표 -->
+	<script>
+	$(function (){
+		$.ajax({
+			url : "GetComingMatch.do",
+			type : "post",
+			data : {"team" :  "<%=favorite_team%>"},
+			dataType : "json",
+			success : function(data) {
+				var resHTML = "";
+				$.each(data, function(idx, val) {
+					resHTML += "<div class='row bg-white align-items-center ml-0 mr-0 py-4 match-entry'>";
+					resHTML += "<div class='col-md-4 col-lg-4 mb-4 mb-lg-0'>";
+					resHTML += "<div class='text-center text-lg-left'>";
+					resHTML += "<div class='d-block d-lg-flex align-items-center'>";
+					resHTML += "<div class='image image-small text-center mb-3 mb-lg-0 mr-lg-3'>";
+					resHTML += "<img src='"+val.home_logo+"' alt='Image' class='img-fluid'>";
+					resHTML += "</div>";
+					resHTML += "<div class='text'>";
+					resHTML += "<h3 class='h5 mb-0 text-black'>"+val.home+"</h3>";
+					resHTML += "<span class='text-uppercase small country'></span>";
+					resHTML += "</div></div></div></div>";
+					resHTML += "<div class='col-md-4 col-lg-4 text-center mb-4 mb-lg-0'>";
+					resHTML += "<h5>"+val.round+" ROUND</h5>"
+					resHTML += "<div class='d-inline-block'>";
+					if(val.status_code==0){
+						resHTML += "<div class='bg-black py-2 px-4 mb-2 text-white d-inline-block rounded cursor-pointer' away='"+val.away+"' home='"+val.home+"' home_logo='"+val.home_logo+"' away_logo='"+val.away_logo+"' match_id='"+val.match_id+"' onclick='fnOpenPredict(this)'><span class='h5'>predict</span></div>";
+					}else{
+						/* resHTML += "<div class='bg-black py-2 px-4 mb-2 text-white d-inline-block rounded'><span class='h5'>"+val.home_score+":"+val.away_score+"</span></div>"; */
+						resHTML += "<div class='bg-black py-2 px-4 mb-2 text-white d-inline-block rounded cursor-pointer' away='"+val.away+"' home='"+val.home+"' home_logo='"+val.home_logo+"' away_logo='"+val.away_logo+"' match_id='"+val.match_id+"' onclick='fnOpenPredict(this)'><span class='h5'>predict</span></div>";
+					}
+					resHTML += "</div><h5>"+val.match_start+"</h5></div>";
+					resHTML += "<div class='col-md-4 col-lg-4 text-center text-lg-right'>";
+					resHTML += "<div class=''>";
+					resHTML += "<div class='d-block d-lg-flex align-items-center'>";
+					resHTML += "<div class='image image-small ml-lg-3 mb-3 mb-lg-0 order-2'>";
+					resHTML += "<img src='"+val.away_logo+"' alt='Image' class='img-fluid'>";
+					resHTML += "</div>";
+					resHTML += "<div class='text order-1 w-100'>";
+					resHTML += "<h3 class='h5 mb-0 text-black'>"+val.away+"</h3>";
+					resHTML += "<span class='text-uppercase small country'></span>";
+					resHTML += "</div></div></div></div></div>";
+				});
+				$("#matches").append(resHTML);
+				
+			}	
+		});
+		
+	});
+	
+	</script>
 	
 </body>
 </html>

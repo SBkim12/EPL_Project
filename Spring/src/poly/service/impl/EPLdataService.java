@@ -20,7 +20,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import net.bytebuddy.asm.Advice.This;
 import poly.dto.EPLDTO;
 import poly.persistance.mapper.IEPLdataMapper;
 import poly.service.IEPLdataService;
@@ -145,6 +144,11 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 				recent_season_name=result.get("name").toString();
 			}
 		}
+//		EPLDTO  sDTO = epldataMapper.presentSeason();
+//		
+//		String recent_season_name = sDTO.getSeason();
+//		String recent_season_id = sDTO.getSeason_id();
+		
 		log.info("최신 시즌 :: " + recent_season_name);
 		log.info("최신 시즌 id :: " + recent_season_id);
 		
@@ -261,6 +265,7 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 			JSONObject result = (JSONObject) dataArr.get(i);
 			
 			String season = result.get("name").toString();
+			String season_id = result.get("season_id").toString();
 			int is_current = Integer.parseInt(result.get("is_current").toString());
 			String start_date = result.get("start_date").toString();
 			String end_date = result.get("end_date").toString();
@@ -272,6 +277,7 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 				rDTO.setSeason(season);
 				rDTO.setStart_date(start_date);
 				rDTO.setEnd_date(end_date);
+				rDTO.setSeason_id(season_id);
 				
 				int res = epldataMapper.updateSeason(rDTO);
 				if(res==0) {
@@ -422,6 +428,109 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 
 		log.info(this.getClass().getName() + ".getkoname start!");
 		return qDTO;
+	}
+
+	@Override
+	public String presentSeason() throws Exception {
+		EPLDTO  qDTO = epldataMapper.presentSeason();
+		
+		String recent_season_id = qDTO.getSeason_id();
+		
+		return recent_season_id;
+	}
+
+
+	@Override
+	public List<Map<String, String>> getUpcomingGame(String team, String seasonId) throws Exception {
+		
+		//String date = poly.util.dateUtil.now();
+		
+		String date = "2021-05-01";
+		
+		String url="https://app.sportdataapi.com/api/v1/soccer/matches?apikey="+key+"&season_id="+seasonId+"&date_from="+date;
+		// JSON 결과 받아오기
+		String json = getUrlForJSON(url);
+
+		// String 변수의 문자열을 json 형태의 데이터 구조로 변경하기 위한 객체를 메모리에 올림
+		JSONParser parser = new JSONParser();
+
+		// String 변수의 문자열을 json 형태의 데이터 구조로 변경하기 위해 자바 최상위 Object 변환
+		Object obj = parser.parse(json);
+
+		// 변환된 object 객체를 json 데이터 구조로 변경
+		JSONObject jsonObject = (JSONObject) obj;
+				
+		// 요청한 파라미터 가져오기
+		JSONArray dataArr = (JSONArray) jsonObject.get("data");
+		
+		//경기 정보 담을 리스트
+		List<Map<String, String>> matches = new LinkedList<Map<String, String>>();
+		Map<String, String> pMap = new HashMap<String, String>();
+		
+		int limit = 3;
+		for(int i =0; i<dataArr.size(); i++) {
+			pMap = new HashMap<String, String>();
+					
+			JSONObject match = (JSONObject) dataArr.get(i);
+			
+			JSONObject homes = (JSONObject) match.get("home_team");
+			JSONObject aways = (JSONObject) match.get("away_team");
+			
+			String home = (String) homes.get("name");
+			
+			String away = (String) aways.get("name");
+			
+			
+			//선택 팀 아닐경우 패스
+			if( !( team.equals(home) || team.equals(away) ) ){
+				continue;
+			}
+			log.info(home);
+			log.info(away);
+			
+			String home_logo = (String) homes.get("logo");
+			log.info(home_logo);
+			String away_logo = (String) aways.get("logo");
+			log.info(away_logo);
+			String match_id =  match.get("match_id").toString();
+			log.info(match_id);
+			String status_code = match.get("status_code").toString();
+			log.info(status_code);
+			String minute = match.get("minute").toString();
+			log.info(minute);
+			String match_start = match.get("match_start").toString();
+			log.info(match_start);
+			
+			//라운드 이름
+			JSONObject rounds = (JSONObject) match.get("round");
+			String round = (String) rounds.get("name").toString();
+			log.info(round);
+			
+			JSONObject stats = (JSONObject) match.get("stats");
+			String home_score = (String) stats.get("home_score").toString();
+			String away_score = (String) stats.get("away_score").toString();
+			
+			pMap.put("home", home);
+			pMap.put("away", away);
+			pMap.put("home_logo", home_logo);
+			pMap.put("away_logo", away_logo);
+			pMap.put("match_id", match_id);
+			pMap.put("status_code", status_code);
+			pMap.put("minute", minute);
+			pMap.put("match_start", match_start);
+			pMap.put("round", round);
+			pMap.put("home_score", home_score);
+			pMap.put("away_score", home_score);
+			
+			matches.add(pMap);
+			
+			limit--;
+			if(limit==0) {
+				break;
+			}
+			pMap = null;
+		}
+		return matches;
 	}
 
 
