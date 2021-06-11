@@ -19,5 +19,7 @@ public interface IUserService {
 	int ChangeMyteam(MemberDTO uDTO)throws Exception;
 
 	int ChangeMyName(MemberDTO uDTO)throws Exception;
+
+	int UserPointUpdate(MemberDTO uDTO)throws Exception;;
 	
 }

@@ -129,7 +129,7 @@
 					</ul>
 				</li>
 				<li class="News"><a href="/news.do" >News</a></li>	
-				<li class="Predict"><a href="/predict.do" >Predict_Res</a></li>	
+				<li class="Predict"><a href="/predict_res.do" >Predict_Res</a></li>	
 				<li><a href="/Logout.do">LogOut</a></li>
 			</ul>
 		</div>

@@ -21,5 +21,7 @@ public interface IUserMapper {
 	int ChangeMyteam(MemberDTO uDTO);
 
 	int ChangeMyName(MemberDTO uDTO);
+
+	int UserPointUpdate(MemberDTO uDTO);
 	
 }

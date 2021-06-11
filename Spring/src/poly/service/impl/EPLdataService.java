@@ -533,5 +533,56 @@ public class EPLdataService	extends AbstractgetUrlFordata implements IEPLdataSer
 		return matches;
 	}
 
+	@Override
+	public Map<String, String> getMatchData(String match_id) throws Exception {
+		
+		Map<String, String> pMap = new HashMap<String, String>();
+		
+		String url = "https://app.sportdataapi.com/api/v1/soccer/matches/"+match_id+"?apikey="+key;
+		
+		
+		// JSON 결과 받아오기
+		String json = getUrlForJSON(url);
+		
+		// String 변수의 문자열을 json 형태의 데이터 구조로 변경하기 위한 객체를 메모리에 올림
+		JSONParser parser = new JSONParser();
+
+		// String 변수의 문자열을 json 형태의 데이터 구조로 변경하기 위해 자바 최상위 Object 변환
+		Object obj = parser.parse(json);
+
+		// 변환된 object 객체를 json 데이터 구조로 변경
+		JSONObject jsonObject = (JSONObject) obj;
+				
+		// 요청한 파라미터 가져오기
+		JSONObject match = (JSONObject) jsonObject.get("data");
+		
+		if(match == null) {
+			log.info("결과 값 없음");
+			return null;
+		}
+		
+		String status_code = match.get("status_code").toString();
+		if(!status_code.equals("3")) {
+			log.info("경기가 종료되지 않았습니다.");
+			return null;
+		}
+		
+		JSONObject homes = (JSONObject) match.get("home_team");
+		JSONObject aways = (JSONObject) match.get("away_team");
+		
+		JSONObject stats = (JSONObject) match.get("stats");
+		String fulltime_score = (String) stats.get("ft_score").toString();
+		
+		String[] score = fulltime_score.split("-");
+		String home_score = score[0];
+		String away_score = score[1];
+		
+		pMap.put("status_code", status_code);
+		pMap.put("home_score", home_score);
+		pMap.put("away_score", home_score);
+		
+		return pMap;
+	}
+
 
 }

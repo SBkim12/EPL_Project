@@ -59,6 +59,12 @@ public class UserService implements IUserService{
 		return userMapper.ChangeMyName(uDTO);
 	}
 
+	@Override
+	public int UserPointUpdate(MemberDTO uDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return userMapper.UserPointUpdate(uDTO);
+	}
+
 
 	
 }

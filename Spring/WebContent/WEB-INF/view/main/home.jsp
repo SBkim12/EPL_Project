@@ -437,6 +437,7 @@
 		var away_logo="";
 		var away="";
 		var home="";
+		var round ="";
 		
 		function fnOpenPredict(predict){
 			match_id = $(predict).attr('match_id');
@@ -444,6 +445,7 @@
 			home = $(predict).attr('home');
 			away_logo = $(predict).attr('away_logo');
 			away = $(predict).attr('away');
+			round = $(predict).attr('round');
 			console.log(match_id);
 			$("#home_score option:eq(0)").prop("selected", true);
 			$("#away_score option:eq(0)").prop("selected", true);
@@ -467,7 +469,8 @@
 						"away" : away,
 						"home" : home,
 						"away_logo" : away_logo,
-						"home_logo" : home_logo
+						"home_logo" : home_logo,
+						"round" : round
 						},
 				dataType : "json",
 				success : function(data) {
@@ -517,13 +520,13 @@
 					resHTML += "<h5>"+val.round+" ROUND</h5>"
 					resHTML += "<div class='d-inline-block'>";
 					if(val.status_code==0){
-						resHTML += "<div class='bg-black py-2 px-4 mb-2 text-white d-inline-block rounded cursor-pointer' away='"+val.away+"' home='"+val.home+"' home_logo='"+val.home_logo+"' away_logo='"+val.away_logo+"' match_id='"+val.match_id+"' onclick='fnOpenPredict(this)'><span class='h5'>predict</span></div>";
+						resHTML += "<div class='bg-black py-2 px-4 mb-2 text-white d-inline-block rounded cursor-pointer' round='"+val.round+"' away='"+val.away+"' home='"+val.home+"' home_logo='"+val.home_logo+"' away_logo='"+val.away_logo+"' match_id='"+val.match_id+"' onclick='fnOpenPredict(this)'><span class='h5'>predict</span></div>";
 					}else{
 						/* resHTML += "<div class='bg-black py-2 px-4 mb-2 text-white d-inline-block rounded'><span class='h5'>"+val.home_score+":"+val.away_score+"</span></div>"; */
-						resHTML += "<div class='bg-black py-2 px-4 mb-2 text-white d-inline-block rounded cursor-pointer' away='"+val.away+"' home='"+val.home+"' home_logo='"+val.home_logo+"' away_logo='"+val.away_logo+"' match_id='"+val.match_id+"' onclick='fnOpenPredict(this)'><span class='h5'>predict</span></div>";
+						resHTML += "<div class='bg-black py-2 px-4 mb-2 text-white d-inline-block rounded cursor-pointer' round='"+val.round+"' away='"+val.away+"' home='"+val.home+"' home_logo='"+val.home_logo+"' away_logo='"+val.away_logo+"' match_id='"+val.match_id+"' onclick='fnOpenPredict(this)'><span class='h5'>predict</span></div>";
 					}
-					resHTML += "</div><h5>"+val.match_start+"</h5></div>";
-					resHTML += "<div class='col-md-4 col-lg-4 text-center text-lg-right'>";
+					resHTML += "</div><span class='text-uppercase small country' style='display:grid'>"+val.match_start+"</span></div>";
+					resHTML += "<div class='col-md-4 col-lg-4 text-center text-lg-right' >";
 					resHTML += "<div class=''>";
 					resHTML += "<div class='d-block d-lg-flex align-items-center'>";
 					resHTML += "<div class='image image-small ml-lg-3 mb-3 mb-lg-0 order-2'>";

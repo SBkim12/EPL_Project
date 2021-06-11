@@ -90,5 +90,12 @@
 		MEMBER_ID = #{member_id}
 	</select>
 	
-	
+	<update id="UserPointUpdate" parameterType="MemberDTO"  >
+	UPDATE 
+		MEMBER_DATA
+	SET
+		MEMBER_POINT = #{member_point}
+	WHERE
+		MEMBER_ID = #{member_id} 
+	</update>
 </mapper>

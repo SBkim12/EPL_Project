@@ -25,4 +25,6 @@ public interface IEPLdataService {
 
 	List<Map<String, String>> getUpcomingGame(String team, String seasonId)throws Exception;
 
+	Map<String, String> getMatchData(String match_id)throws Exception;
+
 }
