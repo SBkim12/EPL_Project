@@ -9,3 +9,5 @@ SportsDATA API를 활용해 EPL 리그 정보 제공
 YouTube DATA API V3 를 통해 최신 EPL 경기 하이라이트 제공
 
 Notion상세설명
+
+https://www.notion.so/MyFavoritePL-7070be2927fa49168690041f4f4f4d33
